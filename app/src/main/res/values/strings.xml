@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">RouterController</string>
+    <string name="status">Status</string>
+    <string name="tools">Tools</string>
+    <string name="settings">Settings</string>
+    <string name="speed_chart">Speed Chart</string>
+    <string name="status_speed_reverse">Speed reverse</string>
+    <string name="connector_info">Connector info</string>
+    <string name="IP_address">IP_address</string>
+    <string name="Port">Port</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="upload">▲ 0.0 B/s</string>
+    <string name="download">▼ 0.0 B/s</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="general">General</string>
+    <string name="connector_type">Connector type</string>
+    <string name="uci">UCI</string>
+    <string name="nvram">NVRAM</string>
+    <string name="speed_dev">Network speed device</string>
+    <string name="br0">br0</string>
+
+    <string name="main_menu">Main bar menu</string>
+
+    <string name="connection_failed">Connection failed</string>
+    <string name="connecting">Connecting&#8230;</string>
+    <string name="not_connect">Not connect yet, try later</string>
+
+    <string name="change_settings">Change Settings</string>
+    <string name="shanxun">ShanXun</string>
+    <string name="command_line">Command Line</string>
+    <string name="command_bundle">Use Command Bundle</string>
+    <string name="upload_files">Upload Files</string>
+
+    <string name="type_command"># Type your command</string>
+    <string name="sx_account">Shanxun Account</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="sx_account_config_name">PPPoE Account Config Name</string>
+    <string name="sx_passwd_config_name">PPPoE Password Config Name</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

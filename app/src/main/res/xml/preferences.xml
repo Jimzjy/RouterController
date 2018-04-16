@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/general">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_key_speed_reverse"
+            android:title="@string/status_speed_reverse" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/connector_info">
+        <ListPreference
+            android:entries="@array/connector_type"
+            android:entryValues="@array/connector_type"
+            android:key="pref_key_connector_type"
+            android:title="@string/connector_type"
+            android:defaultValue="@string/uci"
+            android:summary="@string/uci"/>
+        <ListPreference
+            android:entries="@array/speed_dev"
+            android:entryValues="@array/speed_dev"
+            android:key="pref_key_speed_dev"
+            android:title="@string/speed_dev"
+            android:defaultValue="@string/br0"
+            android:summary="@string/br0"/>
+        <EditTextPreference
+            android:defaultValue="192.168.1.1"
+            android:key="pref_key_ip_address"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="192.168.1.1"
+            android:title="@string/IP_address" />
+        <EditTextPreference
+            android:defaultValue="22"
+            android:key="pref_key_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="22"
+            android:title="@string/Port" />
+        <EditTextPreference
+            android:defaultValue="root"
+            android:key="pref_key_username"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="root"
+            android:title="@string/username" />
+        <EditTextPreference
+            android:defaultValue="admin"
+            android:key="pref_key_password"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="admin"
+            android:title="@string/password" />
+    </PreferenceCategory>
+</PreferenceScreen>

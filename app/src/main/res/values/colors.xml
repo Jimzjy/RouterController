@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4DB6AC</color>
+    <color name="colorPrimaryDark">#4DB6AC</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="appBarTitleText">#FFFFFF</color>
+    <color name="bottomNavigationText">#AAFFFFFF</color>
+    <color name="buttonDefault">#FFFFFF</color>
+    <color name="buttonTint">#E0E0E0</color>
+    <color name="line">#E0E0E0</color>
+    <color name="item_device_icon">#BDBDBD</color>
+    <color name="item_background">@android:color/white</color>
+    <color name="background">@android:color/white</color>
+    <color name="tools_command_background">#ECEFF1</color>
+</resources>

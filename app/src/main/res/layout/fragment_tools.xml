@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    tools:context=".tools.Tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tools_close_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tools_close_bar_height"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tools_tool_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/command_line"
+            android:textColor="@color/appBarTitleText"
+            android:textSize="@dimen/tools_close_bar_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/tools_close_bar_icon"
+            android:layout_width="@dimen/tools_close_bar_icon_size"
+            android:layout_height="@dimen/tools_close_bar_icon_size"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/vector_drawable_ic_remove_white___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="contentDescription" />
+    </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tools_top_widget_height"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toBottomOf="@id/tools_close_bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tools_top_widget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_tools" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/tools_frame_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tools_close_bar" >
+        <FrameLayout
+            android:id="@+id/tools_replace_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>

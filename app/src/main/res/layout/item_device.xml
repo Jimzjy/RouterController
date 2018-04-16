@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/item_background">
+
+    <ImageView
+        android:id="@+id/item_device_icon"
+        android:layout_width="@dimen/status_item_device_icon_size"
+        android:layout_height="@dimen/status_item_device_icon_size"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/vector_drawable_ic_desktop_mac_white___px"
+        android:tint="@color/item_device_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="contentDescription"/>
+
+    <TextView
+        android:id="@+id/item_device_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/status_item_device_text_size"
+        tools:text="@sample/device.json/data/name"
+        app:layout_constraintStart_toEndOf="@+id/item_device_icon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_device_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/status_item_device_text_size"
+        tools:text="@sample/device.json/data/ip"
+        app:layout_constraintStart_toEndOf="@+id/item_device_icon"
+        app:layout_constraintTop_toBottomOf="@+id/item_device_name" />
+
+    <TextView
+        android:id="@+id/item_device_mac"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textSize="@dimen/status_item_device_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_device_icon"
+        app:layout_constraintTop_toBottomOf="@+id/item_device_ip"
+        tools:text="@sample/device.json/data/mac" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:background="@color/line"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+</android.support.constraint.ConstraintLayout>

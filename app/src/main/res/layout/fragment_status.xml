@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="com.jimzjy.routercontroller.status.Status">
+
+    <com.jimzjy.networkspeedview.NetworkSpeedView
+        android:id="@+id/status_network_speed_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_top_widget_height"
+        android:background="@color/colorPrimary"
+        app:speed_unit="Auto_same" />
+
+    <com.jimzjy.routercontroller.status.StatusCoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/status_CoordinatorLayout">
+        <com.jimzjy.routercontroller.status.ScrimView
+            android:id="@+id/status_scrim_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/status_top_widget_height"
+            android:background="@color/colorPrimary"
+            android:alpha="0"
+            app:layout_behavior=".common.DeviceRecyclerScrollerBehavior"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/status_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/item_background"
+            android:layout_marginTop="@dimen/status_top_widget_height"
+            app:layout_behavior=".common.MeasureRecyclerBehavior"
+            tools:listitem="@layout/item_device"
+            tools:itemCount="7" />
+    </com.jimzjy.routercontroller.status.StatusCoordinatorLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/status_constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/status_top_text_height"
+        android:alpha="0">
+
+        <TextView
+            android:id="@+id/status_constraint_left_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:text="@string/download"
+            android:textSize="@dimen/appBarTitleTextSize"
+            android:gravity="center_vertical"
+            android:textColor="@color/appBarTitleText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/status_constraint_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/status_constraint_view"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/appBarTitleText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/status_constraint_right_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="32dp"
+            android:text="@string/upload"
+            android:textSize="@dimen/appBarTitleTextSize"
+            android:gravity="center_vertical"
+            android:textColor="@color/appBarTitleText"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/status_constraint_view"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>

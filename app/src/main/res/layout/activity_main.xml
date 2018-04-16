@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/main_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottomNavigationHeight"
+        android:background="@color/colorPrimary"
+        app:elevation="0dp"
+        app:itemTextColor="@color/selector_bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@+id/main_view_pager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_bottom_navigation" />
+
+    <ImageView
+        android:id="@+id/main_menu_button"
+        android:layout_width="@dimen/appBarIconSize"
+        android:layout_height="@dimen/appBarIconSize"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/vector_drawable_ic_more_vert_white___px"
+        android:contentDescription="@string/main_menu"
+        android:tint="@color/selector_bar_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_bottom_navigation" />
+
+</android.support.constraint.ConstraintLayout>

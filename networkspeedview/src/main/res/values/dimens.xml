@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="heightDefault">200dp</dimen>
+    <dimen name="widthDefault">400dp</dimen>
+    <dimen name="mainTextSize">40sp</dimen>
+    <dimen name="subTextSize">30sp</dimen>
+</resources>

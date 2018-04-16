@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="appBarHeight">56dp</dimen>
+    <dimen name="appBarIconSize">24dp</dimen>
+    <dimen name="appBarTitleTextSize">22sp</dimen>
+    <dimen name="bottomNavigationTextSize">18sp</dimen>
+    <dimen name="bottomNavigationHeight">40dp</dimen>
+    <dimen name="status_item_device_icon_size">48dp</dimen>
+    <dimen name="status_item_device_text_size">16sp</dimen>
+    <dimen name="status_top_widget_height">176dp</dimen>
+    <dimen name="status_top_text_height">64dp</dimen>
+    <dimen name="tools_item_size">80dp</dimen>
+    <dimen name="tools_item_icon_size">56dp</dimen>
+    <dimen name="tools_item_text_size">10sp</dimen>
+    <dimen name="tools_top_widget_height">88dp</dimen>
+    <dimen name="tools_close_bar_height">40dp</dimen>
+    <dimen name="tools_close_bar_icon_size">32dp</dimen>
+    <dimen name="tools_close_bar_text_size">18sp</dimen>
+    <dimen name="tools_command_height">48dp</dimen>
+    <dimen name="tools_command_text_size">18sp</dimen>
+    <dimen name="tools_bar_height">48dp</dimen>
+</resources>

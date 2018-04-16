@@ -1,0 +1,39 @@
+{
+  "data": [
+    {
+      "name": "XXX's iPhone",
+      "ip": "192.168.99.2",
+      "mac": "FF:BB:22:EE:CD:BC"
+    },
+    {
+      "name": "XXX's iPad",
+      "ip": "192.168.99.3",
+      "mac": "FF:BB:22:EE:CD:BD"
+    },
+    {
+      "name": "XXX's MI 6",
+      "ip": "192.168.99.4",
+      "mac": "FF:BB:22:EE:CD:BE"
+    },
+    {
+      "name": "XXX's MI MIX 2",
+      "ip": "192.168.99.5",
+      "mac": "FF:BB:22:EE:CD:BF"
+    },
+    {
+      "name": "XXX-PC",
+      "ip": "192.168.99.6",
+      "mac": "FF:BB:22:EE:CD:B0"
+    },
+    {
+      "name": "XXX-XXX",
+      "ip": "192.168.99.7",
+      "mac": "FF:BB:22:EE:CD:B1"
+    },
+    {
+      "name": "XXX-SSS",
+      "ip": "192.168.99.8",
+      "mac": "FF:BB:22:EE:CD:B1"
+    }
+  ]
+}

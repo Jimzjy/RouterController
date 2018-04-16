@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NetworkSpeedView">
+        <attr name="mainText_size" format="dimension"/>
+        <attr name="subText_size" format="dimension"/>
+        <attr name="speed_unit">
+            <enum name="Bytes_ps" value="0"/>
+            <enum name="KBytes_ps" value="1"/>
+            <enum name="MBytes_ps" value="2"/>
+            <enum name="GBytes_ps" value="3"/>
+            <enum name="Auto" value="4"/>
+            <enum name="Auto_same" value="5"/>
+        </attr>
+    </declare-styleable>
+</resources>

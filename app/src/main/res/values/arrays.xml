@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="connector_type">
+        <item>NVRAM</item>
+        <item>UCI</item>
+    </string-array>
+    <string-array name="speed_dev">
+        <item>br0</item>
+        <item>eth2.2</item>
+        <item>eth1</item>
+        <item>ppp0</item>
+    </string-array>
+</resources>
