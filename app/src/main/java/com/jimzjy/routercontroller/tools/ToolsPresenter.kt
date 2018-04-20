@@ -1,7 +1,6 @@
 package com.jimzjy.routercontroller.tools
 
-import android.widget.FrameLayout
-import android.widget.ImageView
+import com.jimzjy.dialog.CommandData
 
 interface ToolsPresenter {
     fun onStart()
@@ -10,4 +9,6 @@ interface ToolsPresenter {
     fun onClickReconnect()
     fun isConnected(): Boolean
     fun executeCommand(command: String): Array<String>
+    fun getCommandList(): MutableList<CommandData>
+    fun setCommandList(commandList: List<CommandData>)
 }

@@ -1,13 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_bar_height"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/list_dialog_cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/vector_drawable_ic_clear_white___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/list_dialog_done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/vector_drawable_ic_done_white___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_dialog_rv"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        tools:listitem="@layout/layout_dialog_list_item"/>
+        android:layout_width="@dimen/list_width"
+        android:layout_height="@dimen/list_height"
+        android:layout_gravity="center"
+        android:background="@color/background"
+        tools:listitem="@layout/layout_dialog_list_item" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_bar_height"
+        android:background="@android:color/white" >
+
+        <TextView
+            android:id="@+id/list_dialog_bottom_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:text="@string/add"
+            android:textSize="@dimen/list_bottom_text_size"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/view"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/list_dialog_bottom_left"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:elevation="4dp"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="@dimen/list_bottom_text_size"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 </LinearLayout>

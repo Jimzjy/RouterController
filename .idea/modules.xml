@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/RouterController.iml" filepath="$PROJECT_DIR$/RouterController.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dialog/dialog.iml" filepath="$PROJECT_DIR$/dialog/dialog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/networkspeedview/networkspeedview.iml" filepath="$PROJECT_DIR$/networkspeedview/networkspeedview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/routersshutils/routersshutils.iml" filepath="$PROJECT_DIR$/routersshutils/routersshutils.iml" />
+    </modules>
+  </component>
+</project>

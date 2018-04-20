@@ -1,8 +1,10 @@
 package com.jimzjy.routercontroller.tools
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.Log
+import com.jimzjy.dialog.CommandData
 import com.jimzjy.routercontroller.status.StatusPresenterImpl
 import com.jimzjy.routersshutils.common.Connector
 import com.jimzjy.routersshutils.common.ConnectorInfo
@@ -59,6 +61,29 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
             return arrayOf(outputString.toString(), errorString.toString())
         }
         return arrayOf("","")
+    }
+
+    override fun getCommandList(): MutableList<CommandData> {
+        val editor = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val commandSet = editor?.getStringSet("commandSet", emptySet())
+        val commandList = mutableListOf<CommandData>()
+        commandSet?.forEach {
+            val tmp = it.split("!FNNDP!")
+            if (tmp.size >= 2) {
+                commandList.add(CommandData(tmp[0], tmp[1]))
+            }
+        }
+        return commandList
+    }
+
+    override fun setCommandList(commandList: List<CommandData>) {
+        val commandSet = mutableSetOf<String>()
+        commandList.forEach {
+            commandSet.add("${it.name}!FNNDP!${it.content}")
+        }
+        val editor = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()
+        editor?.putStringSet("commandSet", commandSet)
+        editor?.apply()
     }
 
     private fun connectorObservable(): Observable<Boolean> {
