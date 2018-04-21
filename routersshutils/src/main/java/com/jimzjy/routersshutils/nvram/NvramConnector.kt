@@ -6,17 +6,6 @@ import com.jimzjy.routersshutils.common.*
  *
  */
 class NvramConnector(info: ConnectorInfo) : Connector(info) {
-    private val tag = "NvramConnector"
-
-    override fun setPPPoEConfig(username: String, password: String) {
-        executeCommands("nvram set wan_pppoe_username=$username; nvram set wan_pppoe_password=$password; nvram commit",
-                null, null)
-    }
-
-    override fun setPPPoEConfig(password: String) {
-        val commands = "nvram set wan_pppoe_password=$password; nvram commit"
-        executeCommands(commands, null, null)
-    }
 
     override fun getConnectingDevices(): List<DeviceInfo> {
         val outputString = StringBuilder()
@@ -62,15 +51,15 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
         return floatArrayOf(upload, download)
     }
 
-    override fun getConfig(nameOrValue: String): Map<String, String> {
+    override fun getConfig(nameOrValue: String): HashMap<String, String> {
         val outputString = StringBuilder()
         val commands = "nvram show | grep -E $nameOrValue"
         executeCommands(commands, outputString, null)
 
-        if (outputString.toString() == "") return emptyMap()
+        if (outputString.toString() == "") return hashMapOf()
 
         val tmp = outputString.toString().split("\n")
-        val config: MutableMap<String, String> = mutableMapOf()
+        val config: HashMap<String, String> = hashMapOf()
         tmp.forEach {
             val tmp2 = it.split("=")
             if (tmp2.size > 1) {
@@ -82,11 +71,12 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
         return config
     }
 
-    override fun setConfig(nameValueMap: Map<String, String>) {
+    override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
         val commands = StringBuilder()
         for ((K, V) in nameValueMap) {
             commands.append("nvram set $K=$V;")
         }
+        if (commit) commands.append("nvram commit")
         executeCommands(commands.toString(), null, null)
     }
 

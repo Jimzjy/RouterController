@@ -32,12 +32,14 @@
     <string name="command_bundle">Use Command Bundle</string>
     <string name="upload_files">Upload Files</string>
 
-    <string name="type_command"># Type your command</string>
+    <string name="type_command">> Type your command here</string>
+    <string name="type_setting">> Type setting or value </string>
+    <string name="try_to_get">Try to get you want&#8230;</string>
+    <string name="cant_find_config">Try to enter more info, if can\'t get</string>
     <string name="sx_account">Shanxun Account</string>
     <string name="phone_number">Phone Number</string>
     <string name="sx_account_config_name">PPPoE Account Config Name</string>
     <string name="sx_passwd_config_name">PPPoE Password Config Name</string>
+    <string name="commit">Commit</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

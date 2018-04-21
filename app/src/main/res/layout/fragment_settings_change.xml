@@ -7,16 +7,62 @@
     android:background="@color/background"
     tools:context=".tools.fragments.SettingsChangeFragment">
 
-    <android.support.v7.widget.RecyclerView
+    <View
+        android:id="@+id/tools_settings_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/tools_bar_height"
+        android:background="@color/colorPrimary" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="normal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tools_settings_cl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tools_command_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:background="@drawable/tools_command_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tools_settings_bar">
+
+        <EditText
+            android:id="@+id/tools_settings_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:hint="@string/type_setting"
+            android:inputType="text"
+            android:imeOptions="actionSend"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/tools_settings_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/vector_drawable_ic_search_black___px"
+            android:tint="@color/tools_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tools_settings_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/tools_command_background"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tools_settings_cl"
+        tools:listitem="@layout/item_setting" />
 </android.support.constraint.ConstraintLayout>

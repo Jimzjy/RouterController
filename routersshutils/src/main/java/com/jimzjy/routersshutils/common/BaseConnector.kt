@@ -72,12 +72,10 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         }
     }
 
-    abstract fun setPPPoEConfig(username: String, password: String)
-    abstract fun setPPPoEConfig(password: String)
     abstract fun getConnectingDevices(): List<DeviceInfo>
     abstract fun getNetworkSpeed(dev: String): FloatArray
-    abstract fun getConfig(nameOrValue: String): Map<String, String>
-    abstract fun setConfig(nameValueMap: Map<String, String>)
+    abstract fun getConfig(nameOrValue: String): HashMap<String, String>
+    abstract fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean)
     abstract fun refreshARP()
 }
 

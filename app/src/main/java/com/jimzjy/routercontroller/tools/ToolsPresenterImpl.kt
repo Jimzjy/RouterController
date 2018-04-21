@@ -86,6 +86,20 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         editor?.apply()
     }
 
+    override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
+        if (isConnected()) {
+            mConnector?.setConfig(nameValueMap, commit)
+        }
+    }
+
+    override fun getConfig(nameOrValue: String): HashMap<String, String> {
+        val notConnect = hashMapOf(Pair("Not Connect",""))
+        if (isConnected()) {
+            return mConnector?.getConfig(nameOrValue) ?: notConnect
+        }
+        return notConnect
+    }
+
     private fun connectorObservable(): Observable<Boolean> {
         return Observable.create {
             if (!isConnected()){

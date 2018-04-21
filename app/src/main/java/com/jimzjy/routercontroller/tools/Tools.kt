@@ -118,7 +118,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
                     replaceFragment(CommandFragment.newInstance(mToolsPresenter!!), resources.getString(R.string.command_line))
                 }
                 1 -> {
-                    replaceFragment(SettingsChangeFragment(), resources.getString(R.string.change_settings))
+                    replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter!!), resources.getString(R.string.change_settings))
                 }
                 2 -> {
 

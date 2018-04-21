@@ -106,13 +106,13 @@ class CommandFragment : Fragment(), ReconnectClickListener {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        val fragmentTransaction = fragmentManager.beginTransaction()
+//    private fun replaceFragment(fragment: Fragment) {
+//        val fragmentTransaction = fragmentManager.beginTransaction()
 //        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        fragmentTransaction.replace(R.id.tools_replace_layout, fragment)
-        fragmentTransaction.addToBackStack(null)
-        fragmentTransaction.commit()
-    }
+//        fragmentTransaction.replace(R.id.tools_replace_layout, fragment)
+//        fragmentTransaction.addToBackStack(null)
+//        fragmentTransaction.commit()
+//    }
 
     private fun commandSendObservable(): Observable<String> {
         return Observable.create {
@@ -121,9 +121,11 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
                                 && KeyEvent.ACTION_DOWN == event.keyCode)){
-                    println(Thread.currentThread().name)
-                    it.onNext(v.text.toString())
-                    v.text = ""
+                    if (v.text.isNotEmpty()) {
+                        it.onNext(v.text.toString())
+                        v.text = ""
+                        mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
+                    }
                 }
                 false
             }
@@ -134,10 +136,11 @@ class CommandFragment : Fragment(), ReconnectClickListener {
         mDisposable.add(commandSendObservable()
                 .observeOn(Schedulers.io())
                 .map {
+                    val notConnect = arrayOf(resources.getString(R.string.not_connect),"")
                     if (mToolsPresenter?.isConnected() == true) {
-                        mToolsPresenter?.executeCommand(it) ?: arrayOf("","")
+                        mToolsPresenter?.executeCommand(it) ?: notConnect
                     } else {
-                        arrayOf(resources.getString(R.string.not_connect),"")
+                        notConnect
                     }
                 }
                 .observeOn(AndroidSchedulers.mainThread())

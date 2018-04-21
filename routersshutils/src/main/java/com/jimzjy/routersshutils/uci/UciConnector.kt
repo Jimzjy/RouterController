@@ -8,17 +8,6 @@ import com.jimzjy.routersshutils.common.DeviceInfo
  *
  */
 class UciConnector(info: ConnectorInfo) : Connector(info) {
-    override fun setPPPoEConfig(username: String, password: String) {
-        val outputString = StringBuilder()
-        val commands = "uci set network.wan.username='$username'; uci set network.wan.password='$password'; uci commit network"
-        executeCommands(commands, outputString, null)
-    }
-
-    override fun setPPPoEConfig(password: String) {
-        val outputString = StringBuilder()
-        val commands = "uci set network.wan.password='$password'; uci commit network"
-        executeCommands(commands, outputString, null)
-    }
 
     override fun getConnectingDevices(): List<DeviceInfo> {
         val outputString = StringBuilder()
@@ -73,13 +62,13 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         return floatArrayOf(upload, download)
     }
 
-    override fun getConfig(nameOrValue: String): Map<String, String> {
+    override fun getConfig(nameOrValue: String): HashMap<String, String> {
         val outputString = StringBuilder()
         val commands = "uci show | grep -E $nameOrValue"
         executeCommands(commands, outputString, null)
 
         val tmp = outputString.toString().split("\n")
-        val config: MutableMap<String, String> = mutableMapOf()
+        val config: HashMap<String, String> = hashMapOf()
         tmp.forEach {
             val tmp2 = it.split("=")
             if (tmp2.size > 1) {
@@ -91,11 +80,12 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         return config
     }
 
-    override fun setConfig(nameValueMap: Map<String, String>) {
+    override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
         val commands = StringBuilder()
         for ((K,V) in nameValueMap) {
             commands.append("uci set $K='$V';")
         }
+        if (commit) commands.append("uci commit")
         executeCommands(commands.toString(), null, null)
     }
 

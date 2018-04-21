@@ -12,4 +12,5 @@
     <color name="item_background">@android:color/white</color>
     <color name="background">@android:color/white</color>
     <color name="tools_command_background">#ECEFF1</color>
+    <color name="tools_gray">#90A4AE</color>
 </resources>

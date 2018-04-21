@@ -191,7 +191,7 @@ open class ListDialog : DialogFragment() {
         when(requestCode) {
             EDIT_TO_LIST_UPDATE -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val commandDataArray = data.getStringArrayExtra(EDIT_COMMAND_DATA)
+                    val commandDataArray = data.getStringArrayExtra(EDIT_DATA)
                     if (commandDataArray != null) {
                         updateData(CommandData(commandDataArray[0],commandDataArray[1]),
                                 data.getIntExtra(EDIT_POSITION, 0))
@@ -200,7 +200,7 @@ open class ListDialog : DialogFragment() {
             }
             EDIT_TO_LIST_ADD -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    val commandDataArray = data.getStringArrayExtra(EDIT_COMMAND_DATA)
+                    val commandDataArray = data.getStringArrayExtra(EDIT_DATA)
                     if (commandDataArray != null) {
                         addData(CommandData(commandDataArray[0],commandDataArray[1]),
                                 data.getIntExtra(EDIT_POSITION, 0))

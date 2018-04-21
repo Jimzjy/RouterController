@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.jimzjy.routercontroller.R
 import com.jimzjy.routercontroller.tools.ToolsRecyclerItem
+import com.jimzjy.routercontroller.tools.fragments.SettingData
 import com.jimzjy.routersshutils.common.DeviceInfo
 
 
@@ -93,6 +94,38 @@ class ToolsRecyclerAdapter(ctx: Context, private val itemList: List<ToolsRecycle
 
     override fun getItemCount(): Int {
         return itemList.size
+    }
+
+    fun setOnClickItem(clickItem: (v: View, position: Int) -> Unit) {
+        this.mOnClickItem = clickItem
+    }
+}
+
+class SettingsRecyclerAdapter(ctx: Context, private val settingList: List<SettingData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val mInflater = LayoutInflater.from(ctx)
+    private var mOnClickItem: ((v: View, position: Int) -> Unit)? = null
+
+    inner class ViewHolder(root: View): RecyclerView.ViewHolder(root) {
+        val name: TextView = root.findViewById(R.id.tools_settings_setting_name)
+        val value: TextView = root.findViewById(R.id.tools_settings_setting_value)
+
+        init {
+            root.setOnClickListener { mOnClickItem?.invoke(it, adapterPosition) }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
+        return ViewHolder(mInflater.inflate(R.layout.item_setting, parent, false))
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
+        val viewHolder = holder as ViewHolder
+        viewHolder.name.text = settingList[position].name
+        viewHolder.value.text = settingList[position].value
+    }
+
+    override fun getItemCount(): Int {
+        return settingList.size
     }
 
     fun setOnClickItem(clickItem: (v: View, position: Int) -> Unit) {
