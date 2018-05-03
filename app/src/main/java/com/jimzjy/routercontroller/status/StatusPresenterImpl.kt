@@ -92,13 +92,17 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
                 mSpeedDev = preference.getString("pref_key_speed_dev", "")
             }
             var count = 0
-            for (i in 1..MAX_CONNECT_TIMES) {
-                if (mConnector?.isConnected == true) {
-                    it.onNext(true)
-                    break
+            try {
+                for (i in 1..MAX_CONNECT_TIMES) {
+                    if (mConnector?.isConnected == true) {
+                        it.onNext(true)
+                        break
+                    }
+                    count = i
+                    Thread.sleep(1000)
                 }
-                count = i
-                Thread.sleep(1000)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
             if (count >= MAX_CONNECT_TIMES) {
                 it.onNext(false)

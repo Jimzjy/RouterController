@@ -12,69 +12,101 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/tools_bar_height"
         android:background="@color/colorPrimary">
-        <ImageView
-            android:layout_width="wrap_content"
+
+        <TextView
+            android:id="@+id/tools_sx_auto_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:src="@drawable/vector_drawable_ic_clear_white___px"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:padding="6dp"
+            android:background="@drawable/round_corner_background"
+            android:text="@string/auto"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tools_sx_divide"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <View
+            android:id="@+id/tools_sx_divide"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/vector_drawable_ic_done_white___px"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tools_sx_manual_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:padding="6dp"
+            android:background="@null"
+            android:text="@string/manual"
+            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tools_sx_divide"
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <TextView
+    <EditText
+        android:id="@+id/tools_sx_passwd_number_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/sx_account"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="phone"
+        android:hint="@string/phone_number_hint"
+        android:textSize="@dimen/tools_sx_edit_size"/>
 
     <EditText
+        android:id="@+id/tools_sx_passwd_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:inputType="text"
-        android:padding="8dp"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/phone_number"/>
+        android:hint="@string/sx_passwd_config_name_hint"
+        android:textSize="@dimen/tools_sx_edit_size"/>
 
     <EditText
+        android:id="@+id/tools_sx_restart_command"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/sx_account_config_name"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:inputType="text"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/sx_passwd_config_name"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:inputType="text"
-        android:padding="8dp"/>
+        android:hint="@string/sx_restart_command"
+        android:textSize="@dimen/tools_sx_edit_size"/>
+
+    <Button
+        android:id="@+id/tools_sx_commit_button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tools_sx_commit_button_height"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/round_corner_background"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/commit"
+        android:textColor="@color/appBarTitleText"
+        android:layout_gravity="center"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:background="@color/tools_command_background">
+        <TextView
+            android:id="@+id/tools_sx_display_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sx_display_help_hint"/>
+    </ScrollView>
 </LinearLayout>

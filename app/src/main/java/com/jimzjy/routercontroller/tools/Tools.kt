@@ -63,7 +63,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         }
         mCloseBarText = view.findViewById(R.id.tools_tool_name_text)
 
-        replaceFragment(CommandFragment.newInstance(mToolsPresenter!!),
+        replaceFragment(CommandFragment.newInstance(mToolsPresenter),
                 resources.getString(R.string.command_line), false)
         return view
     }
@@ -115,16 +115,16 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         try {
             when (position) {
                 0 -> {
-                    replaceFragment(CommandFragment.newInstance(mToolsPresenter!!), resources.getString(R.string.command_line))
+                    replaceFragment(CommandFragment.newInstance(mToolsPresenter), resources.getString(R.string.command_line))
                 }
                 1 -> {
-                    replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter!!), resources.getString(R.string.change_settings))
+                    replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter), resources.getString(R.string.change_settings))
                 }
                 2 -> {
 
                 }
                 3 -> {
-                    replaceFragment(ShanXunFragment(), resources.getString(R.string.shanxun))
+                    replaceFragment(ShanXunFragment.newInstance(mToolsPresenter), resources.getString(R.string.shanxun))
                 }
             }
         } catch (e: Exception) {

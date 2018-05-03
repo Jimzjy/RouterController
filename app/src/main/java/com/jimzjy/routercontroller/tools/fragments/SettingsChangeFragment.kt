@@ -35,7 +35,7 @@ const val SETTING_TO_DIALOG = 0
 class SettingsChangeFragment : Fragment(), ReconnectClickListener {
     companion object {
         @JvmStatic
-        fun newInstance(toolsPresenter: ToolsPresenter)
+        fun newInstance(toolsPresenter: ToolsPresenter?)
                 = SettingsChangeFragment().apply {
             this.mToolsPresenter = toolsPresenter
         }

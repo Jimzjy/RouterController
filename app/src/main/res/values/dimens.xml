@@ -21,4 +21,7 @@
     <dimen name="tools_command_height">48dp</dimen>
     <dimen name="tools_command_text_size">18sp</dimen>
     <dimen name="tools_bar_height">48dp</dimen>
+    <dimen name="tools_sx_text_size">16sp</dimen>
+    <dimen name="tools_sx_edit_size">16sp</dimen>
+    <dimen name="tools_sx_commit_button_height">40dp</dimen>
 </resources>

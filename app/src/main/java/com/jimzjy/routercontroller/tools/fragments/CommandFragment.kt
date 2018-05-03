@@ -32,18 +32,20 @@ const val DIALOG_TO_FRAGMENT_MULTI_COMMAND = 1
  *
  */
 class CommandFragment : Fragment(), ReconnectClickListener {
+    private var mToolsPresenter: ToolsPresenter? = null
+    private var mCommandEditText: EditText? = null
+    private var mOutputDisplayText: TextView? = null
+    private var mCommandListener: (() -> Unit)? = null
+    private val mDisposable = CompositeDisposable()
+    private val mCommandList = mutableListOf<CommandData>()
+
     companion object {
         @JvmStatic
-        fun newInstance(toolsPresenter: ToolsPresenter)
+        fun newInstance(toolsPresenter: ToolsPresenter?)
                 = CommandFragment().apply {
             this.mToolsPresenter = toolsPresenter
         }
     }
-    private var mToolsPresenter: ToolsPresenter? = null
-    private var mCommandEditText: EditText? = null
-    private var mOutputDisplayText: TextView? = null
-    private val mDisposable = CompositeDisposable()
-    private val mCommandList = mutableListOf<CommandData>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,6 +93,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                     mCommandEditText?.setText(
                             mCommandList[data.getIntExtra(COMMAND_DATA, 0)].content
                     )
+                    mCommandListener?.invoke()
                 }
             }
             DIALOG_TO_FRAGMENT_MULTI_COMMAND -> {
@@ -98,9 +101,10 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                     val position = data.getIntArrayExtra(MULTI_COMMAND_DATA)
                     val command = StringBuilder()
                     position.forEach {
-                        command.append("${mCommandList[it].content};")
+                        command.append("${mCommandList[it].content}&&")
                     }
                     mCommandEditText?.setText(command.toString())
+                    mCommandListener?.invoke()
                 }
             }
         }
@@ -128,6 +132,13 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                     }
                 }
                 false
+            }
+            mCommandListener = {
+                if (mCommandEditText?.text?.isNotEmpty() == true) {
+                    it.onNext(mCommandEditText?.text.toString())
+                    mCommandEditText?.setText("")
+                    mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
+                }
             }
         }
     }

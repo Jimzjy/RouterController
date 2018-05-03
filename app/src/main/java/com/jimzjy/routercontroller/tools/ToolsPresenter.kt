@@ -13,4 +13,6 @@ interface ToolsPresenter {
     fun setCommandList(commandList: List<CommandData>)
     fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean)
     fun getConfig(nameOrValue: String): HashMap<String, String>
+    fun setNumberPassword(number: String, passwordConfig: String, command: String)
+    fun getNumberPassword(): Array<String>
 }

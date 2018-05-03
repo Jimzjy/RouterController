@@ -7,4 +7,5 @@ class SSHUtilsException: Exception {
     constructor() : super()
     constructor(s: String) : super(s)
     constructor(s: String, cause: Throwable): super(s, cause)
+    constructor(cause: Throwable): super(cause)
 }

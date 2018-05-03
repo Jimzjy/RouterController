@@ -12,4 +12,7 @@
 
     <dimen name="edit_dialog_text_size">16sp</dimen>
     <dimen name="edit_dialog_width">272dp</dimen>
+
+    <dimen name="message_dialog_text_size">16sp</dimen>
+    <dimen name="message_dialog_width">272dp</dimen>
 </resources>

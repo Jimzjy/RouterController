@@ -64,8 +64,8 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
     }
 
     override fun getCommandList(): MutableList<CommandData> {
-        val editor = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)
-        val commandSet = editor?.getStringSet("commandSet", emptySet())
+        val sharedPreferences = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val commandSet = sharedPreferences?.getStringSet("commandSet", emptySet())
         val commandList = mutableListOf<CommandData>()
         commandSet?.forEach {
             val tmp = it.split("!FNNDP!")
@@ -100,19 +100,39 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         return notConnect
     }
 
+    override fun setNumberPassword(number: String, passwordConfig: String, command: String) {
+        val editor = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)?.edit()
+        editor?.putString("phoneNumber", number)
+        editor?.putString("passwordConfig", passwordConfig)
+        editor?.putString("restartNetworkCommand", command)
+        editor?.apply()
+    }
+
+    override fun getNumberPassword(): Array<String> {
+        val sharedPreferences = ctx?.getSharedPreferences("data", Context.MODE_PRIVATE)
+        val number = sharedPreferences?.getString("phoneNumber","") ?: ""
+        val passwordConfig = sharedPreferences?.getString("passwordConfig", "") ?: ""
+        val command = sharedPreferences?.getString("restartNetworkCommand", "") ?: ""
+        return arrayOf(number, passwordConfig, command)
+    }
+
     private fun connectorObservable(): Observable<Boolean> {
         return Observable.create {
             if (!isConnected()){
                 this.connect()
             }
             var count = 0
-            for (i in 1..MAX_CONNECT_TIMES) {
-                if (mConnector?.isConnected == true) {
-                    it.onNext(true)
-                    break
+            try {
+                for (i in 1..MAX_CONNECT_TIMES) {
+                    if (mConnector?.isConnected == true) {
+                        it.onNext(true)
+                        break
+                    }
+                    count = i
+                    Thread.sleep(1000)
                 }
-                count = i
-                Thread.sleep(1000)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
             if (count >= MAX_CONNECT_TIMES) {
                 it.onNext(false)

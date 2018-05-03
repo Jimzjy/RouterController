@@ -36,10 +36,22 @@
     <string name="type_setting">> Type setting or value </string>
     <string name="try_to_get">Try to get you want&#8230;</string>
     <string name="cant_find_config">Try to enter more info, if can\'t get</string>
-    <string name="sx_account">Shanxun Account</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="sx_account_config_name">PPPoE Account Config Name</string>
-    <string name="sx_passwd_config_name">PPPoE Password Config Name</string>
+    <string name="phone_number_hint">phone number to get password</string>
+    <string name="phone_number_hint_manual">set password here</string>
+    <string name="sx_passwd_config_name_hint">password config name for PPPoE</string>
+    <string name="sx_restart_command">command to restart network</string>
+    <string name="sx_display_help_hint">Tips: \n 1. If you get trouble for the \"Phone Number\" option, just leave blank and set the number you want to get code to default.\n
+        2. You can get the config by the \"Changing Settings\" module, and if you have more than one config, connect them with \" ; \" , like \"wan0_passwd;wan1_passwd\".\n
+        3. Some commands for restart network: \nOpenWrt(LEDE/Pandora): /etc/init.d/network reload\nAsuswrt(Merlin): service restart_wan\nelse: you can search it on Google or just use \"reboot\" to reboot you device</string>
+    <string name="commit_error">Make sure you set the password config name and command.</string>
+    <string name="empty_phone_number">Make sure you set the Phone Number.</string>
+    <string name="empty_password">ERROR: Empty password.</string>
+    <string name="no_permission">ERROR: Not enough permissions.</string>
+    <string name="wrong_phone_number">Send SMS ERROR: Make sure you set right number.</string>
+    <string name="no_permission_phone_state">Send SMS ERROR: No permission to read phone state</string>
+    <string name="no_permission_for_sms">Send SMS ERROR: No permission to send sms or receive sms.</string>
+    <string name="set_phone_number_to_default">4. If your phone support dual SIM, make sure the number you can get the password is default for SMS.\n</string>
     <string name="commit">Commit</string>
-
+    <string name="auto">Auto</string>
+    <string name="manual">Manual</string>
 </resources>
