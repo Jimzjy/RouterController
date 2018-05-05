@@ -2,8 +2,10 @@ package com.jimzjy.routercontroller.tools.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Html
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,8 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 const val DIALOG_TO_FRAGMENT_COMMAND = 0
@@ -35,6 +39,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
     private var mToolsPresenter: ToolsPresenter? = null
     private var mCommandEditText: EditText? = null
     private var mOutputDisplayText: TextView? = null
+    private var mUpdateTimeButton: Button? = null
     private var mCommandListener: (() -> Unit)? = null
     private val mDisposable = CompositeDisposable()
     private val mCommandList = mutableListOf<CommandData>()
@@ -52,8 +57,8 @@ class CommandFragment : Fragment(), ReconnectClickListener {
         val view = inflater.inflate(R.layout.fragment_command, container, false)
 
         mCommandList.addAll(mToolsPresenter?.getCommandList() ?: mutableListOf())
-        val mCommandBundle = view.findViewById<Button>(R.id.tools_command_bundle)
-        mCommandBundle.setOnClickListener {
+        val commandBundle = view.findViewById<Button>(R.id.tools_command_bundle)
+        commandBundle.setOnClickListener {
             val listDialog = ListDialog.newInstance(mCommandList)
             listDialog.setTargetFragment(this@CommandFragment, DIALOG_TO_FRAGMENT_COMMAND)
             listDialog.setSaveCommandsMethod { mToolsPresenter?.setCommandList(it) }
@@ -62,6 +67,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
 
         mCommandEditText = view.findViewById(R.id.tools_command_edit_text)
         mOutputDisplayText = view.findViewById(R.id.tools_command_display_text)
+        mUpdateTimeButton = view.findViewById(R.id.tools_command_time)
 
         return view
     }
@@ -82,7 +88,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
     }
 
     override fun onClickReconnect() {
-        println("Reconnect Command")
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -110,23 +116,16 @@ class CommandFragment : Fragment(), ReconnectClickListener {
         }
     }
 
-//    private fun replaceFragment(fragment: Fragment) {
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-//        fragmentTransaction.replace(R.id.tools_replace_layout, fragment)
-//        fragmentTransaction.addToBackStack(null)
-//        fragmentTransaction.commit()
-//    }
-
     private fun commandSendObservable(): Observable<String> {
         return Observable.create {
+            val emitter = it
             mCommandEditText?.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEND
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
                                 && KeyEvent.ACTION_DOWN == event.keyCode)){
                     if (v.text.isNotEmpty()) {
-                        it.onNext(v.text.toString())
+                        emitter.onNext(v.text.toString())
                         v.text = ""
                         mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
                     }
@@ -135,10 +134,15 @@ class CommandFragment : Fragment(), ReconnectClickListener {
             }
             mCommandListener = {
                 if (mCommandEditText?.text?.isNotEmpty() == true) {
-                    it.onNext(mCommandEditText?.text.toString())
+                    emitter.onNext(mCommandEditText?.text.toString())
                     mCommandEditText?.setText("")
                     mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
                 }
+            }
+            mUpdateTimeButton?.setOnClickListener {
+                val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(Date())
+                emitter.onNext("date -s \"$time\"")
+                mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
             }
         }
     }
@@ -156,8 +160,12 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    mOutputDisplayText?.text = if (it[1] != "") {
-                        "${it[1]}\n${it[0]}"
+                    mOutputDisplayText?.text = if (it[1].isNotEmpty()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}", Html.FROM_HTML_MODE_LEGACY)
+                        } else {
+                            Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}")
+                        }
                     } else {
                         it[0]
                     }

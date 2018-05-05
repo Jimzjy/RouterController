@@ -12,6 +12,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.telephony.SmsManager
+import android.text.Html
+import android.text.Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
+import android.text.Spanned
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,6 +33,9 @@ import com.jimzjy.routercontroller.tools.ToolsPresenter
  */
 const val REQUEST_PERMISSION = 0
 const val SEND_SMS_OK = "Send SMS: OK\n"
+const val NORMAL_TEXT = "normal"
+const val RED_TEXT = "#E57373"
+const val GREEN_TEXT = "#4DB6AC"
 
 class ShanXunFragment : Fragment(), ReconnectClickListener {
     private var mSmsReader: SmsReader? = null
@@ -111,14 +117,14 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
+        when (requestCode) {
             REQUEST_PERMISSION -> {
                 Log.e("MIUISB", "callback")
                 if (grantResults[0] == 0 && grantResults[1] == 0 && grantResults[2] == 0) {
                     misPermissionGet = true
                     registerSmsObserver()
                 } else {
-                    setDisplayText(resources.getString(R.string.no_permission))
+                    addDisplayText(resources.getString(R.string.no_permission), RED_TEXT)
                 }
             }
         }
@@ -126,34 +132,36 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
     private fun setListener() {
         mCommitButton?.setOnClickListener {
-            if (mToolsPresenter?.isConnected() == true) {
-                mPasswordConfig = mPasswordET?.text.toString()
-                mCommandRestart = mCommandET?.text.toString()
-                if (mPasswordConfig.isNotEmpty() && mCommandRestart.isNotEmpty()) {
-                    if (misAutoMode) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                            val number = mNumberPasswordET?.text.toString()
-                            sendSms(number)
-                            setDisplayText(mText)
+            clearDisplayText()
+            if (misPermissionGet) {
+                if (mToolsPresenter?.isConnected() == true) {
+                    mPasswordConfig = mPasswordET?.text.toString()
+                    mCommandRestart = mCommandET?.text.toString()
+                    if (mPasswordConfig.isNotEmpty() && mCommandRestart.isNotEmpty()) {
+                        if (misAutoMode) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                                val number = mNumberPasswordET?.text.toString()
+                                sendSms(number)
+                            } else {
+                                sendSms("")
+                            }
                         } else {
-                            sendSms("")
-                            setDisplayText(mText)
+                            val password = mNumberPasswordET?.text.toString()
+                            if (password.isNotEmpty()) {
+                                doCommitConfig(password)
+                            } else {
+                                addDisplayText(resources.getString(R.string.empty_password), RED_TEXT)
+                            }
                         }
                     } else {
-                        val password = mNumberPasswordET?.text.toString()
-                        mText = ""
-                        if (password.isNotEmpty()) {
-                            doCommitConfig(password)
-                        } else {
-                            setDisplayText(resources.getString(R.string.empty_password))
-                        }
+                        addDisplayText(resources.getString(R.string.commit_error), RED_TEXT)
                     }
+                    mToolsPresenter?.setNumberPassword(mNumberPasswordET?.text.toString(), mPasswordConfig, mCommandRestart)
                 } else {
-                    setDisplayText(resources.getString(R.string.commit_error))
+                    addDisplayText(resources.getString(R.string.not_connect), RED_TEXT)
                 }
-                mToolsPresenter?.setNumberPassword(mNumberPasswordET?.text.toString(), mPasswordConfig, mCommandRestart)
             } else {
-                setDisplayText(resources.getString(R.string.not_connect))
+                addDisplayText(resources.getString(R.string.no_permission), RED_TEXT)
             }
         }
         mAutoText?.setOnClickListener {
@@ -192,9 +200,9 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
                 try {
                     val smsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(ADDRESS_NUMBER_0, null, SMS_CONTENT, null, null)
-                    mText = SEND_SMS_OK
+                    addDisplayText(SEND_SMS_OK, GREEN_TEXT)
                 } catch (e: Exception) {
-                    mDisplayText?.text = resources.getString(R.string.no_permission_for_sms)
+                    addDisplayText(resources.getString(R.string.no_permission_for_sms), RED_TEXT)
                 }
             }
         }
@@ -202,22 +210,29 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
     private fun doSendSms(number: String, sentIntent: PendingIntent?) {
         val smsSender = SmsSender(context, number)
-        mText = SEND_SMS_OK
+        var text = SEND_SMS_OK
+        var exception = false
         try {
             val subscriptionId = smsSender.getSubscriptionId(number)
             smsSender.sendSms(subscriptionId, sentIntent)
         } catch (e: SmsUtilsException) {
+            exception = true
             when (e.message) {
                 NO_SUBSCRIPTION_ID_FOUND -> {
-                    mText = resources.getString(R.string.wrong_phone_number)
+                    text = resources.getString(R.string.wrong_phone_number)
                 }
                 NO_PERMISSION_TO_READ_PHONE_STATE -> {
-                    mText = resources.getString(R.string.no_permission_phone_state)
+                    text = resources.getString(R.string.no_permission_phone_state)
                 }
                 NO_PERMISSION_FOR_SMS -> {
-                    mText = resources.getString(R.string.no_permission_for_sms)
+                    text = resources.getString(R.string.no_permission_for_sms)
                 }
             }
+        }
+        if (exception) {
+            addDisplayText(text, RED_TEXT)
+        } else {
+            addDisplayText(text, GREEN_TEXT)
         }
     }
 
@@ -233,50 +248,31 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         }
     }
 
-//    private fun registerSmsReceiver() {
-//        if (mSmsReceiver != null) {
-//            val intentFilter = IntentFilter()
-//            intentFilter.addAction(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)
-//            intentFilter.priority = IntentFilter.SYSTEM_HIGH_PRIORITY
-//            context.registerReceiver(mSmsReceiver, intentFilter)
-//        }
-//    }
-//
-//    private fun unRegisterSmsReceiver() {
-//        if (mSmsReceiver != null) {
-//            context.unregisterReceiver(mSmsReceiver)
-//        }
-//    }
-
-    private fun setDisplayText(s: String) {
-        mDisplayText?.text = s
+    private fun addDisplayText(text: String, color: String = NORMAL_TEXT, display: Boolean = true) {
+        mText += when(color) {
+            NORMAL_TEXT -> {
+                "<p>$text</p>"
+            }
+            else -> {
+                "<p style=\"color:$color\">$text</p>"
+            }
+        }
+        if (display) {
+            mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(mText, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                Html.fromHtml(mText)
+            }
+        }
     }
 
-//    private fun initSmsReceiver() {
-//        mSmsReceiver = SmsReceiver().setMessageListener {
-//            mText += "Password: $it\n"
-//            val password = it
-//            setDisplayText(mText)
-//            val handle = Handler()
-//            Thread(Runnable {
-//                try {
-//                    if (mToolsPresenter?.isConnected() == true) {
-//                        mToolsPresenter?.setConfig(hashMapOf(Pair(mPasswordConfig, password)),true)
-//                    }
-//                    handle.post {
-//                        mText += "Commit Password: OK\n"
-//                        setDisplayText(mText)
-//                    }
-//                } catch (e: Exception){
-//                    e.printStackTrace()
-//                }
-//            }).start()
-//        }
-//    }
+    private fun clearDisplayText() {
+        mText = ""
+        mDisplayText?.text = mText
+    }
 
     private fun doCommitConfig(code: String) {
-        mText += "Password: $code\n"
-        setDisplayText(mText)
+        addDisplayText("Password: $code", GREEN_TEXT)
 
         val configMap = hashMapOf<String, String>()
         mPasswordConfig.split(";").forEach {
@@ -287,14 +283,19 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
         val handle = Handler()
         Thread(Runnable {
+            var output = emptyArray<String>()
             try {
                 if (mToolsPresenter?.isConnected() == true) {
                     mToolsPresenter?.setConfig(configMap, true)
-                    mToolsPresenter?.executeCommand(mCommandRestart)
+                    output = mToolsPresenter?.executeCommand(mCommandRestart) ?: arrayOf("", "")
                 }
                 handle.post {
-                    mText += "Commit Password: OK\n"
-                    setDisplayText(mText)
+                    if (output[1].isEmpty()) {
+                        addDisplayText("Commit Password: OK", GREEN_TEXT, false)
+                        addDisplayText("Complete! ", GREEN_TEXT)
+                    } else {
+                        addDisplayText("Commit Password: ${output[1]}", RED_TEXT)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

@@ -2,8 +2,9 @@ package com.jimzjy.routercontroller.tools
 
 
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
+import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -26,6 +27,7 @@ import com.jimzjy.routercontroller.tools.fragments.ShanXunFragment
  *
  */
 class Tools : Fragment(), ReconnectClickListener, ToolsView {
+    private var mCloseBar: ConstraintLayout? = null
     private var mCloseButton: ImageView? = null
     private var mFrameLayout: FrameLayout? = null
     private var mToolsPresenter: ToolsPresenter? = null
@@ -40,13 +42,13 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 
         val mToolsRecyclerItem = listOf(
                 ToolsRecyclerItem(resources.getString(R.string.command_line),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_ball)),
+                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_terminal)),
                 ToolsRecyclerItem(resources.getString(R.string.change_settings),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_ball)),
+                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_settings)),
                 ToolsRecyclerItem(resources.getString(R.string.upload_files),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_ball)),
+                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_files)),
                 ToolsRecyclerItem(resources.getString(R.string.shanxun),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_ball)))
+                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_lighting)))
         val mToolsRecyclerAdapter = ToolsRecyclerAdapter(context, mToolsRecyclerItem)
         val mToolsRecyclerView = view.findViewById<RecyclerView>(R.id.tools_top_widget)
         mToolsRecyclerView.adapter = mToolsRecyclerAdapter
@@ -57,9 +59,10 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         mFrameLayout = view.findViewById(R.id.tools_frame_layout)
         mFrameLayout?.translationY = mFrameLayoutTranslationY
 
+        mCloseBar = view.findViewById(R.id.tools_close_bar)
         mCloseButton = view.findViewById(R.id.tools_close_bar_icon)
-        mCloseButton?.setOnClickListener {
-            onClickCloseButton((it as ImageView))
+        mCloseBar?.setOnClickListener {
+            onClickCloseButton(mCloseButton)
         }
         mCloseBarText = view.findViewById(R.id.tools_tool_name_text)
 
@@ -87,18 +90,18 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 
     }
 
-    private fun onClickCloseButton(view: ImageView) {
+    private fun onClickCloseButton(view: ImageView?) {
         frameLayoutTranslation(mFrameLayoutTranslationY)
         changeCloseBarIcon(view)
     }
 
-    private fun changeCloseBarIcon(view: ImageView) {
+    private fun changeCloseBarIcon(view: ImageView?) {
         when (mFrameLayout?.translationY?.compareTo(0f) == 0) {
             true -> {
-                view.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_remove_white___px))
+                view?.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_remove_white___px))
             }
             false -> {
-                view.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_add_white___px))
+                view?.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_add_white___px))
             }
         }
     }
@@ -142,7 +145,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         mCloseBarText?.text = name
         if (isTrans) {
             frameLayoutTranslation(mFrameLayoutTranslationY)
-            changeCloseBarIcon(mCloseButton!!)
+            changeCloseBarIcon(mCloseButton)
         }
     }
 }

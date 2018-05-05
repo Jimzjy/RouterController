@@ -29,7 +29,8 @@
     <string name="change_settings">Change Settings</string>
     <string name="shanxun">ShanXun</string>
     <string name="command_line">Command Line</string>
-    <string name="command_bundle">Use Command Bundle</string>
+    <string name="command_bundle">Command Bundle</string>
+    <string name="update_time">Update Time</string>
     <string name="upload_files">Upload Files</string>
 
     <string name="type_command">> Type your command here</string>
@@ -40,9 +41,9 @@
     <string name="phone_number_hint_manual">set password here</string>
     <string name="sx_passwd_config_name_hint">password config name for PPPoE</string>
     <string name="sx_restart_command">command to restart network</string>
-    <string name="sx_display_help_hint">Tips: \n 1. If you get trouble for the \"Phone Number\" option, just leave blank and set the number you want to get code to default.\n
+    <string name="sx_display_help_hint">!!For some system like MIUI you should restart the app after agree the permission!!\nTips: \n 1. If you get trouble for the \"Phone Number\" option, just leave blank and set the number you want to get code to default.\n
         2. You can get the config by the \"Changing Settings\" module, and if you have more than one config, connect them with \" ; \" , like \"wan0_passwd;wan1_passwd\".\n
-        3. Some commands for restart network: \nOpenWrt(LEDE/Pandora): /etc/init.d/network reload\nAsuswrt(Merlin): service restart_wan\nelse: you can search it on Google or just use \"reboot\" to reboot you device</string>
+        3. Some commands for restart network: \nOpenWrt(LEDE/Pandora): /etc/init.d/network reload\nAsuswrt(Merlin): /sbin/service restart_wan\nelse: you can search it on Google or just use \"shutdown -r now\" to reboot you device</string>
     <string name="commit_error">Make sure you set the password config name and command.</string>
     <string name="empty_phone_number">Make sure you set the Phone Number.</string>
     <string name="empty_password">ERROR: Empty password.</string>

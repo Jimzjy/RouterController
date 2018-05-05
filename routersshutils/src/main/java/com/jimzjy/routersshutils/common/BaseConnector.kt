@@ -33,12 +33,13 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         session = null
     }
 
-    open fun executeCommands(commands: String, outputString: StringBuilder?, errorOutputString: StringBuilder?, timeWait: Long = 1000) {
+    open fun executeCommands(commands: String, outputString: StringBuilder?, errorOutputString: StringBuilder?, timeWait: Long = 1000, setPty: Boolean = false) {
         if (session == null) throw SSHUtilsException("session is null")
         if (session?.isConnected != true) throw SSHUtilsException("session is not connected")
         try {
             val channel = session?.openChannel("exec") as ChannelExec
             channel.setCommand(commands)
+            if (setPty) channel.setPty(true)
             channel.inputStream = null
             val input = channel.inputStream
             val error = channel.errStream

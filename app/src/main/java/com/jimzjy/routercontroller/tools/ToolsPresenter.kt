@@ -8,7 +8,7 @@ interface ToolsPresenter {
     fun onDestroyView()
     fun onClickReconnect()
     fun isConnected(): Boolean
-    fun executeCommand(command: String): Array<String>
+    fun executeCommand(command: String, timeWait: Long = 500, setPty: Boolean = false): Array<String>
     fun getCommandList(): MutableList<CommandData>
     fun setCommandList(commandList: List<CommandData>)
     fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean)

@@ -3,6 +3,7 @@ package com.jimzjy.routercontroller.tools
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.text.Html
 import android.util.Log
 import com.jimzjy.dialog.CommandData
 import com.jimzjy.routercontroller.status.StatusPresenterImpl
@@ -15,11 +16,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
+private const val MAX_CONNECT_TIMES = 10
+
 class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Context?) : ToolsPresenter {
-    companion object {
-        private const val TAG = "ToolsPresenterImpl"
-        private const val MAX_CONNECT_TIMES = 10
-    }
     private var mConnector: Connector? = null
     private val mDisposable = CompositeDisposable()
 
@@ -53,11 +52,11 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         return mConnector?.isConnected == true
     }
 
-    override fun executeCommand(command: String): Array<String> {
+    override fun executeCommand(command: String, timeWait: Long, setPty: Boolean): Array<String> {
         if (isConnected()) {
             val outputString = StringBuilder()
             val errorString = StringBuilder()
-            mConnector?.executeCommands(command, outputString, errorString)
+            mConnector?.executeCommands(command, outputString, errorString, timeWait, setPty)
             return arrayOf(outputString.toString(), errorString.toString())
         }
         return arrayOf("","")
@@ -76,6 +75,9 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         return commandList
     }
 
+    /**
+     * FNNDP: 只有风暴才能击倒大树? FNNDP! - Mr.Quin
+     */
     override fun setCommandList(commandList: List<CommandData>) {
         val commandSet = mutableSetOf<String>()
         commandList.forEach {

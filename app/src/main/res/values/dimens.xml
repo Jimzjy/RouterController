@@ -12,7 +12,7 @@
     <dimen name="status_top_text_height">64dp</dimen>
 
     <dimen name="tools_item_size">80dp</dimen>
-    <dimen name="tools_item_icon_size">56dp</dimen>
+    <dimen name="tools_item_icon_size">40dp</dimen>
     <dimen name="tools_item_text_size">10sp</dimen>
     <dimen name="tools_top_widget_height">88dp</dimen>
     <dimen name="tools_close_bar_height">40dp</dimen>
