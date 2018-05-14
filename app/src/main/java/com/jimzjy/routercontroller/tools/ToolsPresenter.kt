@@ -1,6 +1,8 @@
 package com.jimzjy.routercontroller.tools
 
 import com.jimzjy.dialog.CommandData
+import com.jimzjy.routersshutils.common.SftpProgress
+import java.io.File
 
 interface ToolsPresenter {
     fun onStart()
@@ -15,4 +17,5 @@ interface ToolsPresenter {
     fun getConfig(nameOrValue: String): HashMap<String, String>
     fun setNumberPassword(number: String, passwordConfig: String, command: String)
     fun getNumberPassword(): Array<String>
+    fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null)
 }

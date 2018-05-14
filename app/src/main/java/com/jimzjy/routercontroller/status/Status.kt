@@ -41,7 +41,7 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
         mStatusPresenter = StatusPresenterImpl(this@Status, context)
 
         mDeviceList.add(DeviceInfo("", resources.getString(R.string.connecting), ""))
-        mRecyclerAdapter = DeviceRecyclerAdapter(context, mDeviceList)
+        mRecyclerAdapter = DeviceRecyclerAdapter(context!!, mDeviceList)
         val recyclerView = view.findViewById<RecyclerView>(R.id.status_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = mRecyclerAdapter

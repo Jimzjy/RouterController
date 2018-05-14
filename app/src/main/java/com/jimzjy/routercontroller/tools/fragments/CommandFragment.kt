@@ -97,8 +97,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
             DIALOG_TO_FRAGMENT_COMMAND -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     mCommandEditText?.setText(
-                            mCommandList[data.getIntExtra(COMMAND_DATA, 0)].content
-                    )
+                            mCommandList[data.getIntExtra(COMMAND_DATA, 0)].content)
                     mCommandListener?.invoke()
                 }
             }

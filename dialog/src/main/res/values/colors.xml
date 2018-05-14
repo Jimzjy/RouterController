@@ -3,6 +3,5 @@
     <color name="colorPrimary">#4DB6AC</color>
     <color name="colorPrimaryDark">#4DB6AC</color>
     <color name="colorAccent">#FFC107</color>
-    <color name="background">#FAFAFA</color>
-    <color name="divider">#9E9E9E</color>
+    <color name="dialog_background">#FFFFFF</color>
 </resources>

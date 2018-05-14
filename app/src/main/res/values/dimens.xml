@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="appBarHeight">56dp</dimen>
-    <dimen name="appBarIconSize">24dp</dimen>
+    <dimen name="appBarIconSize">40dp</dimen>
     <dimen name="appBarTitleTextSize">22sp</dimen>
     <dimen name="bottomNavigationTextSize">18sp</dimen>
     <dimen name="bottomNavigationHeight">40dp</dimen>
+    <dimen name="bottomNavigationIconSize">32dp</dimen>
 
     <dimen name="status_item_device_icon_size">48dp</dimen>
     <dimen name="status_item_device_text_size">16sp</dimen>
@@ -24,4 +25,14 @@
     <dimen name="tools_sx_text_size">16sp</dimen>
     <dimen name="tools_sx_edit_size">16sp</dimen>
     <dimen name="tools_sx_commit_button_height">40dp</dimen>
+    <dimen name="tools_lf_searchET_marginTop">60dp</dimen>
+    <dimen name="tools_lf_searchET_height">40dp</dimen>
+    <dimen name="tools_file_rv_height">72dp</dimen>
+    <dimen name="tools_file_commit_height">40dp</dimen>
+
+    <dimen name="item_file_height">48dp</dimen>
+    <dimen name="item_file_icon_size">40dp</dimen>
+    <dimen name="item_selected_files_size">64dp</dimen>
+    <dimen name="item_selected_files_icon_size">50dp</dimen>
+    <dimen name="item_selected_files_text_size">10sp</dimen>
 </resources>

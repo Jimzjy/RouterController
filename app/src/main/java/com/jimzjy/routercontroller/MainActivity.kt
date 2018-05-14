@@ -1,10 +1,9 @@
-package com.jimzjy.routercontroller.main
+package com.jimzjy.routercontroller
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.PopupMenu
-import com.jimzjy.routercontroller.R
 import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.common.ViewPagerAdapter
 import com.jimzjy.routercontroller.settings.Settings

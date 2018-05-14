@@ -16,7 +16,7 @@ class Settings : AppCompatActivity() {
                 .replace(R.id.settings_content, FragmentSettings())
                 .commit()
 
-        settings_toolbar.setNavigationIcon(R.drawable.vector_drawable_ic_keyboard_backspace_white___px)
+        settings_toolbar.setNavigationIcon(R.drawable.vector_drawable_baseline_keyboard_arrow_left___px)
         settings_toolbar.setTitleTextColor(ContextCompat.getColor(applicationContext, R.color.appBarTitleText))
         settings_toolbar.setNavigationOnClickListener { onBackPressed() }
     }

@@ -19,6 +19,7 @@ import com.jimzjy.routercontroller.R
 import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.common.ToolsRecyclerAdapter
 import com.jimzjy.routercontroller.tools.fragments.CommandFragment
+import com.jimzjy.routercontroller.tools.fragments.FileFragment
 import com.jimzjy.routercontroller.tools.fragments.SettingsChangeFragment
 import com.jimzjy.routercontroller.tools.fragments.ShanXunFragment
 
@@ -42,14 +43,14 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 
         val mToolsRecyclerItem = listOf(
                 ToolsRecyclerItem(resources.getString(R.string.command_line),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_terminal)),
+                        ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_terminal)!!),
                 ToolsRecyclerItem(resources.getString(R.string.change_settings),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_settings)),
+                        ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_settings)!!),
                 ToolsRecyclerItem(resources.getString(R.string.upload_files),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_files)),
+                        ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_files)!!),
                 ToolsRecyclerItem(resources.getString(R.string.shanxun),
-                        ContextCompat.getDrawable(context, R.drawable.vector_drawable_lighting)))
-        val mToolsRecyclerAdapter = ToolsRecyclerAdapter(context, mToolsRecyclerItem)
+                        ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_lighting)!!))
+        val mToolsRecyclerAdapter = ToolsRecyclerAdapter(context!!, mToolsRecyclerItem)
         val mToolsRecyclerView = view.findViewById<RecyclerView>(R.id.tools_top_widget)
         mToolsRecyclerView.adapter = mToolsRecyclerAdapter
         mToolsRecyclerView.layoutManager = GridLayoutManager(context, 4)
@@ -98,10 +99,10 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     private fun changeCloseBarIcon(view: ImageView?) {
         when (mFrameLayout?.translationY?.compareTo(0f) == 0) {
             true -> {
-                view?.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_remove_white___px))
+                view?.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_ic_remove_white___px))
             }
             false -> {
-                view?.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.vector_drawable_ic_add_white___px))
+                view?.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_ic_add_white___px))
             }
         }
     }
@@ -124,7 +125,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
                     replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter), resources.getString(R.string.change_settings))
                 }
                 2 -> {
-
+                    replaceFragment(FileFragment.newInstance(mToolsPresenter), resources.getString(R.string.upload_files))
                 }
                 3 -> {
                     replaceFragment(ShanXunFragment.newInstance(mToolsPresenter), resources.getString(R.string.shanxun))
@@ -136,7 +137,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     }
 
     private fun replaceFragment(fragment: Fragment, name: String, isTrans: Boolean = true) {
-        val fragmentTransaction = fragmentManager.beginTransaction()
+        val fragmentTransaction = fragmentManager!!.beginTransaction()
 //        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
         fragmentTransaction.replace(R.id.tools_replace_layout, fragment)
 //        fragmentTransaction.addToBackStack(null)

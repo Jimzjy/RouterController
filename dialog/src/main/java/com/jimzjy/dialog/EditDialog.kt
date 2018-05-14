@@ -96,6 +96,6 @@ open class EditDialog : DialogFragment() {
                 .putExtra(EDIT_DATA, arrayOf(mTitle?.text.toString()
                         , mContent?.text.toString()))
                 .putExtra(EDIT_POSITION, position)
-        targetFragment.onActivityResult(targetRequestCode, Activity.RESULT_OK, intent)
+        targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, intent)
     }
 }

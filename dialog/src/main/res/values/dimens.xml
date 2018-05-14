@@ -11,8 +11,11 @@
     <dimen name="list_bottom_text_size">18sp</dimen>
 
     <dimen name="edit_dialog_text_size">16sp</dimen>
-    <dimen name="edit_dialog_width">272dp</dimen>
+    <dimen name="edit_dialog_width">260dp</dimen>
 
     <dimen name="message_dialog_text_size">16sp</dimen>
-    <dimen name="message_dialog_width">272dp</dimen>
+    <dimen name="message_dialog_width">260dp</dimen>
+
+    <dimen name="loading_dialog_height">40dp</dimen>
+    <dimen name="loading_dialog_width">40dp</dimen>
 </resources>

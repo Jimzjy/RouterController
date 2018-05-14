@@ -1,7 +1,6 @@
 package com.jimzjy.dialog
 
 import android.content.Context
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +28,8 @@ class CommandListAdapter(ctx: Context, private val itemList: List<CommandData>):
             }
             root.setOnLongClickListener {
                 if (!multiSelectMode){
-                    selectButton.isChecked = true
                     mOnLongClickItem?.invoke(it, adapterPosition)
+                    selectButton.isChecked = true
                 }
                 true
             }

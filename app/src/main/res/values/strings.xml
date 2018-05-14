@@ -55,4 +55,12 @@
     <string name="commit">Commit</string>
     <string name="auto">Auto</string>
     <string name="manual">Manual</string>
+    <string name="cancel">Cancel</string>
+    <string name="Done">Done</string>
+    <string name="back">Back</string>
+    <string name="select_file">Select Files</string>
+    <string name="search_file">Search files in current path</string>
+    <string name="destination_path">Destination path</string>
+    <string name="no_dst_path">No destination path</string>
+    <string name="no_file_upload">No file to upload</string>
 </resources>

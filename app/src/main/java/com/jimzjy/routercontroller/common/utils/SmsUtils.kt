@@ -1,4 +1,4 @@
-package com.jimzjy.routercontroller.common
+package com.jimzjy.routercontroller.common.utils
 
 import android.annotation.TargetApi
 import android.app.PendingIntent
@@ -14,8 +14,6 @@ import android.telephony.SmsManager
 import android.telephony.SmsMessage
 import android.telephony.SubscriptionManager
 import android.util.Log
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -95,7 +93,7 @@ class SmsReceiver : BroadcastReceiver() {
             mMessageListener?.invoke(getCode(messageContent))
         }
 
-        abortBroadcast()
+        //abortBroadcast()
     }
 
     @TargetApi(23)

@@ -57,7 +57,7 @@ class SettingsChangeFragment : Fragment(), ReconnectClickListener {
         mSearchButton = view.findViewById(R.id.tools_settings_search)
 
         mSettingList.add(SettingData(resources.getString(R.string.cant_find_config),""))
-        mRecyclerViewAdapter = SettingsRecyclerAdapter(context, mSettingList)
+        mRecyclerViewAdapter = SettingsRecyclerAdapter(context!!, mSettingList)
         mRecyclerViewAdapter?.setOnClickItem { v, position ->
             if (!mCommitLocked) {
                 val editDialog = EditDialog.newInstance(mSettingList[position].name,

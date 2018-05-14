@@ -1,20 +1,20 @@
 package com.jimzjy.routercontroller.tools
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import android.text.Html
 import android.util.Log
 import com.jimzjy.dialog.CommandData
 import com.jimzjy.routercontroller.status.StatusPresenterImpl
 import com.jimzjy.routersshutils.common.Connector
 import com.jimzjy.routersshutils.common.ConnectorInfo
+import com.jimzjy.routersshutils.common.SftpProgress
 import com.jimzjy.routersshutils.nvram.NvramConnector
 import com.jimzjy.routersshutils.uci.UciConnector
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 private const val MAX_CONNECT_TIMES = 10
 
@@ -116,6 +116,12 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         val passwordConfig = sharedPreferences?.getString("passwordConfig", "") ?: ""
         val command = sharedPreferences?.getString("restartNetworkCommand", "") ?: ""
         return arrayOf(number, passwordConfig, command)
+    }
+
+    override fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress?) {
+        if (isConnected()) {
+            mConnector?.sftpTo(dst, file, sftpProgress)
+        }
     }
 
     private fun connectorObservable(): Observable<Boolean> {

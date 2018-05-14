@@ -50,7 +50,7 @@ open class ListDialog : DialogFragment() {
         val view = inflater.inflate(R.layout.fragment_list_dialog, container, false)
 
         val listRecyclerView = view.findViewById<RecyclerView>(R.id.list_dialog_rv)
-        mListRecyclerViewAdapter = CommandListAdapter(context,mCommandList ?: emptyList())
+        mListRecyclerViewAdapter = CommandListAdapter(context!!,mCommandList ?: emptyList())
         listRecyclerView.layoutManager = LinearLayoutManager(context)
         listRecyclerView.adapter = mListRecyclerViewAdapter
         listRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -125,9 +125,7 @@ open class ListDialog : DialogFragment() {
             if (mListRecyclerViewAdapter?.multiSelectMode != true) {
                 dismiss()
             } else {
-                for (i in 0..(mCommandSelected.size - 1)) {
-                    if (mCommandSelected[i]) deleteData(i)
-                }
+                deleteSelectedData()
             }
         }
         mBottomRightButton?.setOnClickListener {
@@ -170,20 +168,33 @@ open class ListDialog : DialogFragment() {
         mListRecyclerViewAdapter?.notifyItemInserted(position)
     }
 
-    open fun deleteData(position: Int) {
-        mCommandList?.removeAt(position)
-        mCommandSelected.removeAt(position)
-        mListRecyclerViewAdapter?.notifyItemRemoved(position)
+    open fun deleteSelectedData() {
+        val dataList = mutableListOf<CommandData>()
+        for (i in 0..(mCommandSelected.size - 1)) {
+            if (mCommandSelected[i]){
+                dataList.add(mCommandList?.get(i) ?: CommandData("",""))
+            }
+        }
+        dataList.forEach {
+            if (mCommandList?.contains(it) == true) {
+                mCommandList?.remove(it)
+            }
+        }
+        mCommandSelected.clear()
+        for (i in 1..(mCommandList?.size ?: 1)) {
+            mCommandSelected.add(false)
+        }
+        mListRecyclerViewAdapter?.notifyDataSetChanged()
     }
 
     private fun sendData(position: Int) {
         val intent = Intent().putExtra(COMMAND_DATA, position)
-        targetFragment.onActivityResult(0, Activity.RESULT_OK, intent)
+        targetFragment?.onActivityResult(0, Activity.RESULT_OK, intent)
     }
 
     private fun sendData(positionArray: IntArray) {
         val intent = Intent().putExtra(MULTI_COMMAND_DATA, positionArray)
-        targetFragment.onActivityResult(1, Activity.RESULT_OK, intent)
+        targetFragment?.onActivityResult(1, Activity.RESULT_OK, intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

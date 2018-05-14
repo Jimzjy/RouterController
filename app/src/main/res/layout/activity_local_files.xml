@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".tools.LocalFilesActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tools_lf_bar_normal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appBarHeight"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/tools_lf_bar_back"
+            android:layout_width="@dimen/appBarIconSize"
+            android:layout_height="@dimen/appBarIconSize"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/bar_button_ripple"
+            android:contentDescription="@string/back"
+            android:padding="4dp"
+            android:src="@drawable/vector_drawable_baseline_keyboard_arrow_left___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tools_lf_bar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/select_file"
+            android:textColor="@color/appBarTitleText"
+            android:textSize="@dimen/bottomNavigationTextSize"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tools_lf_bar_back"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/tools_lf_bar_multi"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/appBarHeight"
+        android:visibility="gone"
+        android:background="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/tools_lf_bar_cancel"
+            android:layout_width="@dimen/appBarIconSize"
+            android:layout_height="@dimen/appBarIconSize"
+            android:layout_margin="8dp"
+            android:background="@drawable/bar_button_ripple"
+            android:contentDescription="@string/cancel"
+            android:padding="4dp"
+            android:src="@drawable/vector_drawable_ic_clear_white___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/tools_lf_bar_done"
+            android:layout_width="@dimen/appBarIconSize"
+            android:layout_height="@dimen/appBarIconSize"
+            android:layout_margin="8dp"
+            android:background="@drawable/bar_button_ripple"
+            android:contentDescription="@string/Done"
+            android:padding="4dp"
+            android:src="@drawable/vector_drawable_ic_done_white___px"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/tools_lf_search_ET"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/tools_lf_searchET_height"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="@dimen/tools_lf_searchET_marginTop"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/tools_command_border"
+        android:hint="@string/search_file"
+        android:inputType="text"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/tools_lf_search_BT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/search_file"
+        android:src="@drawable/vector_drawable_ic_search_black___px"
+        android:tint="@color/tools_gray"
+        app:layout_constraintBottom_toTopOf="@+id/tools_lf_rv"
+        app:layout_constraintEnd_toEndOf="@+id/tools_lf_search_ET"
+        app:layout_constraintTop_toTopOf="@+id/tools_lf_search_ET" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/tools_lf_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tools_lf_search_ET"
+        tools:listitem="@layout/item_file" />
+</android.support.constraint.ConstraintLayout>

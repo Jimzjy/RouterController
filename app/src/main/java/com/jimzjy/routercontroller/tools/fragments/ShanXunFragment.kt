@@ -13,8 +13,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.telephony.SmsManager
 import android.text.Html
-import android.text.Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE
-import android.text.Spanned
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +23,7 @@ import android.widget.TextView
 
 import com.jimzjy.routercontroller.R
 import com.jimzjy.routercontroller.common.*
+import com.jimzjy.routercontroller.common.utils.*
 import com.jimzjy.routercontroller.tools.ToolsPresenter
 
 /**
@@ -110,8 +109,8 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         unRegisterSmsObserver()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         mToolsPresenter = null
     }
 
@@ -119,7 +118,6 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_PERMISSION -> {
-                Log.e("MIUISB", "callback")
                 if (grantResults[0] == 0 && grantResults[1] == 0 && grantResults[2] == 0) {
                     misPermissionGet = true
                     registerSmsObserver()
@@ -181,10 +179,11 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
     private fun requestPermission() {
         val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
                 Manifest.permission.SEND_SMS,
-                Manifest.permission.READ_SMS)
+                Manifest.permission.READ_SMS,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
         for (p in permissions) {
-            if (ContextCompat.checkSelfPermission(context, p) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity, permissions, REQUEST_PERMISSION)
+            if (ContextCompat.checkSelfPermission(context!!, p) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(activity!!, permissions, REQUEST_PERMISSION)
                 return
             }
         }
@@ -209,7 +208,7 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
     }
 
     private fun doSendSms(number: String, sentIntent: PendingIntent?) {
-        val smsSender = SmsSender(context, number)
+        val smsSender = SmsSender(context!!, number)
         var text = SEND_SMS_OK
         var exception = false
         try {
@@ -238,13 +237,13 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
     private fun registerSmsObserver() {
         mSmsReader?.let {
-            context.contentResolver.registerContentObserver(Uri.parse(SMS_URI), true, it)
+            context?.contentResolver?.registerContentObserver(Uri.parse(SMS_URI), true, it)
         }
     }
 
     private fun unRegisterSmsObserver() {
         mSmsReader?.let {
-            context.contentResolver.unregisterContentObserver(it)
+            context?.contentResolver?.unregisterContentObserver(it)
         }
     }
 
@@ -305,7 +304,7 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
 
     private fun initSmsObserver() {
         val handler = Handler()
-        mSmsReader = SmsReader(context, handler).setMessageListener {
+        mSmsReader = SmsReader(context!!, handler).setMessageListener {
             doCommitConfig(it)
         }
     }
@@ -315,12 +314,12 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
             mNumberPasswordET?.setText("")
             mNumberPasswordET?.setHint(R.string.phone_number_hint_manual)
             mAutoText?.background = null
-            mManualText?.background = ContextCompat.getDrawable(context, R.drawable.round_corner_background)
+            mManualText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         } else {
             mNumberPasswordET?.setText("")
             mNumberPasswordET?.setHint(R.string.phone_number_hint)
             mManualText?.background = null
-            mAutoText?.background = ContextCompat.getDrawable(context, R.drawable.round_corner_background)
+            mAutoText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         }
     }
 }
