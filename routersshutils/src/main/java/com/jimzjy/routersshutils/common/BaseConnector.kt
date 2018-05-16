@@ -48,14 +48,14 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
             val tmp = ByteArray(1024)
             while (true) {
                 while (input.available() > 0) {
-                    val i = input.read(tmp, 0, 1024)
+                    val i = input.read(tmp)
                     if (i < 0) break
-                    outputString?.append(String(tmp, 0, 1024))
+                    outputString?.append(String(tmp, 0, i))
                 }
                 while (error.available() > 0) {
-                    val i = error.read(tmp, 0, 1024)
+                    val i = error.read(tmp)
                     if (i < 0) break
-                    errorOutputString?.append(String(tmp, 0, 1024))
+                    errorOutputString?.append(String(tmp, 0, i))
                 }
                 if (channel.isClosed) {
                     if (input.available() > 0 || error.available() > 0) continue
@@ -76,13 +76,9 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         if (mSession == null) throw SSHUtilsException("Session is null")
         if (mSession?.isConnected != true) throw SSHUtilsException("Session is not connected")
         var channel: ChannelSftp? = null
-        var fileStack: LinkedList<File>? = null
+        val fileStack: LinkedList<File>
         val ogPath = getPrevPath(file.absolutePath)
-        val ogDst = if (dst.last() == '/') {
-            dst.substring(0..(dst.length - 2))
-        } else {
-            dst
-        }
+        val ogDst = removePathSuffix(dst)
 
         try {
             channel = mSession?.openChannel("sftp") as ChannelSftp
@@ -128,37 +124,45 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
 
     private fun sftpFileTo(channel: ChannelSftp, dst: String, file: File, sftpProgress: SftpProgress?) {
         val fis = FileInputStream(file)
-        if (sftpProgress != null) {
-            channel.put(fis, dst, object : SftpProgressMonitor {
-                override fun count(count: Long): Boolean {
-                    return sftpProgress.count(count)
-                }
+        try {
+            if (sftpProgress != null) {
+                channel.put(fis, dst, object : SftpProgressMonitor {
+                    override fun count(count: Long): Boolean {
+                        return sftpProgress.count(count)
+                    }
 
-                override fun end() {
-                    sftpProgress.end()
-                }
+                    override fun end() {
+                        sftpProgress.end()
+                    }
 
-                override fun init(op: Int, src: String?, dest: String?, max: Long) {
-                    sftpProgress.init(op, src, dest, max)
-                }
-            })
-        } else {
-            channel.put(fis, dst)
+                    override fun init(op: Int, src: String?, dest: String?, max: Long) {
+                        sftpProgress.init(op, src, dest, max)
+                    }
+                })
+            } else {
+                channel.put(fis, dst)
+            }
+        } catch (e: SftpException) {
+            throw e
+        } finally {
+            fis.close()
         }
-        fis.close()
     }
 
+    private fun removePathSuffix(path: String): String {
+        if (path.last() == '/') {
+            return path.substring(0, path.length - 1)
+        }
+        return path
+    }
+
+    /**
+     * @param path
+     */
     private fun getPrevPath(path: String): String {
-        val tmpPath1 = path.split('/').toMutableList()
-        if (tmpPath1[0].isEmpty()) {
-            tmpPath1.removeAt(0)
-        }
-        tmpPath1.removeAt(tmpPath1.size - 1)
-        var tmpPath2 = ""
-        tmpPath1.forEach {
-            tmpPath2 += "/$it"
-        }
-        return tmpPath2
+        val tmpPath = removePathSuffix(path)
+        val index = tmpPath.lastIndexOf('/')
+        return tmpPath.substring(0, index)
     }
 
     private fun getFolderPathForRemote(dstPath: String, originalPath: String, folderPath: String): String {
