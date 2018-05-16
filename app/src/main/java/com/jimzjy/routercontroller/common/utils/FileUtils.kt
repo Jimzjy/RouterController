@@ -101,16 +101,17 @@ open class FileSeeker(path: String) {
             val pattern = Pattern.compile("\\w*$name\\w*", Pattern.CASE_INSENSITIVE)
             val tmpFileStack = LinkedList<File>()
             tmpFileStack.push(currentFile)
-            var tmpFile: File
 
             while (tmpFileStack.size > 0) {
-                tmpFile = tmpFileStack.pop()
-                tmpFile?.let {
+                val tmpFile = tmpFileStack.pop()
+                tmpFile.let {
                     if (pattern.matcher(it.name).matches()) {
                         emitter.onNext(it)
                     }
                     if (it.isDirectory) {
-                        tmpFileStack.push(it)
+                        it.listFiles().forEach {
+                            tmpFileStack.push(it)
+                        }
                     }
                 }
             }

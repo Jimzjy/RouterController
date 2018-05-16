@@ -63,18 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tools_file_rv" />
 
-    <ProgressBar
-        android:id="@+id/tools_file_progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:elevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tools_file_commit_BT" />
-
     <ScrollView
         android:id="@+id/tools_file_sv"
         android:layout_width="match_parent"

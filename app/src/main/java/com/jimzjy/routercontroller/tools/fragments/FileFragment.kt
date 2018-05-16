@@ -37,12 +37,10 @@ class FileFragment : Fragment() {
     private var mRVAdapter: SelectedFilesRecyclerAdapter? = null
     private val mFileList = mutableListOf<File>()
     private var mText = ""
-    private var mMaxCount = 0L
     private var mRecyclerView: RecyclerView? = null
     private var mCommitButton: Button? = null
     private var mDestinationET: EditText? = null
     private var mDisplayText: TextView? = null
-    private var mProgressBar: ProgressBar? = null
     private var mSelectFileBT: Button? = null
 
     companion object {
@@ -62,7 +60,6 @@ class FileFragment : Fragment() {
         mCommitButton = view.findViewById(R.id.tools_file_commit_BT)
         mDestinationET = view.findViewById(R.id.tools_file_dst_ET)
         mDisplayText = view.findViewById(R.id.tools_file_out_text)
-        mProgressBar = view.findViewById(R.id.tools_file_progress_bar)
         mSelectFileBT = view.findViewById(R.id.tools_file_select_BT)
 
         mRVAdapter = SelectedFilesRecyclerAdapter(context!!, mFileList)
@@ -134,6 +131,8 @@ class FileFragment : Fragment() {
                                             initAction(op, src, dest, max)
                                         }
                                     }
+                                }, {
+                                    addDisplayText("Upload: Finish!")
                                 })
                             } catch (e: SSHUtilsException) {
                                 e.printStackTrace()
@@ -149,28 +148,19 @@ class FileFragment : Fragment() {
     }
 
     private fun initAction(op: Int, src: String?, dest: String?, max: Long) {
-        mMaxCount = max
-        addDisplayText("$op: $src -> $dest total: $max", GREEN_TEXT)
+        addDisplayText("$src -> $dest", GREEN_TEXT)
     }
 
     private fun countAction(count: Long) {
-        setProgress(count)
-        setNextDisplayText("Upload: $count/$mMaxCount")
+        setNextDisplayText("Uploading: $count")
     }
 
     private fun endAction() {
-        setProgress(0)
         addDisplayText("Upload: End")
     }
 
     private fun errorAction(e: Exception) {
-        setProgress(0)
         addDisplayText("Upload Error: ${e.message}", RED_TEXT)
-    }
-
-    private fun setProgress(count: Long, max: Long = mMaxCount) {
-        mProgressBar?.max = max.toInt()
-        mProgressBar?.progress = count.toInt()
     }
 
     private fun setNextDisplayText(text: String, color: String = NORMAL_TEXT) {

@@ -18,7 +18,7 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         val tmp = outputString.toString().split("\n")
         val ipAddress = arrayListOf<String>()
         tmp.forEach {
-            if (it != "") {
+            if (it.isNotEmpty()) {
                 ipAddress.add(it.split(" +".toRegex())[0])
             }
         }
@@ -26,12 +26,14 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         executeCommands("cat /tmp/dhcp.leases", outputString2, null)
         val tmp2 = outputString2.toString().split("\n")
         tmp2.forEach {
-            if (it != "") {
+            if (it.isNotEmpty()) {
                 val tmp3 = it.split(" ")
-                for (i in ipAddress) {
-                    if (tmp3[2] == i) {
-                        config.add(DeviceInfo(tmp3[3],tmp3[2],tmp3[1]))
-                        break
+                if (tmp3.size >= 4) {
+                    for (i in ipAddress) {
+                        if (tmp3[2] == i) {
+                            config.add(DeviceInfo(tmp3[3],tmp3[2],tmp3[1]))
+                            break
+                        }
                     }
                 }
             }

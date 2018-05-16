@@ -17,5 +17,5 @@ interface ToolsPresenter {
     fun getConfig(nameOrValue: String): HashMap<String, String>
     fun setNumberPassword(number: String, passwordConfig: String, command: String)
     fun getNumberPassword(): Array<String>
-    fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null)
+    fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null, uploadFinishAction: (() -> Unit)? = null)
 }
