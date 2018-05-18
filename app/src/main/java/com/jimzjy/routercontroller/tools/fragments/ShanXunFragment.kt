@@ -76,9 +76,8 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         mPasswordET?.setText(numberPasswordCommand[1])
         mCommandET?.setText(numberPasswordCommand[2])
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermission()
-        }
+        checkPermission()
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
             val text = mDisplayText?.text.toString() +
                     resources.getString(R.string.set_phone_number_to_default)
@@ -114,18 +113,35 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         mToolsPresenter = null
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_PERMISSION -> {
-                if (grantResults[0] == 0 && grantResults[1] == 0 && grantResults[2] == 0) {
-                    misPermissionGet = true
-                    registerSmsObserver()
-                } else {
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when (requestCode) {
+//            REQUEST_PERMISSION -> {
+//                if (grantResults[0] == 0 && grantResults[1] == 0 && grantResults[2] == 0) {
+//                    misPermissionGet = true
+//                    registerSmsObserver()
+//                } else {
+//
+//                }
+//            }
+//        }
+//    }
+
+    private fun checkPermission() {
+        val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_SMS)
+
+        for (p in permissions) {
+            context?.let {
+                if (ContextCompat.checkSelfPermission(it, p) != PackageManager.PERMISSION_GRANTED) {
+                    misPermissionGet = false
                     addDisplayText(resources.getString(R.string.no_permission), RED_TEXT)
+                    return
                 }
             }
         }
+        misPermissionGet = true
     }
 
     private fun setListener() {
@@ -174,20 +190,6 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
                 misAutoMode = false
             }
         }
-    }
-
-    private fun requestPermission() {
-        val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.SEND_SMS,
-                Manifest.permission.READ_SMS,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-        for (p in permissions) {
-            if (ContextCompat.checkSelfPermission(context!!, p) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity!!, permissions, REQUEST_PERMISSION)
-                return
-            }
-        }
-        misPermissionGet = true
     }
 
     private fun sendSms(number: String) {

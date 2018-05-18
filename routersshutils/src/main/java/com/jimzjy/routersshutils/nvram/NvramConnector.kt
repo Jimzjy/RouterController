@@ -24,8 +24,9 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
                 }
             }
         }
-        getHostName(config, ip,"/tmp/static_ip.inf")
 
+        if (getHostName(config, ip, PADAVAN_DHCP_FILE)) return config
+        if (getHostName(config, ip, ASUSWRT_DHCP_FILE)) return config
         return config
     }
 
@@ -82,26 +83,5 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun refreshARP() {
         executeCommands("ip neigh flush all", null, null)
-    }
-
-    private fun getHostName(config: MutableList<DeviceInfo>, ip: List<String>, file: String) {
-        val errorOutput = StringBuilder()
-        val outputString = StringBuilder()
-        executeCommands("cat $file", outputString, errorOutput)
-        if (errorOutput.toString() == "") {
-            config.clear()
-        } else {
-            return
-        }
-
-        val tmp = outputString.toString().split("\n")
-        tmp.forEach {
-            if (it != "") {
-                val tmp2 = it.split(",")
-                if (tmp2[0] in ip) {
-                    config.add(DeviceInfo(tmp2[2], tmp2[0], tmp2[1]))
-                }
-            }
-        }
     }
 }

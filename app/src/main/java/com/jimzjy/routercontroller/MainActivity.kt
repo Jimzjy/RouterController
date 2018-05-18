@@ -1,14 +1,19 @@
 package com.jimzjy.routercontroller
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.widget.PopupMenu
 import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.common.ViewPagerAdapter
 import com.jimzjy.routercontroller.settings.Settings
 import com.jimzjy.routercontroller.status.Status
 import com.jimzjy.routercontroller.tools.Tools
+import com.jimzjy.routercontroller.tools.fragments.REQUEST_PERMISSION
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         init()
         setListener()
+        requestPermission()
     }
 
 
@@ -52,6 +58,24 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             popupMenu.show()
+        }
+    }
+
+    private fun requestPermission() {
+        val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_SMS,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+        val notGetPermissionList = mutableListOf<String>()
+
+        for (p in permissions) {
+            if (ContextCompat.checkSelfPermission(this, p) != PackageManager.PERMISSION_GRANTED) {
+                notGetPermissionList.add(p)
+            }
+        }
+
+        if (notGetPermissionList.size > 0) {
+            ActivityCompat.requestPermissions(this, notGetPermissionList.toTypedArray(), REQUEST_PERMISSION)
         }
     }
 }

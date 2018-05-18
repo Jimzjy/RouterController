@@ -3,6 +3,7 @@ package com.jimzjy.routersshutils.uci
 import com.jimzjy.routersshutils.common.Connector
 import com.jimzjy.routersshutils.common.ConnectorInfo
 import com.jimzjy.routersshutils.common.DeviceInfo
+import com.jimzjy.routersshutils.common.OPENWRT_DHCP_FILE
 
 /**
  *
@@ -11,33 +12,23 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getConnectingDevices(): List<DeviceInfo> {
         val outputString = StringBuilder()
-        val outputString2 = StringBuilder()
         val config = mutableListOf<DeviceInfo>()
+        val ip = mutableListOf<String>()
 
         executeCommands("cat /proc/net/arp | grep -v IP", outputString, null)
+        if (outputString.toString() == "") return emptyList()
         val tmp = outputString.toString().split("\n")
-        val ipAddress = arrayListOf<String>()
         tmp.forEach {
-            if (it.isNotEmpty()) {
-                ipAddress.add(it.split(" +".toRegex())[0])
-            }
-        }
-
-        executeCommands("cat /tmp/dhcp.leases", outputString2, null)
-        val tmp2 = outputString2.toString().split("\n")
-        tmp2.forEach {
-            if (it.isNotEmpty()) {
-                val tmp3 = it.split(" ")
-                if (tmp3.size >= 4) {
-                    for (i in ipAddress) {
-                        if (tmp3[2] == i) {
-                            config.add(DeviceInfo(tmp3[3],tmp3[2],tmp3[1]))
-                            break
-                        }
-                    }
+            if (it != "") {
+                val ipMac = it.split(" +".toRegex())
+                if (ipMac.size >= 4) {
+                    config.add(DeviceInfo("< ? >",ipMac[0],ipMac[3]))
+                    ip.add(ipMac[0])
                 }
             }
         }
+
+        if (getHostName(config, ip, OPENWRT_DHCP_FILE)) return config
         return config
     }
 
@@ -91,7 +82,5 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         executeCommands(commands.toString(), null, null)
     }
 
-    override fun refreshARP() {
-
-    }
+    override fun refreshARP() {}
 }

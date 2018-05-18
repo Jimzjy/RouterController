@@ -5,6 +5,10 @@ import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
+const val PADAVAN_DHCP_FILE = "/tmp/static_ip.inf"
+const val OPENWRT_DHCP_FILE = "/tmp/dhcp.leases"
+const val ASUSWRT_DHCP_FILE = "/tmp/var/lib/misc/dnsmasq.leases"
+
 /**
  *
  */
@@ -168,6 +172,49 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
     private fun getFolderPathForRemote(dstPath: String, originalPath: String, folderPath: String): String {
         val tmpPath1 = folderPath.split(originalPath)[1]
         return "$dstPath$tmpPath1"
+    }
+
+    open fun getHostName(config: MutableList<DeviceInfo>, ip: List<String>, file: String): Boolean {
+        val errorOutput = StringBuilder()
+        val outputString = StringBuilder()
+        executeCommands("cat $file", outputString, errorOutput)
+        if (errorOutput.isEmpty()) {
+            config.clear()
+        } else {
+            return false
+        }
+
+        when (file) {
+            PADAVAN_DHCP_FILE -> {
+                config.addAll(getDeviceInfo(2, 0, 1, 3, ",", outputString, ip))
+                return true
+            }
+            OPENWRT_DHCP_FILE -> {
+                config.addAll(getDeviceInfo(3, 2, 1, 4, " ", outputString, ip))
+                return true
+            }
+            ASUSWRT_DHCP_FILE -> {
+                config.addAll(getDeviceInfo(3, 2, 1, 4, " ", outputString, ip))
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun getDeviceInfo(namePos: Int, ipPos: Int, macPos: Int, minSize: Int, delimiter: String, outputString: StringBuilder, ip: List<String>): List<DeviceInfo> {
+        val tmp = outputString.toString().split("\n")
+        val deviceList = mutableListOf<DeviceInfo>()
+        tmp.forEach {
+            if (it.isNotEmpty()) {
+                val tmp2 = it.split(delimiter)
+                if (tmp2.size >= minSize) {
+                    if (tmp2[ipPos] in ip) {
+                        deviceList.add(DeviceInfo(tmp2[namePos], tmp2[ipPos], tmp2[macPos]))
+                    }
+                }
+            }
+        }
+        return deviceList
     }
 
     abstract fun getConnectingDevices(): List<DeviceInfo>
