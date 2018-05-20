@@ -5,7 +5,7 @@ import com.jimzjy.routersshutils.common.*
 /**
  *
  */
-class NvramConnector(info: ConnectorInfo) : Connector(info) {
+open class NvramConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getConnectingDevices(): List<DeviceInfo> {
         val outputString = StringBuilder()
@@ -16,7 +16,7 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
         if (outputString.toString() == "") return emptyList()
         val tmp = outputString.toString().split("\n")
         tmp.forEach {
-            if (it != "") {
+            if (it.isNotEmpty()) {
                 val ipMac = it.split(" +".toRegex())
                 if (ipMac.size >= 4) {
                     config.add(DeviceInfo("< ? >",ipMac[0],ipMac[3]))
@@ -35,7 +35,7 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
         val commands = "cat /proc/net/dev | grep $dev; sleep 1; cat /proc/net/dev | grep $dev"
         executeCommands(commands, outputString, null, 1200)
 
-        if (outputString.toString() == "") return floatArrayOf(0f, 0f)
+        if (outputString.isEmpty()) return floatArrayOf(0f, 0f)
         val tmp = outputString.toString().split("\n", limit = 2)
         var upload = 0f
         var download = 0f
@@ -54,10 +54,10 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getConfig(nameOrValue: String): HashMap<String, String> {
         val outputString = StringBuilder()
-        val commands = "nvram show | grep -E $nameOrValue"
+        val commands = "$nvramUciPath/nvram show | grep -E $nameOrValue"
         executeCommands(commands, outputString, null)
 
-        if (outputString.toString() == "") return hashMapOf()
+        if (outputString.isEmpty()) return hashMapOf()
 
         val tmp = outputString.toString().split("\n")
         val config: HashMap<String, String> = hashMapOf()
@@ -75,9 +75,9 @@ class NvramConnector(info: ConnectorInfo) : Connector(info) {
     override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
         val commands = StringBuilder()
         for ((K, V) in nameValueMap) {
-            commands.append("nvram set $K=$V;")
+            commands.append("$nvramUciPath/nvram set $K=$V;")
         }
-        if (commit) commands.append("nvram commit")
+        if (commit) commands.append("$nvramUciPath/nvram commit")
         executeCommands(commands.toString(), null, null)
     }
 

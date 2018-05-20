@@ -30,7 +30,6 @@ import com.jimzjy.routercontroller.tools.ToolsPresenter
  * A simple [Fragment] subclass.
  *
  */
-const val REQUEST_PERMISSION = 0
 const val SEND_SMS_OK = "Send SMS: OK\n"
 const val NORMAL_TEXT = "normal"
 const val RED_TEXT = "#E57373"
@@ -112,20 +111,6 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         super.onDestroy()
         mToolsPresenter = null
     }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        when (requestCode) {
-//            REQUEST_PERMISSION -> {
-//                if (grantResults[0] == 0 && grantResults[1] == 0 && grantResults[2] == 0) {
-//                    misPermissionGet = true
-//                    registerSmsObserver()
-//                } else {
-//
-//                }
-//            }
-//        }
-//    }
 
     private fun checkPermission() {
         val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
@@ -255,12 +240,12 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
                 "<p>$text</p>"
             }
             else -> {
-                "<p style=\"color:$color\">$text</p>"
+                "<p><font color=\"$color\">$text</font></p>"
             }
         }
         if (display) {
             mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Html.fromHtml(mText, Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(mText, Html.FROM_HTML_MODE_COMPACT)
             } else {
                 Html.fromHtml(mText)
             }

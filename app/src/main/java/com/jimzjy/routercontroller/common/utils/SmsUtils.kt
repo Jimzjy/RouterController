@@ -13,7 +13,6 @@ import android.os.Handler
 import android.telephony.SmsManager
 import android.telephony.SmsMessage
 import android.telephony.SubscriptionManager
-import android.util.Log
 import java.util.*
 import java.util.regex.Pattern
 
@@ -21,6 +20,7 @@ const val ADDRESS_NUMBER_0 = "+86106593005"
 const val ADDRESS_NUMBER_1 = "106593005"
 const val ADDRESS_NUMBER_2 = "86106593005"
 const val SMS_INBOX_URI = "content://sms/inbox"
+const val SMS_RAW_URI = "content://sms/raw"
 const val SMS_URI = "content://sms"
 const val SMS_CONTENT = "MM"
 const val SMS_READ_ORDER = "date desc"
@@ -123,9 +123,14 @@ class SmsReceiver : BroadcastReceiver() {
 class SmsReader(private val mContext: Context, mHandler: Handler) : ContentObserver(mHandler) {
     private var mMessageListener: ((String) -> Unit)? = null
     private val mPattern = Pattern.compile("\\w*[a-z0-9A-Z]+\\w*")
+    private var uriBefore = ""
 
     override fun onChange(selfChange: Boolean, uri: Uri?) {
         super.onChange(selfChange, uri)
+        if (uri.toString() == SMS_RAW_URI || uri.toString() == uriBefore) {
+            return
+        }
+        uriBefore = uri.toString()
         val cursor = mContext.contentResolver.query(Uri.parse(SMS_INBOX_URI),
                 arrayOf("body", "date"),
                 "address in (?,?,?)",
@@ -137,10 +142,11 @@ class SmsReader(private val mContext: Context, mHandler: Handler) : ContentObser
         val date = Date().time
         if ((date - messageDate) in (0..3000)) {
             val message = cursor.getString(0)
-            Log.d("SmsUtil", message)
             cursor.close()
             mMessageListener?.invoke(getCode(message))
         }
+
+        if (!cursor.isClosed) cursor.close()
     }
 
     private fun getCode(message: String): String {

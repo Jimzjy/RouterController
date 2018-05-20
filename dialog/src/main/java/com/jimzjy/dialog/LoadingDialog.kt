@@ -7,14 +7,12 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.airbnb.lottie.LottieAnimationView
 
 /**
  * A simple [Fragment] subclass.
  *
  */
 class LoadingDialog : DialogFragment() {
-    private var mAnimation: LottieAnimationView? = null
     private var mOnDismiss: (() -> Unit)? = null
 
     companion object {
@@ -24,12 +22,9 @@ class LoadingDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_loading_dialog, container, false)
 
-        mAnimation = view.findViewById(R.id.loading_dialog_animation)
-        mAnimation?.setAnimation(R.raw.animation_loading)
-
-        return view
+        dialog.window.setBackgroundDrawableResource(R.color.transparent)
+        return inflater.inflate(R.layout.fragment_loading_dialog, container, false)
     }
 
     override fun onDismiss(dialog: DialogInterface?) {

@@ -14,6 +14,7 @@ const val ASUSWRT_DHCP_FILE = "/tmp/var/lib/misc/dnsmasq.leases"
  */
 abstract class Connector(private val connectorInfo: ConnectorInfo) {
     private var mSession: Session? = null
+    var nvramUciPath = ""
     open val sessionTimeout = 10000
     open val channelTimeout = 3000
     open val isConnected get() = mSession?.isConnected == true

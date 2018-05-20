@@ -37,6 +37,7 @@ open class FileSeeker(path: String) {
     }
 
     open fun findFile(name: String, searchAt: String = mPath) {
+        fileStack.push(currentFile)
         findFileObservable(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -13,7 +13,6 @@ import com.jimzjy.routercontroller.common.ViewPagerAdapter
 import com.jimzjy.routercontroller.settings.Settings
 import com.jimzjy.routercontroller.status.Status
 import com.jimzjy.routercontroller.tools.Tools
-import com.jimzjy.routercontroller.tools.fragments.REQUEST_PERMISSION
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (notGetPermissionList.size > 0) {
-            ActivityCompat.requestPermissions(this, notGetPermissionList.toTypedArray(), REQUEST_PERMISSION)
+            ActivityCompat.requestPermissions(this, notGetPermissionList.toTypedArray(), 0)
         }
     }
 }

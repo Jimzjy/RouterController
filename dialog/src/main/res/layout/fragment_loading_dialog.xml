@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoadingDialog">
 
-    <com.airbnb.lottie.LottieAnimationView
+    <app.dinus.com.loadingdrawable.LoadingView
         android:id="@+id/loading_dialog_animation"
         android:layout_width="@dimen/loading_dialog_width"
         android:layout_height="@dimen/loading_dialog_height"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"/>
-
+        app:loading_renderer="DanceLoadingRenderer"/>
 </FrameLayout>

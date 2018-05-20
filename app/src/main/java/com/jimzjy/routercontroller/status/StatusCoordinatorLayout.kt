@@ -15,8 +15,6 @@ class StatusCoordinatorLayout(ctx: Context, attrs: AttributeSet?) : CoordinatorL
     private val mAlphaChangeStart = mTopOffsetY - (mTopText / 2)
     private var mShowText: ((alpha: Float) -> Unit)? = null
 
-    constructor(ctx: Context) : this(ctx, null)
-
     override fun scrollTo(x: Int, y: Int) {
         var sY = y
         when {

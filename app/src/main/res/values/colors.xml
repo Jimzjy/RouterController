@@ -15,4 +15,5 @@
     <color name="tools_gray">#90A4AE</color>
     <color name="error_text">#EF5350</color>
     <color name="tools_command_time_BT">#E0F2F1</color>
+    <color name="dark_green">#009688</color>
 </resources>

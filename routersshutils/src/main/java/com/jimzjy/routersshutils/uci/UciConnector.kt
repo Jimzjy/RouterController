@@ -1,14 +1,11 @@
 package com.jimzjy.routersshutils.uci
 
-import com.jimzjy.routersshutils.common.Connector
-import com.jimzjy.routersshutils.common.ConnectorInfo
-import com.jimzjy.routersshutils.common.DeviceInfo
-import com.jimzjy.routersshutils.common.OPENWRT_DHCP_FILE
+import com.jimzjy.routersshutils.common.*
 
 /**
  *
  */
-class UciConnector(info: ConnectorInfo) : Connector(info) {
+open class UciConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getConnectingDevices(): List<DeviceInfo> {
         val outputString = StringBuilder()
@@ -19,7 +16,7 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
         if (outputString.toString() == "") return emptyList()
         val tmp = outputString.toString().split("\n")
         tmp.forEach {
-            if (it != "") {
+            if (it.isNotEmpty()) {
                 val ipMac = it.split(" +".toRegex())
                 if (ipMac.size >= 4) {
                     config.add(DeviceInfo("< ? >",ipMac[0],ipMac[3]))
@@ -34,31 +31,32 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getNetworkSpeed(dev: String): FloatArray {
         val outputString = StringBuilder()
-        val commands = "cat /proc/net/dev | grep eth0; sleep 1; cat /proc/net/dev | grep eth0"
-        executeCommands(commands, outputString, null)
+        val commands = "cat /proc/net/dev | grep $dev; sleep 1; cat /proc/net/dev | grep $dev"
+        executeCommands(commands, outputString, null, 1200)
 
+        if (outputString.isEmpty()) return floatArrayOf(0f, 0f)
         val tmp = outputString.toString().split("\n", limit = 2)
         var upload = 0f
         var download = 0f
-        var count = 1
         tmp.forEach {
             val tmp2 = it.split(" +".toRegex())
-            if (count == 1) {
-                upload = tmp2[2].toFloat()
-                download = tmp2[10].toFloat()
+            if (tmp2.size > 17) {
+                upload = tmp2[10].toFloat() - upload
+                download = tmp2[2].toFloat() - download
             } else {
-                upload = tmp2[2].toFloat() - upload
-                download = tmp2[10].toFloat() - download
+                upload = tmp2[9].toFloat() - upload
+                download = tmp2[1].toFloat() - download
             }
-            count++
         }
         return floatArrayOf(upload, download)
     }
 
     override fun getConfig(nameOrValue: String): HashMap<String, String> {
         val outputString = StringBuilder()
-        val commands = "uci show | grep -E $nameOrValue"
+        val commands = "$nvramUciPath/uci show | grep -E $nameOrValue"
         executeCommands(commands, outputString, null)
+
+        if (outputString.isEmpty()) return hashMapOf()
 
         val tmp = outputString.toString().split("\n")
         val config: HashMap<String, String> = hashMapOf()
@@ -76,9 +74,9 @@ class UciConnector(info: ConnectorInfo) : Connector(info) {
     override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
         val commands = StringBuilder()
         for ((K,V) in nameValueMap) {
-            commands.append("uci set $K='$V';")
+            commands.append("$nvramUciPath/uci set $K='$V';")
         }
-        if (commit) commands.append("uci commit")
+        if (commit) commands.append("$nvramUciPath/uci commit")
         executeCommands(commands.toString(), null, null)
     }
 

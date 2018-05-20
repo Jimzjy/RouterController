@@ -185,12 +185,12 @@ class FileFragment : Fragment() {
                 "<p>$text</p>"
             }
             else -> {
-                "<p style=\"color:$color\">$text</p>"
+                "<p><font color=\"$color\">$text</font></p>"
             }
         }
         if (display) {
             mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Html.fromHtml(mText, Html.FROM_HTML_MODE_LEGACY)
+                Html.fromHtml(mText, Html.FROM_HTML_MODE_COMPACT)
             } else {
                 Html.fromHtml(mText)
             }

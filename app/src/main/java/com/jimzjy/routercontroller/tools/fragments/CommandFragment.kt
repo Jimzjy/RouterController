@@ -161,7 +161,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                 .subscribe {
                     mOutputDisplayText?.text = if (it[1].isNotEmpty()) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}", Html.FROM_HTML_MODE_LEGACY)
+                            Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}", Html.FROM_HTML_MODE_COMPACT)
                         } else {
                             Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}")
                         }

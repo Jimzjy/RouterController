@@ -16,6 +16,6 @@
     <dimen name="message_dialog_text_size">16sp</dimen>
     <dimen name="message_dialog_width">260dp</dimen>
 
-    <dimen name="loading_dialog_height">40dp</dimen>
-    <dimen name="loading_dialog_width">40dp</dimen>
+    <dimen name="loading_dialog_height">100dp</dimen>
+    <dimen name="loading_dialog_width">100dp</dimen>
 </resources>

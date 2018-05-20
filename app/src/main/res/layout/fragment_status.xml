@@ -6,12 +6,34 @@
     android:background="@color/background"
     tools:context="com.jimzjy.routercontroller.status.Status">
 
-    <com.jimzjy.networkspeedview.NetworkSpeedView
-        android:id="@+id/status_network_speed_view"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/status_top_CL"
         android:layout_width="match_parent"
         android:layout_height="@dimen/status_top_widget_height"
-        android:background="@color/colorPrimary"
-        app:speed_unit="Auto_same" />
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/status_dev_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/round_corner_background"
+            android:backgroundTint="@color/dark_green"
+            android:paddingBottom="4dp"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Dev: br0" />
+
+        <com.jimzjy.networkspeedview.NetworkSpeedView
+            android:id="@+id/status_network_speed_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:speed_unit="Auto_same" />
+    </android.support.constraint.ConstraintLayout>
 
     <com.jimzjy.routercontroller.status.StatusCoordinatorLayout
         android:layout_width="match_parent"

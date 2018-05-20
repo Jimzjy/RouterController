@@ -24,6 +24,13 @@
             android:defaultValue="@string/br0"
             android:summary="@string/br0"/>
         <EditTextPreference
+            android:defaultValue="path"
+            android:key="pref_key_path"
+            android:title="@string/path"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/path"/>
+        <EditTextPreference
             android:defaultValue="192.168.1.1"
             android:key="pref_key_ip_address"
             android:selectAllOnFocus="true"
@@ -50,6 +57,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="admin"
+            android:inputType="textPassword"
             android:title="@string/password" />
     </PreferenceCategory>
 </PreferenceScreen>

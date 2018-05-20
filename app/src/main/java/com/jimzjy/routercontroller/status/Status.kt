@@ -21,9 +21,6 @@ import java.util.*
  *
  */
 class Status : Fragment(), StatusView, ReconnectClickListener {
-    companion object {
-        const val TAG = "Status"
-    }
     private var mDeviceList: ArrayList<DeviceInfo> = arrayListOf()
 
     private var mRecyclerAdapter: DeviceRecyclerAdapter? = null
@@ -33,6 +30,7 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
     private var mSpeedBarLeftText: TextView? = null
     private var mSpeedBarRightText: TextView? = null
     private var mStatusPresenter: StatusPresenter? = null
+    private var mDevText: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -54,6 +52,11 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
 
         mCoordinatorLayout = view.findViewById(R.id.status_CoordinatorLayout)
         mCoordinatorLayout?.setShowText { mSpeedBar?.alpha = it }
+
+        mDevText = view.findViewById(R.id.status_dev_text)
+        mDevText?.setOnClickListener {
+
+        }
 
         return view
     }

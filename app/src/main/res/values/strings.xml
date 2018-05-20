@@ -19,6 +19,7 @@
     <string name="nvram">NVRAM</string>
     <string name="speed_dev">Network speed device</string>
     <string name="br0">br0</string>
+    <string name="path">Path</string>
 
     <string name="main_menu">Main bar menu</string>
 

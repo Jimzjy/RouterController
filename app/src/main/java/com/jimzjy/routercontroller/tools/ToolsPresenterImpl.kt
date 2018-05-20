@@ -160,6 +160,17 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         } else {
             UciConnector(connectorInfo)
         }
+
+        val tmpPath = preference.getString("pref_key_path", "")
+        mConnector?.nvramUciPath = if (tmpPath != "path" && tmpPath.isNotEmpty()) {
+            if (tmpPath.last() == '/') {
+                tmpPath.substring(0, tmpPath.length - 1)
+            } else {
+                tmpPath
+            }
+        } else {
+            ""
+        }
         mConnector?.connect()
     }
 
