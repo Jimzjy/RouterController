@@ -33,7 +33,7 @@ const val NO_PERMISSION_FOR_SMS = "No permission for sms"
 class SmsSender(ctx: Context, private val number: String) {
     private val subscriptionManager = ctx.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
 
-    fun getSubscriptionId(number: String): Int {
+    fun getSubscriptionId(): Int {
         var phoneNumber = number
         if (phoneNumber.isEmpty()) {
             return -1
@@ -138,14 +138,17 @@ class SmsReader(private val mContext: Context, mHandler: Handler) : ContentObser
                 SMS_READ_ORDER)
         cursor.moveToFirst()
 
-        val messageDate = cursor.getString(1).toLong()
-        val date = Date().time
-        if ((date - messageDate) in (0..3000)) {
-            val message = cursor.getString(0)
-            cursor.close()
-            mMessageListener?.invoke(getCode(message))
+        try{
+            val messageDate = cursor.getString(1).toLong()
+            val date = Date().time
+            if ((date - messageDate) in (0..3000)) {
+                val message = cursor.getString(0)
+                cursor.close()
+                mMessageListener?.invoke(getCode(message))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-
         if (!cursor.isClosed) cursor.close()
     }
 

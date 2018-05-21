@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
 
-class CommandListAdapter(ctx: Context, private val itemList: List<CommandData>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommandListAdapter(ctx: Context, private val mItemList: List<CommandData>, private val mCommandSelected: MutableList<Boolean>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val mInflater = LayoutInflater.from(ctx)
     private var mOnClickItem: ((v: View, position: Int) -> Unit)? = null
     private var mOnLongClickItem: ((v: View, position: Int) -> Unit)? = null
@@ -29,7 +29,6 @@ class CommandListAdapter(ctx: Context, private val itemList: List<CommandData>):
             root.setOnLongClickListener {
                 if (!multiSelectMode){
                     mOnLongClickItem?.invoke(it, adapterPosition)
-                    selectButton.isChecked = true
                 }
                 true
             }
@@ -42,17 +41,18 @@ class CommandListAdapter(ctx: Context, private val itemList: List<CommandData>):
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
-        viewHolder.name.text = itemList[position].name
-        viewHolder.content.text = itemList[position].content
+        viewHolder.name.text = mItemList[position].name
+        viewHolder.content.text = mItemList[position].content
         if (!multiSelectMode) {
             viewHolder.selectButton.visibility = View.INVISIBLE
         } else {
             viewHolder.selectButton.visibility = View.VISIBLE
+            viewHolder.selectButton.isChecked = mCommandSelected[position]
         }
     }
 
     override fun getItemCount(): Int {
-        return itemList.size
+        return mItemList.size
     }
 
     fun setOnClickItem(clickItem: (v: View, position: Int) -> Unit) {

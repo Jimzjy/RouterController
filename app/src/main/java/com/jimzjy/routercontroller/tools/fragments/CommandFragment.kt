@@ -1,6 +1,7 @@
 package com.jimzjy.routercontroller.tools.fragments
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -35,7 +37,7 @@ const val DIALOG_TO_FRAGMENT_MULTI_COMMAND = 1
 /**
  *
  */
-class CommandFragment : Fragment(), ReconnectClickListener {
+class CommandFragment : Fragment(){
     private var mToolsPresenter: ToolsPresenter? = null
     private var mCommandEditText: EditText? = null
     private var mOutputDisplayText: TextView? = null
@@ -87,10 +89,6 @@ class CommandFragment : Fragment(), ReconnectClickListener {
         mToolsPresenter = null
     }
 
-    override fun onClickReconnect() {
-
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when(requestCode) {
@@ -124,6 +122,7 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
                                 && KeyEvent.ACTION_DOWN == event.keyCode)){
                     if (v.text.isNotEmpty()) {
+                        hideSoftInput()
                         emitter.onNext(v.text.toString())
                         v.text = ""
                         mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
@@ -169,5 +168,10 @@ class CommandFragment : Fragment(), ReconnectClickListener {
                         it[0]
                     }
                 })
+    }
+
+    private fun hideSoftInput() {
+        (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(mCommandEditText?.windowToken, 0)
     }
 }

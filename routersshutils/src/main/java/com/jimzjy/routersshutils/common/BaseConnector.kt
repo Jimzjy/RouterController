@@ -218,6 +218,28 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         return deviceList
     }
 
+    open fun getDevArray(): Array<String> {
+        val outputString = StringBuilder()
+        val devList = mutableListOf<String>()
+        executeCommands("cat /proc/net/dev | grep -vE \"(Receive|bytes)\"", outputString, null)
+        if (outputString.isEmpty()) return emptyArray()
+        outputString.toString().split("\n").forEach {
+            val tmp = it.split(" +".toRegex())
+            if (tmp.size >= 3) {
+                try {
+                    if (tmp[0].isEmpty() && tmp[2].toLong() > 0) {
+                        devList.add(tmp[1].substring(0, tmp[1].length - 1))
+                    } else if (tmp[0].isNotEmpty() && tmp[1].toLong() > 0){
+                        devList.add(tmp[0].substring(0, tmp[0].length - 1))
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        return devList.toTypedArray()
+    }
+
     abstract fun getConnectingDevices(): List<DeviceInfo>
     abstract fun getNetworkSpeed(dev: String): FloatArray
     abstract fun getConfig(nameOrValue: String): HashMap<String, String>

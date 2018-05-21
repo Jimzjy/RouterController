@@ -16,13 +16,6 @@
             android:title="@string/connector_type"
             android:defaultValue="@string/uci"
             android:summary="@string/uci"/>
-        <ListPreference
-            android:entries="@array/speed_dev"
-            android:entryValues="@array/speed_dev"
-            android:key="pref_key_speed_dev"
-            android:title="@string/speed_dev"
-            android:defaultValue="@string/br0"
-            android:summary="@string/br0"/>
         <EditTextPreference
             android:defaultValue="path"
             android:key="pref_key_path"
@@ -30,6 +23,13 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:summary="@string/path"/>
+        <EditTextPreference
+            android:defaultValue="br0"
+            android:key="pref_key_speed_dev"
+            android:title="@string/speed_dev"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="br0"/>
         <EditTextPreference
             android:defaultValue="192.168.1.1"
             android:key="pref_key_ip_address"

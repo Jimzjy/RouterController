@@ -4,10 +4,4 @@
         <item>NVRAM</item>
         <item>UCI</item>
     </string-array>
-    <string-array name="speed_dev">
-        <item>br0</item>
-        <item>eth2.2</item>
-        <item>eth1</item>
-        <item>ppp0</item>
-    </string-array>
 </resources>

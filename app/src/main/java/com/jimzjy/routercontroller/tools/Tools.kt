@@ -23,6 +23,10 @@ import com.jimzjy.routercontroller.tools.fragments.FileFragment
 import com.jimzjy.routercontroller.tools.fragments.SettingsChangeFragment
 import com.jimzjy.routercontroller.tools.fragments.ShanXunFragment
 
+const val TOOLS_FRAGMENT_TAG_0 = "COMMAND_LINE"
+const val TOOLS_FRAGMENT_TAG_1 = "CHANGE_SETTINGS"
+const val TOOLS_FRAGMENT_TAG_2 = "UPLOAD_FILES"
+const val TOOLS_FRAGMENT_TAG_3 = "SHAN_XUN"
 /**
  * A simple [Fragment] subclass.
  *
@@ -34,6 +38,10 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     private var mToolsPresenter: ToolsPresenter? = null
     private var mFrameLayoutTranslationY = 0f
     private var mCloseBarText: TextView? = null
+
+    companion object {
+        val fragmentTags = arrayOf(TOOLS_FRAGMENT_TAG_0, TOOLS_FRAGMENT_TAG_1, TOOLS_FRAGMENT_TAG_2, TOOLS_FRAGMENT_TAG_3)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -68,7 +76,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         mCloseBarText = view.findViewById(R.id.tools_tool_name_text)
 
         replaceFragment(CommandFragment.newInstance(mToolsPresenter),
-                resources.getString(R.string.command_line), false)
+                resources.getString(R.string.command_line), fragmentTags[0], false)
         return view
     }
 
@@ -88,7 +96,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     }
 
     override fun onClickReconnect() {
-
+        mToolsPresenter?.onClickReconnect()
     }
 
     private fun onClickCloseButton(view: ImageView?) {
@@ -119,16 +127,16 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         try {
             when (position) {
                 0 -> {
-                    replaceFragment(CommandFragment.newInstance(mToolsPresenter), resources.getString(R.string.command_line))
+                    replaceFragment(CommandFragment.newInstance(mToolsPresenter), resources.getString(R.string.command_line), fragmentTags[0])
                 }
                 1 -> {
-                    replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter), resources.getString(R.string.change_settings))
+                    replaceFragment(SettingsChangeFragment.newInstance(mToolsPresenter), resources.getString(R.string.change_settings), fragmentTags[1])
                 }
                 2 -> {
-                    replaceFragment(FileFragment.newInstance(mToolsPresenter), resources.getString(R.string.upload_files))
+                    replaceFragment(FileFragment.newInstance(mToolsPresenter), resources.getString(R.string.upload_files), fragmentTags[2])
                 }
                 3 -> {
-                    replaceFragment(ShanXunFragment.newInstance(mToolsPresenter), resources.getString(R.string.shanxun))
+                    replaceFragment(ShanXunFragment.newInstance(mToolsPresenter), resources.getString(R.string.shanxun), fragmentTags[3])
                 }
             }
         } catch (e: Exception) {
@@ -136,10 +144,10 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, name: String, isTrans: Boolean = true) {
+    private fun replaceFragment(fragment: Fragment, name: String, tag: String,isTrans: Boolean = true) {
         val fragmentTransaction = fragmentManager!!.beginTransaction()
 //        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-        fragmentTransaction.replace(R.id.tools_replace_layout, fragment)
+        fragmentTransaction.replace(R.id.tools_replace_layout, fragment, tag)
 //        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
 

@@ -41,12 +41,14 @@ open class NvramConnector(info: ConnectorInfo) : Connector(info) {
         var download = 0f
         tmp.forEach {
             val tmp2 = it.split(" +".toRegex())
-            if (tmp2.size > 17) {
-                upload = tmp2[10].toFloat() - upload
-                download = tmp2[2].toFloat() - download
-            } else {
-                upload = tmp2[9].toFloat() - upload
-                download = tmp2[1].toFloat() - download
+            if (tmp2.size > 10) {
+                if (tmp2[0].isEmpty()) {
+                    upload = tmp2[10].toFloat() - upload
+                    download = tmp2[2].toFloat() - download
+                } else {
+                    upload = tmp2[9].toFloat() - upload
+                    download = tmp2[1].toFloat() - download
+                }
             }
         }
         return floatArrayOf(upload, download)
@@ -54,7 +56,7 @@ open class NvramConnector(info: ConnectorInfo) : Connector(info) {
 
     override fun getConfig(nameOrValue: String): HashMap<String, String> {
         val outputString = StringBuilder()
-        val commands = "$nvramUciPath/nvram show | grep -E $nameOrValue"
+        val commands = "${nvramUciPath}nvram show | grep -E $nameOrValue"
         executeCommands(commands, outputString, null)
 
         if (outputString.isEmpty()) return hashMapOf()
@@ -75,9 +77,9 @@ open class NvramConnector(info: ConnectorInfo) : Connector(info) {
     override fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean) {
         val commands = StringBuilder()
         for ((K, V) in nameValueMap) {
-            commands.append("$nvramUciPath/nvram set $K=$V;")
+            commands.append("${nvramUciPath}nvram set $K=$V;")
         }
-        if (commit) commands.append("$nvramUciPath/nvram commit")
+        if (commit) commands.append("${nvramUciPath}nvram commit")
         executeCommands(commands.toString(), null, null)
     }
 

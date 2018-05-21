@@ -11,6 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/status_top_widget_height"
         android:background="@color/colorPrimary">
+        <com.jimzjy.networkspeedview.NetworkSpeedView
+            android:id="@+id/status_network_speed_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:speed_unit="Auto_same" />
 
         <TextView
             android:id="@+id/status_dev_text"
@@ -27,12 +32,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Dev: br0" />
-
-        <com.jimzjy.networkspeedview.NetworkSpeedView
-            android:id="@+id/status_network_speed_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:speed_unit="Auto_same" />
     </android.support.constraint.ConstraintLayout>
 
     <com.jimzjy.routercontroller.status.StatusCoordinatorLayout

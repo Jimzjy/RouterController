@@ -1,5 +1,7 @@
 package com.jimzjy.routercontroller.status
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
@@ -9,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.jimzjy.dialog.EDIT_DATA
+import com.jimzjy.dialog.EditDialog
 import com.jimzjy.networkspeedview.NetworkSpeedView
 import com.jimzjy.routercontroller.common.DeviceRecyclerAdapter
 import com.jimzjy.routercontroller.R
@@ -22,7 +26,6 @@ import java.util.*
  */
 class Status : Fragment(), StatusView, ReconnectClickListener {
     private var mDeviceList: ArrayList<DeviceInfo> = arrayListOf()
-
     private var mRecyclerAdapter: DeviceRecyclerAdapter? = null
     private var mNetworkSpeedView: NetworkSpeedView? = null
     private var mCoordinatorLayout: StatusCoordinatorLayout? = null
@@ -38,7 +41,6 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
 
         mStatusPresenter = StatusPresenterImpl(this@Status, context)
 
-        mDeviceList.add(DeviceInfo("", resources.getString(R.string.connecting), ""))
         mRecyclerAdapter = DeviceRecyclerAdapter(context!!, mDeviceList)
         val recyclerView = view.findViewById<RecyclerView>(R.id.status_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -54,9 +56,15 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
         mCoordinatorLayout?.setShowText { mSpeedBar?.alpha = it }
 
         mDevText = view.findViewById(R.id.status_dev_text)
+        mDevText?.text = mStatusPresenter?.getDev()
         mDevText?.setOnClickListener {
-
+            val editDialog = EditDialog.newInstance(
+                    "${resources.getString(R.string.select_dev)}${mStatusPresenter?.getDevArray()?.joinToString(" ")}",
+                    mStatusPresenter?.getDev() ?: "", resources.getString(R.string.commit), false, 0)
+            editDialog.setTargetFragment(this@Status, 0)
+            editDialog.show(fragmentManager, "EditDialog")
         }
+
 
         return view
     }
@@ -71,9 +79,9 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
         mStatusPresenter?.onStop()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mStatusPresenter?.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        mStatusPresenter?.onDestroyView()
     }
 
     override fun updateDevicesList(deviceList: List<DeviceInfo>) {
@@ -98,5 +106,14 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
 
     override fun onClickReconnect() {
         mStatusPresenter?.onClickReconnect()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+            val dev = data.getStringArrayExtra(EDIT_DATA)[1]
+            mStatusPresenter?.setDev(dev)
+            mDevText?.text = dev
+        }
     }
 }

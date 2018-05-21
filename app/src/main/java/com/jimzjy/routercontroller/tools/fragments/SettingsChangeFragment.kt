@@ -32,7 +32,7 @@ const val SETTING_TO_DIALOG = 0
  * A simple [Fragment] subclass.
  *
  */
-class SettingsChangeFragment : Fragment(), ReconnectClickListener {
+class SettingsChangeFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(toolsPresenter: ToolsPresenter?)
@@ -58,13 +58,12 @@ class SettingsChangeFragment : Fragment(), ReconnectClickListener {
 
         mSettingList.add(SettingData(resources.getString(R.string.cant_find_config),""))
         mRecyclerViewAdapter = SettingsRecyclerAdapter(context!!, mSettingList)
-        mRecyclerViewAdapter?.setOnClickItem { v, position ->
+        mRecyclerViewAdapter?.setOnClickItem { _, position ->
             if (!mCommitLocked) {
                 val editDialog = EditDialog.newInstance(mSettingList[position].name,
                         mSettingList[position].value,
                         resources.getString(R.string.commit), false, position)
                 editDialog.setTargetFragment(this@SettingsChangeFragment, SETTING_TO_DIALOG)
-                editDialog.setTitleBackground(null, false)
                 editDialog.show(fragmentManager,"EditDialog")
             }
         }
@@ -74,10 +73,6 @@ class SettingsChangeFragment : Fragment(), ReconnectClickListener {
         mSettingRecyclerView?.setHasFixedSize(true)
 
         return view
-    }
-
-    override fun onClickReconnect() {
-
     }
 
     override fun onStart() {

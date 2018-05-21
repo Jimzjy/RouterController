@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
                 when(it.itemId) {
                     R.id.menu_reconnect -> {
                         val fragmentList = supportFragmentManager.fragments
-                        fragmentList.forEach { (it as ReconnectClickListener).onClickReconnect() }
+                        fragmentList.forEach {
+                            if (it.tag !in Tools.fragmentTags) {
+                                (it as ReconnectClickListener).onClickReconnect()
+                            }
+                        }
                     }
                     R.id.menu_settings -> {
                         startActivity(Intent(this@MainActivity, Settings::class.java))

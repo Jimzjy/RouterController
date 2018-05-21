@@ -50,7 +50,7 @@ open class ListDialog : DialogFragment() {
         val view = inflater.inflate(R.layout.fragment_list_dialog, container, false)
 
         val listRecyclerView = view.findViewById<RecyclerView>(R.id.list_dialog_rv)
-        mListRecyclerViewAdapter = CommandListAdapter(context!!,mCommandList ?: emptyList())
+        mListRecyclerViewAdapter = CommandListAdapter(context!!,mCommandList ?: emptyList(), mCommandSelected)
         listRecyclerView.layoutManager = LinearLayoutManager(context)
         listRecyclerView.adapter = mListRecyclerViewAdapter
         listRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -93,17 +93,20 @@ open class ListDialog : DialogFragment() {
         mListRecyclerViewAdapter?.setOnLongClickItem { _, position ->
             if (mListRecyclerViewAdapter?.multiSelectMode != true){
                 mListRecyclerViewAdapter?.multiSelectMode = true
+                mCommandSelected[position] = true
                 mListRecyclerViewAdapter?.notifyDataSetChanged()
                 mCancelButton?.visibility = View.VISIBLE
                 mDoneButton?.visibility = View.VISIBLE
                 mBottomLeftButton?.text = resources.getString(R.string.delete)
                 mBottomRightButton?.text = resources.getString(R.string.edit)
-                mCommandSelected[position] = true
             }
         }
         mCancelButton?.setOnClickListener {
             if (mListRecyclerViewAdapter?.multiSelectMode == true) {
                 mListRecyclerViewAdapter?.multiSelectMode = false
+                for (i in 0 until mCommandSelected.size) {
+                    mCommandSelected[i] = false
+                }
                 mListRecyclerViewAdapter?.notifyDataSetChanged()
                 mCancelButton?.visibility = View.INVISIBLE
                 mDoneButton?.visibility = View.INVISIBLE
@@ -114,7 +117,7 @@ open class ListDialog : DialogFragment() {
         mDoneButton?.setOnClickListener {
             if (mListRecyclerViewAdapter?.multiSelectMode == true) {
                 val tmp = mutableListOf<Int>()
-                for (i in 0..(mCommandSelected.size - 1)) {
+                for (i in 0 until mCommandSelected.size) {
                     if (mCommandSelected[i]) tmp.add(i)
                 }
                 sendData(tmp.toIntArray())
@@ -134,7 +137,7 @@ open class ListDialog : DialogFragment() {
                 editDialog.setTargetFragment(this@ListDialog, EDIT_TO_LIST_ADD)
                 editDialog.show(fragmentManager, "EditDialog")
             } else {
-                for (i in 0..(mCommandSelected.size - 1)){
+                for (i in 0 until mCommandSelected.size){
                     if (mCommandSelected[i]) {
                         val editDialog = EditDialog.newInstance(mCommandList?.get(i)?.name ?: ""
                                 , mCommandList?.get(i)?.content ?: "",i)
@@ -151,11 +154,11 @@ open class ListDialog : DialogFragment() {
         mSaveCommandMethod = method
     }
 
-    open fun clearAndUpdateAllData(commandList: List<CommandData>) {
-        mCommandList?.clear()
-        mCommandList?.addAll(commandList)
-        mListRecyclerViewAdapter?.notifyDataSetChanged()
-    }
+//    open fun clearAndUpdateAllData(commandList: List<CommandData>) {
+//        mCommandList?.clear()
+//        mCommandList?.addAll(commandList)
+//        mListRecyclerViewAdapter?.notifyDataSetChanged()
+//    }
 
     open fun updateData(commandData: CommandData, position: Int) {
         mCommandList?.set(position, commandData)
@@ -170,7 +173,7 @@ open class ListDialog : DialogFragment() {
 
     open fun deleteSelectedData() {
         val dataList = mutableListOf<CommandData>()
-        for (i in 0..(mCommandSelected.size - 1)) {
+        for (i in 0 until mCommandSelected.size) {
             if (mCommandSelected[i]){
                 dataList.add(mCommandList?.get(i) ?: CommandData("",""))
             }

@@ -2,7 +2,6 @@ package com.jimzjy.routercontroller.status
 
 import android.content.Context
 import android.preference.PreferenceManager
-import android.util.Log
 import com.jimzjy.routercontroller.R
 import com.jimzjy.routersshutils.common.Connector
 import com.jimzjy.routersshutils.common.ConnectorInfo
@@ -13,23 +12,26 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.*
+
+const val MAX_CONNECT_TIMES = 10
+const val SPEED_WAIT_TIME = 1500L
 
 /**
  *
  */
 class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx: Context?) : StatusPresenter {
-    companion object {
-        const val TAG = "StatusPresenterImpl"
-        private const val MAX_CONNECT_TIMES = 10
-    }
-
     private val mDisposable = CompositeDisposable()
     private val mConnectingText = ctx?.resources?.getString(R.string.connecting) ?: "Connecting..."
     private val mConnectionFailedText = ctx?.resources?.getString(R.string.connection_failed) ?: "Connection Failed"
+    private var mConnectTimer: Timer? = null
+    private var mSpeedTimer: Timer? = null
     private var mSpeedDev = "br0"
     private var mConnector: Connector? = null
+    private var mDevArray: Array<String>? = null
 
     override fun onStart() {
+        mStatusView?.updateDevicesList(listOf(DeviceInfo("", mConnectingText, "")))
         startObservable()
     }
 
@@ -37,34 +39,47 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
         disposeObservable()
     }
 
-    override fun onDestroy() {
-        Thread(Runnable {
-            mConnector?.disconnect()
-            mConnector = null
-        }).start()
+    override fun onDestroyView() {
+        disconnectedConnector()
         mStatusView = null
         ctx = null
     }
 
     override fun onClickReconnect() {
         disposeObservable()
-        Thread(Runnable {
-            mConnector?.disconnect()
-            mConnector = null
-        }).start()
+        disconnectedConnector()
         mStatusView?.updateDevicesList(listOf(DeviceInfo("", mConnectingText, "")))
         mStatusView?.setSpeedArray(floatArrayOf(0f, 0f))
         mStatusView?.updateSpeedBar()
         startObservable()
     }
 
+    override fun getDev(): String {
+        return mSpeedDev
+    }
+
+    override fun setDev(dev: String) {
+        mSpeedDev = dev
+        val editor = PreferenceManager.getDefaultSharedPreferences(ctx).edit()
+        editor.putString("pref_key_speed_dev", dev)
+        editor.apply()
+    }
+
+    override fun getDevArray(): Array<String> {
+        return mDevArray ?: emptyArray()
+    }
+
     private fun networkSpeedObservable(): Observable<FloatArray> {
         return Observable.create {
             try {
-                while (mConnector?.isConnected == true) {
-                    it.onNext(mConnector?.getNetworkSpeed(mSpeedDev) ?: floatArrayOf(0f, 0f))
-                    Thread.sleep(1500)
-                }
+                if (mSpeedTimer == null) mSpeedTimer = Timer()
+                mSpeedTimer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        if (mConnector?.isConnected == true) {
+                            it.onNext(mConnector?.getNetworkSpeed(mSpeedDev) ?: floatArrayOf(0f, 0f))
+                        }
+                    }
+                }, 0, SPEED_WAIT_TIME)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -93,19 +108,24 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
             }
             var count = 0
             try {
-                for (i in 1..MAX_CONNECT_TIMES) {
-                    if (mConnector?.isConnected == true) {
-                        it.onNext(true)
-                        break
+                if (mConnectTimer == null) mConnectTimer = Timer()
+                mConnectTimer?.schedule(object : TimerTask() {
+                    override fun run() {
+                        if (mConnector?.isConnected == true) {
+                            mDevArray = mConnector?.getDevArray()
+                            it.onNext(true)
+                            cancelTimer()
+                        } else {
+                            count++
+                            if (count >= MAX_CONNECT_TIMES) {
+                                it.onNext(false)
+                                cancelTimer()
+                            }
+                        }
                     }
-                    count = i
-                    Thread.sleep(1000)
-                }
+                },0, 1000)
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-            if (count >= MAX_CONNECT_TIMES) {
-                it.onNext(false)
             }
         }
     }
@@ -157,6 +177,23 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
     }
 
     private fun disposeObservable() {
+        cancelTimer()
         if (!mDisposable.isDisposed) mDisposable.clear()
+    }
+
+    private fun cancelTimer() {
+        mConnectTimer?.cancel()
+        mConnectTimer?.purge()
+        mConnectTimer = null
+        mSpeedTimer?.cancel()
+        mSpeedTimer?.purge()
+        mSpeedTimer = null
+    }
+
+    private fun disconnectedConnector() {
+        Thread(Runnable {
+            if (mConnector?.isConnected == true) mConnector?.disconnect()
+            mConnector = null
+        }).start()
     }
 }

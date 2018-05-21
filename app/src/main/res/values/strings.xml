@@ -64,4 +64,5 @@
     <string name="destination_path">Destination path</string>
     <string name="no_dst_path">No destination path</string>
     <string name="no_file_upload">No file to upload</string>
+    <string name="select_dev">Select from these below ▼\n</string>
 </resources>

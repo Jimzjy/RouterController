@@ -22,7 +22,7 @@ const val EDIT_POSITION = "edit_position"
 open class EditDialog : DialogFragment() {
     private var mTitle: TextView? = null
     private var mContent: TextView? = null
-    private var mDoneButton: Button? = null
+    private var mDoneButton: TextView? = null
     private var mTitleText: String? = null
     private var mContentText: String? = null
     private var mDoneButtonText: String? = null
@@ -84,11 +84,6 @@ open class EditDialog : DialogFragment() {
             mTitle?.isEnabled = false
         }
         return view
-    }
-
-    open fun setTitleBackground(background: Drawable?, editable: Boolean = true) {
-        mTitle?.background = background
-        if (!editable) mTitle?.isClickable = false
     }
 
     private fun sendData() {

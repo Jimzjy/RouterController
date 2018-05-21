@@ -2,25 +2,20 @@ package com.jimzjy.routercontroller.tools
 
 import android.content.Context
 import android.preference.PreferenceManager
-import android.util.Log
 import com.jimzjy.dialog.CommandData
-import com.jimzjy.routercontroller.status.StatusPresenterImpl
 import com.jimzjy.routersshutils.common.Connector
 import com.jimzjy.routersshutils.common.ConnectorInfo
 import com.jimzjy.routersshutils.common.SftpProgress
 import com.jimzjy.routersshutils.nvram.NvramConnector
 import com.jimzjy.routersshutils.uci.UciConnector
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import java.io.File
+import java.util.*
 
-private const val MAX_CONNECT_TIMES = 10
 
 class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Context?) : ToolsPresenter {
     private var mConnector: Connector? = null
-    private val mDisposable = CompositeDisposable()
+//    private val mDisposable = CompositeDisposable()
+//    private var mTimer: Timer? = null
 
     override fun onStart() {
         startObservable()
@@ -31,20 +26,14 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
     }
 
     override fun onDestroyView() {
-        Thread(Runnable {
-            mConnector?.disconnect()
-            mConnector = null
-        }).start()
+        disconnectedConnector()
         mToolsView = null
         ctx = null
     }
 
     override fun onClickReconnect() {
         disposeObservable()
-        Thread(Runnable {
-            mConnector?.disconnect()
-            mConnector = null
-        }).start()
+        disconnectedConnector()
         startObservable()
     }
 
@@ -124,29 +113,33 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         }
     }
 
-    private fun connectorObservable(): Observable<Boolean> {
-        return Observable.create {
-            if (!isConnected()){
-                this.connect()
-            }
-            var count = 0
-            try {
-                for (i in 1..MAX_CONNECT_TIMES) {
-                    if (mConnector?.isConnected == true) {
-                        it.onNext(true)
-                        break
-                    }
-                    count = i
-                    Thread.sleep(1000)
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            if (count >= MAX_CONNECT_TIMES) {
-                it.onNext(false)
-            }
-        }
-    }
+//    private fun connectorObservable(): Observable<Boolean> {
+//        return Observable.create {
+//            if (!isConnected()){
+//                this.connect()
+//            }
+//            var count = 0
+//            try {
+//                if (mTimer == null) mTimer = Timer()
+//                mTimer?.schedule(object : TimerTask() {
+//                    override fun run() {
+//                        if (mConnector?.isConnected == true) {
+//                            it.onNext(true)
+//                            cancelTimer()
+//                        } else {
+//                            count++
+//                            if (count >= MAX_CONNECT_TIMES) {
+//                                it.onNext(false)
+//                                cancelTimer()
+//                            }
+//                        }
+//                    }
+//                },0, 1000)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 
     private fun connect() {
         val preference = PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -163,8 +156,8 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
 
         val tmpPath = preference.getString("pref_key_path", "")
         mConnector?.nvramUciPath = if (tmpPath != "path" && tmpPath.isNotEmpty()) {
-            if (tmpPath.last() == '/') {
-                tmpPath.substring(0, tmpPath.length - 1)
+            if (tmpPath.last() != '/') {
+                "$tmpPath/"
             } else {
                 tmpPath
             }
@@ -175,23 +168,40 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
     }
 
     private fun startObservable() {
-        try {
-            mDisposable.add(connectorObservable()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        if (it) {
-
-                        } else {
-
-                        }
-                    })
-        } catch (e: Exception) {
-            Log.e(StatusPresenterImpl.TAG, e.toString())
-        }
+        Thread(Runnable {
+            connect()
+        }).start()
+//        try {
+//            mDisposable.add(connectorObservable()
+//                    .subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe {
+//                        if (it) {
+//
+//                        } else {
+//
+//                        }
+//                    })
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     private fun disposeObservable() {
-        if (!mDisposable.isDisposed) mDisposable.clear()
+//        cancelTimer()
+//        if (!mDisposable.isDisposed) mDisposable.clear()
+    }
+
+//    private fun cancelTimer() {
+//        mTimer?.cancel()
+//        mTimer?.purge()
+//        mTimer = null
+//    }
+
+    private fun disconnectedConnector() {
+        Thread(Runnable {
+            if (mConnector?.isConnected == true) mConnector?.disconnect()
+            mConnector = null
+        }).start()
     }
 }

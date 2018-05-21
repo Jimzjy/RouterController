@@ -35,7 +35,7 @@ const val NORMAL_TEXT = "normal"
 const val RED_TEXT = "#E57373"
 const val GREEN_TEXT = "#4DB6AC"
 
-class ShanXunFragment : Fragment(), ReconnectClickListener {
+class ShanXunFragment : Fragment() {
     private var mSmsReader: SmsReader? = null
     private var mToolsPresenter: ToolsPresenter? = null
     private var mNumberPasswordET: EditText? = null
@@ -85,10 +85,6 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         }
         setListener()
         return view
-    }
-
-    override fun onClickReconnect() {
-
     }
 
     override fun onResume() {
@@ -199,7 +195,7 @@ class ShanXunFragment : Fragment(), ReconnectClickListener {
         var text = SEND_SMS_OK
         var exception = false
         try {
-            val subscriptionId = smsSender.getSubscriptionId(number)
+            val subscriptionId = smsSender.getSubscriptionId()
             smsSender.sendSms(subscriptionId, sentIntent)
         } catch (e: SmsUtilsException) {
             exception = true
