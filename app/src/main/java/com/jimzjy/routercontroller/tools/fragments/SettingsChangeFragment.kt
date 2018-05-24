@@ -2,6 +2,7 @@ package com.jimzjy.routercontroller.tools.fragments
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import com.jimzjy.dialog.EDIT_DATA
@@ -124,6 +126,7 @@ class SettingsChangeFragment : Fragment() {
             mSearchButton?.setOnClickListener {
                 val text: String = mSettingEditText?.text.toString()
                 if (text.isNotEmpty()) {
+                    hideSoftInput()
                     emitter.onNext(text)
                     mSettingEditText?.setText("")
                     changeData(hashMapOf(Pair(resources.getString(R.string.try_to_get),"")))
@@ -135,6 +138,7 @@ class SettingsChangeFragment : Fragment() {
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
                                 && KeyEvent.ACTION_DOWN == event.keyCode)){
                     if (v.text.isNotEmpty()) {
+                        hideSoftInput()
                         emitter.onNext(v.text.toString())
                         v.text = ""
                         changeData(hashMapOf(Pair(resources.getString(R.string.try_to_get),"")))
@@ -160,6 +164,11 @@ class SettingsChangeFragment : Fragment() {
                 .subscribe {
                     changeData(it)
                 })
+    }
+
+    private fun hideSoftInput() {
+        (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(mSettingEditText?.windowToken, 0)
     }
 }
 

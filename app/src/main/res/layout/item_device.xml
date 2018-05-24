@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/item_background">
+    android:background="@color/background">
 
     <ImageView
         android:id="@+id/item_device_icon"
@@ -26,6 +26,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textSize="@dimen/status_item_device_text_size"
+        android:textIsSelectable="true"
         tools:text="@sample/device.json/data/name"
         app:layout_constraintStart_toEndOf="@+id/item_device_icon"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,6 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textSize="@dimen/status_item_device_text_size"
+        android:textIsSelectable="true"
         tools:text="@sample/device.json/data/ip"
         app:layout_constraintStart_toEndOf="@+id/item_device_icon"
         app:layout_constraintTop_toBottomOf="@+id/item_device_name" />
@@ -49,6 +51,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textSize="@dimen/status_item_device_text_size"
+        android:textIsSelectable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_device_icon"
         app:layout_constraintTop_toBottomOf="@+id/item_device_ip"

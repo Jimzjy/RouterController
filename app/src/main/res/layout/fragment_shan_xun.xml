@@ -53,36 +53,51 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/tools_sx_passwd_number_edit"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/tools_sx_passwd_number_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="phone"
-        android:hint="@string/phone_number_hint"
-        android:textSize="@dimen/tools_sx_edit_size"/>
+        android:hint="@string/phone_number_hint">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/tools_sx_passwd_number_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="phone"
+            android:textSize="@dimen/tools_sx_edit_size"/>
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/tools_sx_passwd_edit"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="text"
-        android:hint="@string/sx_passwd_config_name_hint"
-        android:textSize="@dimen/tools_sx_edit_size"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/sx_passwd_config_name_hint">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/tools_sx_passwd_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="text"
+            android:textSize="@dimen/tools_sx_edit_size" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/tools_sx_restart_command"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:inputType="text"
-        android:hint="@string/sx_restart_command"
-        android:textSize="@dimen/tools_sx_edit_size"/>
+        android:layout_marginTop="4dp"
+        android:hint="@string/sx_restart_command">
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/tools_sx_restart_command"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:inputType="text"
+            android:textSize="@dimen/tools_sx_edit_size" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/tools_sx_commit_button"
@@ -107,6 +122,7 @@
             android:id="@+id/tools_sx_display_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textIsSelectable="true"
             android:text="@string/sx_display_help_hint"/>
     </ScrollView>
 </LinearLayout>

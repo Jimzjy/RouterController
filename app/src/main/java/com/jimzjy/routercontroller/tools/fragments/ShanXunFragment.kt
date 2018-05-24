@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
@@ -38,10 +40,11 @@ const val GREEN_TEXT = "#4DB6AC"
 class ShanXunFragment : Fragment() {
     private var mSmsReader: SmsReader? = null
     private var mToolsPresenter: ToolsPresenter? = null
-    private var mNumberPasswordET: EditText? = null
-    private var mPasswordET: EditText? = null
+    private var mNumberPasswordET: TextInputEditText? = null
+    private var mNumberPasswordLayout: TextInputLayout? = null
+    private var mPasswordET: TextInputEditText? = null
     private var mCommitButton: Button? = null
-    private var mCommandET: EditText? = null
+    private var mCommandET: TextInputEditText? = null
     private var mDisplayText: TextView? = null
     private var mAutoText: TextView? = null
     private var mManualText: TextView? = null
@@ -69,6 +72,7 @@ class ShanXunFragment : Fragment() {
         mDisplayText = view.findViewById(R.id.tools_sx_display_text)
         mAutoText = view.findViewById(R.id.tools_sx_auto_text)
         mManualText = view.findViewById(R.id.tools_sx_manual_text)
+        mNumberPasswordLayout = view.findViewById(R.id.tools_sx_passwd_number_layout)
 
         val numberPasswordCommand = mToolsPresenter?.getNumberPassword() ?: arrayOf("", "", "")
         mNumberPasswordET?.setText(numberPasswordCommand[0])
@@ -295,12 +299,14 @@ class ShanXunFragment : Fragment() {
     private fun changeMode() {
         if (misAutoMode) {
             mNumberPasswordET?.setText("")
-            mNumberPasswordET?.setHint(R.string.phone_number_hint_manual)
+            //mNumberPasswordET?.setHint(R.string.phone_number_hint_manual)
+            mNumberPasswordLayout?.hint = resources.getString(R.string.phone_number_hint_manual)
             mAutoText?.background = null
             mManualText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         } else {
             mNumberPasswordET?.setText("")
-            mNumberPasswordET?.setHint(R.string.phone_number_hint)
+            //mNumberPasswordET?.setHint(R.string.phone_number_hint)
+            mNumberPasswordLayout?.hint = resources.getString(R.string.phone_number_hint)
             mManualText?.background = null
             mAutoText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         }

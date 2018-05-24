@@ -17,12 +17,12 @@
             android:defaultValue="@string/uci"
             android:summary="@string/uci"/>
         <EditTextPreference
-            android:defaultValue="path"
+            android:defaultValue="default"
             android:key="pref_key_path"
             android:title="@string/path"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:summary="@string/path"/>
+            android:summary="@string/default_path"/>
         <EditTextPreference
             android:defaultValue="br0"
             android:key="pref_key_speed_dev"

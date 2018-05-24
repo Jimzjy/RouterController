@@ -10,7 +10,7 @@ const val OPENWRT_DHCP_FILE = "/tmp/dhcp.leases"
 const val ASUSWRT_DHCP_FILE = "/tmp/var/lib/misc/dnsmasq.leases"
 
 /**
- *
+ *  SSH 连接器
  */
 abstract class Connector(private val connectorInfo: ConnectorInfo) {
     private var mSession: Session? = null
@@ -19,6 +19,9 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
     open val channelTimeout = 3000
     open val isConnected get() = mSession?.isConnected == true
 
+    /**
+     * 进行连接
+     */
     open fun connect() {
         try {
             val jsch = JSch()
@@ -32,11 +35,23 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         if (mSession == null) throw SSHUtilsException("mSession is null")
     }
 
+    /**
+     * 取消连接
+     */
     open fun disconnect() {
         mSession?.disconnect()
         mSession = null
     }
 
+    /**
+     * 执行命令
+     *
+     * @param commands 命令内容
+     * @param outputString 返回普通信息
+     * @param errorOutputString 返回的错误信息
+     * @param timeWait 循环等待返回信息的时间
+     * @param setPty 是否设置虚拟终端
+     */
     open fun executeCommands(commands: String, outputString: StringBuilder?, errorOutputString: StringBuilder?, timeWait: Long = 1000, setPty: Boolean = false) {
         if (mSession == null) throw SSHUtilsException("mSession is null")
         if (mSession?.isConnected != true) throw SSHUtilsException("mSession is not connected")
@@ -77,6 +92,14 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         }
     }
 
+    /**
+     * 用 SFTP 上传文件到指定目录
+     *
+     * @param dst 目标目录
+     * @param file 上传的文件
+     * @param sftpProgress 反馈进度 [SftpProgress]
+     * @param uploadFinishAction 上传完成后的回调函数
+     */
     open fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null, uploadFinishAction: (() -> Unit)?) {
         if (mSession == null) throw SSHUtilsException("Session is null")
         if (mSession?.isConnected != true) throw SSHUtilsException("Session is not connected")
@@ -162,7 +185,7 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
     }
 
     /**
-     * @param path
+     * @param path 路径, 结尾不能有'/'
      */
     private fun getPrevPath(path: String): String {
         val tmpPath = removePathSuffix(path)
@@ -175,6 +198,14 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         return "$dstPath$tmpPath1"
     }
 
+    /**
+     * 将得到的配置添加到传入的 [config] 里
+     *
+     * @param config 得到的 config 将会添加到这个列表
+     * @param ip IP列表, 用于比对是否添加到 [config] 里面
+     * @param file 设备信息存储文件路径
+     * @return true 如果成功取得设备信息
+     */
     open fun getHostName(config: MutableList<DeviceInfo>, ip: List<String>, file: String): Boolean {
         val errorOutput = StringBuilder()
         val outputString = StringBuilder()
@@ -218,6 +249,11 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         return deviceList
     }
 
+    /**
+     * 获取用于取得网速的 device
+     *
+     * @return device 列表
+     */
     open fun getDevArray(): Array<String> {
         val outputString = StringBuilder()
         val devList = mutableListOf<String>()
@@ -240,9 +276,32 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
         return devList.toTypedArray()
     }
 
+    /**
+     * 取得连接设备信息
+     *
+     * @return 连接设备列表 [DeviceInfo]
+     */
     abstract fun getConnectingDevices(): List<DeviceInfo>
+
+    /**
+     * 获得当前传输速度信息
+     *
+     * @return 上下行速度数组
+     */
     abstract fun getNetworkSpeed(dev: String): FloatArray
+
+    /**
+     * 获得配置信息
+     *
+     * @return 名称和值的数组
+     */
     abstract fun getConfig(nameOrValue: String): HashMap<String, String>
+
+    /**
+     * 设置配置信息
+     *
+     * @param nameValueMap 配置名称和值的数组
+     */
     abstract fun setConfig(nameValueMap: HashMap<String, String>, commit: Boolean)
     abstract fun refreshARP()
 }

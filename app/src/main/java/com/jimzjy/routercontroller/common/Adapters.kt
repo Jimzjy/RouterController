@@ -21,6 +21,11 @@ import java.io.File
 
 class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     private val mFragmentList = arrayListOf<Fragment>()
+    private val mTitleList = arrayListOf<String>()
+
+    override fun getPageTitle(position: Int): CharSequence? {
+        return mTitleList[position]
+    }
 
     override fun getCount(): Int {
         return mFragmentList.size
@@ -30,8 +35,9 @@ class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return mFragmentList[position]
     }
 
-    fun addFragment(fragment: Fragment) {
+    fun addFragment(fragment: Fragment, title: String) {
         mFragmentList.add(fragment)
+        mTitleList.add(title)
     }
 }
 
@@ -77,7 +83,6 @@ class ToolsRecyclerAdapter(ctx: Context, private val itemList: List<ToolsRecycle
     private var mOnClickItem: ((v: View, position: Int) -> Unit)? = null
 
     inner class ViewHolder(root: View) : RecyclerView.ViewHolder(root) {
-        val name: TextView = root.findViewById(R.id.tools_item_text)
         val icon: ImageView = root.findViewById(R.id.tools_item_icon)
 
         init {
@@ -91,7 +96,6 @@ class ToolsRecyclerAdapter(ctx: Context, private val itemList: List<ToolsRecycle
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
-        viewHolder.name.text = itemList[position].name
         viewHolder.icon.setImageDrawable(itemList[position].icon)
     }
 
@@ -124,7 +128,11 @@ class SettingsRecyclerAdapter(ctx: Context, private val settingList: List<Settin
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
         viewHolder.name.text = settingList[position].name
-        viewHolder.value.text = settingList[position].value
+        viewHolder.value.text = if(settingList[position].value.length <= 25) {
+            settingList[position].value
+        } else {
+            "${settingList[position].value.substring(0..25)}..."
+        }
     }
 
     override fun getItemCount(): Int {

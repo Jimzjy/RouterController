@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".settings.Settings" />
         <activity android:name=".tools.LocalFilesActivity" />
+        <activity android:name=".about.AboutActivity"/>
     </application>
 
 </manifest>

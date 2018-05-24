@@ -1,6 +1,7 @@
 package com.jimzjy.routercontroller.tools
 
 import android.content.Context
+import android.os.Handler
 import android.preference.PreferenceManager
 import com.jimzjy.dialog.CommandData
 import com.jimzjy.routersshutils.common.Connector
@@ -26,14 +27,15 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
     }
 
     override fun onDestroyView() {
-        disconnectedConnector()
+        disconnectConnector()
         mToolsView = null
         ctx = null
     }
 
     override fun onClickReconnect() {
         disposeObservable()
-        disconnectedConnector()
+        disconnectConnector()
+
         startObservable()
     }
 
@@ -155,7 +157,7 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         }
 
         val tmpPath = preference.getString("pref_key_path", "")
-        mConnector?.nvramUciPath = if (tmpPath != "path" && tmpPath.isNotEmpty()) {
+        mConnector?.nvramUciPath = if (tmpPath != "default" && tmpPath.isNotEmpty()) {
             if (tmpPath.last() != '/') {
                 "$tmpPath/"
             } else {
@@ -168,9 +170,11 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
     }
 
     private fun startObservable() {
-        Thread(Runnable {
-            connect()
-        }).start()
+        if (!isConnected()) {
+            Thread(Runnable {
+                connect()
+            }).start()
+        }
 //        try {
 //            mDisposable.add(connectorObservable()
 //                    .subscribeOn(Schedulers.io())
@@ -198,10 +202,13 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
 //        mTimer = null
 //    }
 
-    private fun disconnectedConnector() {
+    private fun disconnectConnector(reconnect: Boolean = false) {
+        val handler = Handler()
         Thread(Runnable {
-            if (mConnector?.isConnected == true) mConnector?.disconnect()
+            if (isConnected()) mConnector?.disconnect()
             mConnector = null
+
+            if (reconnect) handler.post { startObservable() }
         }).start()
     }
 }

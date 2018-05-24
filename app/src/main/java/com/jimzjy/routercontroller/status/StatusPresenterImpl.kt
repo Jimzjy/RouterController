@@ -1,6 +1,7 @@
 package com.jimzjy.routercontroller.status
 
 import android.content.Context
+import android.os.Handler
 import android.preference.PreferenceManager
 import com.jimzjy.routercontroller.R
 import com.jimzjy.routersshutils.common.Connector
@@ -26,7 +27,7 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
     private val mConnectionFailedText = ctx?.resources?.getString(R.string.connection_failed) ?: "Connection Failed"
     private var mConnectTimer: Timer? = null
     private var mSpeedTimer: Timer? = null
-    private var mSpeedDev = "br0"
+    private var mSpeedDev = ""
     private var mConnector: Connector? = null
     private var mDevArray: Array<String>? = null
 
@@ -40,21 +41,25 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
     }
 
     override fun onDestroyView() {
-        disconnectedConnector()
+        disconnectConnector()
         mStatusView = null
         ctx = null
     }
 
     override fun onClickReconnect() {
         disposeObservable()
-        disconnectedConnector()
         mStatusView?.updateDevicesList(listOf(DeviceInfo("", mConnectingText, "")))
         mStatusView?.setSpeedArray(floatArrayOf(0f, 0f))
         mStatusView?.updateSpeedBar()
-        startObservable()
+        disconnectConnector(true)
     }
 
     override fun getDev(): String {
+        if (mSpeedDev.isNotEmpty()) {
+            return mSpeedDev
+        }
+        val preference = PreferenceManager.getDefaultSharedPreferences(ctx)
+        mSpeedDev = preference.getString("pref_key_speed_dev", "")
         return mSpeedDev
     }
 
@@ -190,10 +195,13 @@ class StatusPresenterImpl(private var mStatusView: StatusView?, private var ctx:
         mSpeedTimer = null
     }
 
-    private fun disconnectedConnector() {
+    private fun disconnectConnector(reconnect: Boolean = false) {
+        val handler = Handler()
         Thread(Runnable {
             if (mConnector?.isConnected == true) mConnector?.disconnect()
             mConnector = null
+
+            if (reconnect) handler.post { startObservable() }
         }).start()
     }
 }

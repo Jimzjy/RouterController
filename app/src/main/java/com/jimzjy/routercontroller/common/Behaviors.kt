@@ -17,9 +17,16 @@ import com.jimzjy.routercontroller.status.ScrimView
 class DeviceRecyclerScrollerBehavior(ctx: Context, attrs: AttributeSet) : CoordinatorLayout.Behavior<ScrimView>(ctx, attrs) {
     private val mTopText = ctx.resources.getDimension(R.dimen.status_top_text_height)
     private val mTotalOffsetY = ctx.resources.getDimension(R.dimen.status_top_widget_height) - mTopText
+    private var mAnimator: ObjectAnimator? = null
 
     override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: ScrimView, directTargetChild: View, target: View, axes: Int, type: Int): Boolean {
-        return (axes and ViewCompat.SCROLL_AXIS_VERTICAL) != 0
+        if ((axes and ViewCompat.SCROLL_AXIS_VERTICAL) != 0) {
+            mAnimator?.let {
+                if (it.isStarted) it.end()
+            }
+            return true
+        }
+        return false
     }
 
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: ScrimView, target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
@@ -41,18 +48,18 @@ class DeviceRecyclerScrollerBehavior(ctx: Context, attrs: AttributeSet) : Coordi
     override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, child: ScrimView, target: View, type: Int) {
         val scrollY = coordinatorLayout.scrollY
         if (scrollY > mTotalOffsetY / 2) {
-//            scrollStopAnimation(coordinatorLayout, child, scrollY, mTotalOffsetY.toInt())
+            scrollStopAnimation(coordinatorLayout, child, scrollY, mTotalOffsetY.toInt())
         } else {
-//            scrollStopAnimation(coordinatorLayout, child, scrollY, 0)
+            scrollStopAnimation(coordinatorLayout, child, scrollY, 0)
         }
     }
 
     private fun scrollStopAnimation(coordinatorLayout: CoordinatorLayout, child: ScrimView, scrollY: Int, scrollTo: Int) {
-        val animator = ObjectAnimator.ofInt(coordinatorLayout, "scrollY", scrollY, scrollTo)
-        animator.addUpdateListener {
+        mAnimator = ObjectAnimator.ofInt(coordinatorLayout, "scrollY", scrollY, scrollTo)
+        mAnimator?.addUpdateListener {
             child.alpha = (it.animatedValue as Int) / (mTotalOffsetY - mTopText / 2)
         }
-        animator.start()
+        mAnimator?.start()
     }
 }
 

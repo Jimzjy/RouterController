@@ -21,7 +21,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <EditText
         android:id="@+id/edit_dialog_content"
         android:layout_width="@dimen/edit_dialog_width"
@@ -29,7 +28,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:textSize="@dimen/edit_dialog_text_size"
         android:hint="@string/content"
         app:layout_constraintEnd_toEndOf="parent"

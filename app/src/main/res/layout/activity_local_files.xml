@@ -21,7 +21,7 @@
             android:id="@+id/tools_lf_bar_back"
             android:layout_width="@dimen/appBarIconSize"
             android:layout_height="@dimen/appBarIconSize"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/bar_button_ripple"
             android:contentDescription="@string/back"
             android:padding="4dp"
@@ -37,7 +37,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/select_file"
             android:textColor="@color/appBarTitleText"
-            android:textSize="@dimen/bottomNavigationTextSize"
+            android:textSize="@dimen/appBarTitleTextSize"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tools_lf_bar_back"
             app:layout_constraintTop_toTopOf="parent" />
@@ -80,35 +80,41 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/tools_lf_search_ET"
+    <android.support.v7.widget.CardView
+        android:id="@+id/tools_lf_search_ET_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tools_lf_searchET_height"
         android:layout_marginEnd="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="@dimen/tools_lf_searchET_marginTop"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:background="@drawable/tools_command_border"
-        android:hint="@string/search_file"
-        android:inputType="text"
-        android:imeOptions="actionSend"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <EditText
+            android:id="@+id/tools_lf_search_ET"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tools_lf_searchET_height"
+            android:paddingStart="8dp"
+            android:paddingEnd="32dp"
+            android:background="@null"
+            android:hint="@string/search_file"
+            android:inputType="text"
+            android:imeOptions="actionSend" />
+    </android.support.v7.widget.CardView>
 
     <ImageView
         android:id="@+id/tools_lf_search_BT"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_width="@dimen/tools_lf_searchBT_size"
+        android:layout_height="@dimen/tools_lf_searchBT_size"
         android:layout_marginEnd="8dp"
         android:contentDescription="@string/search_file"
+        android:elevation="8dp"
         android:src="@drawable/vector_drawable_ic_search_black___px"
         android:tint="@color/tools_gray"
-        app:layout_constraintBottom_toTopOf="@+id/tools_lf_rv"
-        app:layout_constraintEnd_toEndOf="@+id/tools_lf_search_ET"
-        app:layout_constraintTop_toTopOf="@+id/tools_lf_search_ET" />
+        app:layout_constraintBottom_toBottomOf="@+id/tools_lf_search_ET_layout"
+        app:layout_constraintEnd_toEndOf="@+id/tools_lf_search_ET_layout"
+        app:layout_constraintTop_toTopOf="@+id/tools_lf_search_ET_layout" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tools_lf_rv"
@@ -118,6 +124,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tools_lf_search_ET"
+        app:layout_constraintTop_toBottomOf="@+id/tools_lf_search_ET_layout"
         tools:listitem="@layout/item_file" />
 </android.support.constraint.ConstraintLayout>

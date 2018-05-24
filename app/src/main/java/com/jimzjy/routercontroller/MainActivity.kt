@@ -3,11 +3,14 @@ package com.jimzjy.routercontroller
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.view.GravityCompat
 import android.widget.PopupMenu
+import com.jimzjy.routercontroller.about.AboutActivity
 import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.common.ViewPagerAdapter
 import com.jimzjy.routercontroller.settings.Settings
@@ -30,37 +33,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPagerAdapter.addFragment(Status())
-        viewPagerAdapter.addFragment(Tools())
+        viewPagerAdapter.addFragment(Status(), resources.getString(R.string.status))
+        viewPagerAdapter.addFragment(Tools(), resources.getString(R.string.tools))
         main_view_pager.adapter = viewPagerAdapter
 
-        main_bottom_navigation.setIconVisibility(false)
-        main_bottom_navigation.enableAnimation(false)
-        main_bottom_navigation.setTextSize(18f)
-        main_bottom_navigation.setupWithViewPager(main_view_pager)
+        main_tab_layout.setupWithViewPager(main_view_pager)
     }
 
     private fun setListener() {
         main_menu_button.setOnClickListener {
-            val popupMenu = PopupMenu(this@MainActivity, main_menu_button)
-            popupMenu.menuInflater.inflate(R.menu.menu_appbar_menu_button, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener {
-                when(it.itemId) {
-                    R.id.menu_reconnect -> {
-                        val fragmentList = supportFragmentManager.fragments
-                        fragmentList.forEach {
-                            if (it.tag !in Tools.fragmentTags) {
-                                (it as ReconnectClickListener).onClickReconnect()
-                            }
+            main_drawer_layout.openDrawer(GravityCompat.START)
+        }
+
+        main_navigation_view.setNavigationItemSelectedListener {
+            main_drawer_layout.closeDrawers()
+            when(it.itemId) {
+                R.id.menu_reconnect -> {
+                    val fragmentList = supportFragmentManager.fragments
+                    fragmentList.forEach {
+                        if (it.tag !in Tools.fragmentTags) {
+                            (it as ReconnectClickListener).onClickReconnect()
                         }
                     }
-                    R.id.menu_settings -> {
-                        startActivity(Intent(this@MainActivity, Settings::class.java))
-                    }
                 }
-                true
+                R.id.menu_settings -> {
+                    startActivity(Intent(this@MainActivity, Settings::class.java))
+                }
+                R.id.menu_help -> {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Jimzjy/RouterController")))
+                }
+                R.id.menu_about -> {
+                    startActivity(Intent(this, AboutActivity::class.java))
+                }
             }
-            popupMenu.show()
+            true
         }
     }
 

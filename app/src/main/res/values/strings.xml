@@ -20,6 +20,7 @@
     <string name="speed_dev">Network speed device</string>
     <string name="br0">br0</string>
     <string name="path">Path</string>
+    <string name="default_path">default</string>
 
     <string name="main_menu">Main bar menu</string>
 
@@ -30,6 +31,7 @@
     <string name="change_settings">Change Settings</string>
     <string name="shanxun">ShanXun</string>
     <string name="command_line">Command Line</string>
+    <string name="command">Command</string>
     <string name="command_bundle">Command Bundle</string>
     <string name="update_time">Update Time</string>
     <string name="upload_files">Upload Files</string>
@@ -38,11 +40,11 @@
     <string name="type_setting">> Type setting or value </string>
     <string name="try_to_get">Try to get you want&#8230;</string>
     <string name="cant_find_config">Try to enter more info, if can\'t get</string>
-    <string name="phone_number_hint">phone number to get password</string>
-    <string name="phone_number_hint_manual">set password here</string>
-    <string name="sx_passwd_config_name_hint">password config name for PPPoE</string>
-    <string name="sx_restart_command">command to restart network</string>
-    <string name="sx_display_help_hint">!!For some system like MIUI you should restart the app after agree the permission!!\nTips: \n 1. If you get trouble for the \"Phone Number\" option, just leave blank and set the number you want to get code to default.\n
+    <string name="phone_number_hint">Phone Number</string>
+    <string name="phone_number_hint_manual">Password</string>
+    <string name="sx_passwd_config_name_hint">Password Config Name</string>
+    <string name="sx_restart_command">Restart Network Command</string>
+    <string name="sx_display_help_hint">Tips: \n 1. If you get trouble for the \"Phone Number\" option, just leave blank and set the number you want to get code to default.\n
         2. You can get the config by the \"Changing Settings\" module, and if you have more than one config, connect them with \" ; \" , like \"wan0_passwd;wan1_passwd\".\n
         3. Some commands for restart network: \nOpenWrt(LEDE/Pandora): /etc/init.d/network reload\nAsuswrt(Merlin): /sbin/service restart_wan\nelse: you can search it on Google or just use \"shutdown -r now\" to reboot you device</string>
     <string name="commit_error">Make sure you set the password config name and command.</string>
@@ -61,8 +63,18 @@
     <string name="back">Back</string>
     <string name="select_file">Select Files</string>
     <string name="search_file">Search files in current path</string>
-    <string name="destination_path">Destination path</string>
+    <string name="destination_path">Destination Path</string>
     <string name="no_dst_path">No destination path</string>
     <string name="no_file_upload">No file to upload</string>
     <string name="select_dev">Select from these below ▼\n</string>
+
+    <string name="DeviceWithColon">Dev: %s</string>
+    <string name="no_file_selected">No file selected</string>
+    <string name="disabled">Disabled</string>
+    <string name="about_text">GitHub repo: https://github.com/Jimzjy/RouterController</string>
+    <string name="license_p">Copyright 2018 Jimzjy\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.See the License for the specific language governing permissions and limitations under the License</string>
+    <string name="open_source_license">Open Source Licenses</string>
+    <string name="version">Version %s</string>
+    <string name="about">About</string>
+    <string name="help">Help</string>
 </resources>

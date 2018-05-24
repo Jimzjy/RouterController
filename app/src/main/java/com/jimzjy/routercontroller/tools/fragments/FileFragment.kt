@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -39,9 +40,10 @@ class FileFragment : Fragment() {
     private var mText = ""
     private var mRecyclerView: RecyclerView? = null
     private var mCommitButton: Button? = null
-    private var mDestinationET: EditText? = null
+    private var mDestinationET: TextInputEditText? = null
     private var mDisplayText: TextView? = null
     private var mSelectFileBT: Button? = null
+    private var mNoFileText: TextView? = null
 
     companion object {
         @JvmStatic
@@ -61,6 +63,7 @@ class FileFragment : Fragment() {
         mDestinationET = view.findViewById(R.id.tools_file_dst_ET)
         mDisplayText = view.findViewById(R.id.tools_file_out_text)
         mSelectFileBT = view.findViewById(R.id.tools_file_select_BT)
+        mNoFileText = view.findViewById(R.id.tools_file_nofile_text)
 
         mRVAdapter = SelectedFilesRecyclerAdapter(context!!, mFileList)
         val layoutManager = LinearLayoutManager(context)
@@ -83,8 +86,13 @@ class FileFragment : Fragment() {
         if (requestCode == REQUEST_LOCAL_FILE  && resultCode == Activity.RESULT_OK && data != null) {
             val path = data.getStringArrayExtra("path")
             path?.let {
-                resetFileList(it)
-                mRVAdapter?.notifyDataSetChanged()
+                if (it.isNotEmpty()) {
+                    mNoFileText?.visibility = View.GONE
+                    resetFileList(it)
+                    mRVAdapter?.notifyDataSetChanged()
+                } else {
+                    mNoFileText?.visibility = View.VISIBLE
+                }
             }
         }
     }

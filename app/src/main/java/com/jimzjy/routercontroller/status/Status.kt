@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +57,6 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
         mCoordinatorLayout?.setShowText { mSpeedBar?.alpha = it }
 
         mDevText = view.findViewById(R.id.status_dev_text)
-        mDevText?.text = mStatusPresenter?.getDev()
         mDevText?.setOnClickListener {
             val editDialog = EditDialog.newInstance(
                     "${resources.getString(R.string.select_dev)}${mStatusPresenter?.getDevArray()?.joinToString(" ")}",
@@ -64,14 +64,13 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
             editDialog.setTargetFragment(this@Status, 0)
             editDialog.show(fragmentManager, "EditDialog")
         }
-
-
         return view
     }
 
     override fun onStart() {
         super.onStart()
         mStatusPresenter?.onStart()
+        mDevText?.text = String.format(resources.getString(R.string.DeviceWithColon), mStatusPresenter?.getDev())
     }
 
     override fun onStop() {
