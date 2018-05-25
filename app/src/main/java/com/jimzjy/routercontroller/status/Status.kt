@@ -111,7 +111,7 @@ class Status : Fragment(), StatusView, ReconnectClickListener {
         if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
             val dev = data.getStringArrayExtra(EDIT_DATA)[1]
             mStatusPresenter.setDev(dev)
-            mDevText.text = dev
+            mDevText.text = String.format(resources.getString(R.string.DeviceWithColon), dev)
         }
     }
 }
