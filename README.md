@@ -1,20 +1,25 @@
 # RouterController
-一个路由管理 App , 通过 SSH 连接路由器.  
-![license](/tmp/license-Apache 2.0-blue.svg) ![api](/tmp/API-21+-blue.svg)
 
-功能 :  
+一个路由管理 App , 通过 SSH 连接路由器.
+
+![license](/tmp/license-Apache_2.0-blue.svg) ![api](/tmp/API-21+-blue.svg)
+
+功能 :
+
 - 显示网速
 - 显示连接设备
 - 发送命令
 - 更新系统时间
 - 修改设置
 - 上传文件
-- 闪讯密码更新  
+- 闪讯密码更新
 
 ## Help
+
 [查看 Wiki 寻找帮助](https://github.com/Jimzjy/RouterController/wiki)
 
 ## License
+
     Copyright 2018 Jimzjy
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
