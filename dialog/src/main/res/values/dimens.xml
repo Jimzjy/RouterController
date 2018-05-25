@@ -3,8 +3,6 @@
     <dimen name="item_command_name">18sp</dimen>
     <dimen name="item_command_content">12sp</dimen>
 
-    <dimen name="list_dialog_margin_left">48dp</dimen>
-    <dimen name="list_dialog_margin_top">104dp</dimen>
     <dimen name="list_width">304dp</dimen>
     <dimen name="list_height">320dp</dimen>
     <dimen name="list_bar_height">48dp</dimen>
@@ -12,9 +10,6 @@
 
     <dimen name="edit_dialog_text_size">16sp</dimen>
     <dimen name="edit_dialog_width">260dp</dimen>
-
-    <dimen name="message_dialog_text_size">16sp</dimen>
-    <dimen name="message_dialog_width">260dp</dimen>
 
     <dimen name="loading_dialog_height">100dp</dimen>
     <dimen name="loading_dialog_width">100dp</dimen>

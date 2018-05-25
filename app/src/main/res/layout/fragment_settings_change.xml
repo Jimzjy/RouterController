@@ -46,7 +46,8 @@
         android:tint="@color/tools_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tools_settings_edit_text_layout"
         app:layout_constraintEnd_toEndOf="@+id/tools_settings_edit_text_layout"
-        app:layout_constraintTop_toTopOf="@+id/tools_settings_edit_text_layout" />
+        app:layout_constraintTop_toTopOf="@+id/tools_settings_edit_text_layout"
+        android:contentDescription="@string/search"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/tools_settings_rv"

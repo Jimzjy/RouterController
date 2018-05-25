@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, Settings::class.java))
                 }
                 R.id.menu_help -> {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Jimzjy/RouterController")))
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Jimzjy/RouterController/wiki")))
                 }
                 R.id.menu_about -> {
                     startActivity(Intent(this, AboutActivity::class.java))

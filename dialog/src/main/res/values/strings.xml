@@ -4,10 +4,8 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>
-    <string name="select">Select</string>
-    <string name="ok">OK</string>
-    <string name="yes">Yes</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="title">Title</string>
     <string name="content">Content</string>
-    <string name="withColon">%s :</string>
+    <string name="withColon" translatable="false">%s :</string>
 </resources>

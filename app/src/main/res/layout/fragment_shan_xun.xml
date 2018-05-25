@@ -122,7 +122,6 @@
             android:id="@+id/tools_sx_display_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textIsSelectable="true"
-            android:text="@string/sx_display_help_hint"/>
+            android:textIsSelectable="true" />
     </ScrollView>
 </LinearLayout>
