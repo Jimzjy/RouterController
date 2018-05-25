@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 
@@ -24,12 +25,12 @@ const val EDIT_TO_LIST_ADD = 1
  * A simple [Fragment] subclass.
  *
  */
-open class ListDialog : DialogFragment() {
-    private var mListRecyclerViewAdapter: CommandListAdapter? = null
-    private var mCancelButton: ImageView? = null
-    private var mDoneButton: ImageView? = null
-    private var mBottomLeftButton: TextView? = null
-    private var mBottomRightButton: TextView? = null
+open class ListDialog: DialogFragment() {
+    private lateinit var mListRecyclerViewAdapter: CommandListAdapter
+    private lateinit var mCancelButton: ImageView
+    private lateinit var mDoneButton: ImageView
+    private lateinit var mBottomLeftButton: TextView
+    private lateinit var mBottomRightButton: TextView
     private var mCommandList: MutableList<CommandData>? = null
     private var mSaveCommandMethod: ((commandList: List<CommandData>) -> Unit)? = null
     private val mCommandSelected = mutableListOf<Boolean>()
@@ -39,7 +40,7 @@ open class ListDialog : DialogFragment() {
         fun newInstance(commandList: MutableList<CommandData>)
                 = ListDialog().apply {
             mCommandList = commandList
-            for (i in 1..(mCommandList?.size ?: 1)) {
+            for (i in 1..(mCommandList?.size ?: 0)) {
                 mCommandSelected.add(false)
             }
         }
@@ -47,6 +48,7 @@ open class ListDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         val view = inflater.inflate(R.layout.fragment_list_dialog, container, false)
 
         val listRecyclerView = view.findViewById<RecyclerView>(R.id.list_dialog_rv)
@@ -57,9 +59,9 @@ open class ListDialog : DialogFragment() {
         listRecyclerView.setHasFixedSize(true)
 
         mCancelButton = view.findViewById(R.id.list_dialog_cancel_button)
-        mCancelButton?.visibility = View.INVISIBLE
+        mCancelButton.visibility = View.INVISIBLE
         mDoneButton = view.findViewById(R.id.list_dialog_done_button)
-        mDoneButton?.visibility = View.INVISIBLE
+        mDoneButton.visibility = View.INVISIBLE
         mBottomLeftButton = view.findViewById(R.id.list_dialog_bottom_left)
         mBottomRightButton= view.findViewById(R.id.list_dialog_bottom_right)
 
@@ -79,8 +81,8 @@ open class ListDialog : DialogFragment() {
     }
 
     private fun setListener() {
-        mListRecyclerViewAdapter?.setOnClickItem { _, position ->
-            when(mListRecyclerViewAdapter?.multiSelectMode == true) {
+        mListRecyclerViewAdapter.setOnClickItem { _, position ->
+            when(mListRecyclerViewAdapter.multiSelectMode) {
                 false -> {
                     sendData(position)
                     dismiss()
@@ -90,32 +92,32 @@ open class ListDialog : DialogFragment() {
                 }
             }
         }
-        mListRecyclerViewAdapter?.setOnLongClickItem { _, position ->
-            if (mListRecyclerViewAdapter?.multiSelectMode != true){
-                mListRecyclerViewAdapter?.multiSelectMode = true
+        mListRecyclerViewAdapter.setOnLongClickItem { _, position ->
+            if (!mListRecyclerViewAdapter.multiSelectMode){
+                mListRecyclerViewAdapter.multiSelectMode = true
                 mCommandSelected[position] = true
-                mListRecyclerViewAdapter?.notifyDataSetChanged()
-                mCancelButton?.visibility = View.VISIBLE
-                mDoneButton?.visibility = View.VISIBLE
-                mBottomLeftButton?.text = resources.getString(R.string.delete)
-                mBottomRightButton?.text = resources.getString(R.string.edit)
+                mListRecyclerViewAdapter.notifyDataSetChanged()
+                mCancelButton.visibility = View.VISIBLE
+                mDoneButton.visibility = View.VISIBLE
+                mBottomLeftButton.text = resources.getString(R.string.delete)
+                mBottomRightButton.text = resources.getString(R.string.edit)
             }
         }
-        mCancelButton?.setOnClickListener {
-            if (mListRecyclerViewAdapter?.multiSelectMode == true) {
-                mListRecyclerViewAdapter?.multiSelectMode = false
+        mCancelButton.setOnClickListener {
+            if (mListRecyclerViewAdapter.multiSelectMode) {
+                mListRecyclerViewAdapter.multiSelectMode = false
                 for (i in 0 until mCommandSelected.size) {
                     mCommandSelected[i] = false
                 }
-                mListRecyclerViewAdapter?.notifyDataSetChanged()
-                mCancelButton?.visibility = View.INVISIBLE
-                mDoneButton?.visibility = View.INVISIBLE
-                mBottomLeftButton?.text = resources.getString(R.string.cancel)
-                mBottomRightButton?.text = resources.getString(R.string.add)
+                mListRecyclerViewAdapter.notifyDataSetChanged()
+                mCancelButton.visibility = View.INVISIBLE
+                mDoneButton.visibility = View.INVISIBLE
+                mBottomLeftButton.text = resources.getString(R.string.cancel)
+                mBottomRightButton.text = resources.getString(R.string.add)
             }
         }
-        mDoneButton?.setOnClickListener {
-            if (mListRecyclerViewAdapter?.multiSelectMode == true) {
+        mDoneButton.setOnClickListener {
+            if (mListRecyclerViewAdapter.multiSelectMode) {
                 val tmp = mutableListOf<Int>()
                 for (i in 0 until mCommandSelected.size) {
                     if (mCommandSelected[i]) tmp.add(i)
@@ -124,15 +126,15 @@ open class ListDialog : DialogFragment() {
                 dismiss()
             }
         }
-        mBottomLeftButton?.setOnClickListener {
-            if (mListRecyclerViewAdapter?.multiSelectMode != true) {
+        mBottomLeftButton.setOnClickListener {
+            if (!mListRecyclerViewAdapter.multiSelectMode) {
                 dismiss()
             } else {
                 deleteSelectedData()
             }
         }
-        mBottomRightButton?.setOnClickListener {
-            if (mListRecyclerViewAdapter?.multiSelectMode != true) {
+        mBottomRightButton.setOnClickListener {
+            if (!mListRecyclerViewAdapter.multiSelectMode) {
                 val editDialog = EditDialog.newInstance(0)
                 editDialog.setTargetFragment(this@ListDialog, EDIT_TO_LIST_ADD)
                 editDialog.show(fragmentManager, "EditDialog")
@@ -162,13 +164,13 @@ open class ListDialog : DialogFragment() {
 
     open fun updateData(commandData: CommandData, position: Int) {
         mCommandList?.set(position, commandData)
-        mListRecyclerViewAdapter?.notifyItemChanged(position)
+        mListRecyclerViewAdapter.notifyItemChanged(position)
     }
 
     open fun addData(commandData: CommandData, position: Int = 0) {
         mCommandList?.add(position, commandData)
         mCommandSelected.add(position, false)
-        mListRecyclerViewAdapter?.notifyItemInserted(position)
+        mListRecyclerViewAdapter.notifyItemInserted(position)
     }
 
     open fun deleteSelectedData() {
@@ -187,7 +189,7 @@ open class ListDialog : DialogFragment() {
         for (i in 1..(mCommandList?.size ?: 1)) {
             mCommandSelected.add(false)
         }
-        mListRecyclerViewAdapter?.notifyDataSetChanged()
+        mListRecyclerViewAdapter.notifyDataSetChanged()
     }
 
     private fun sendData(position: Int) {

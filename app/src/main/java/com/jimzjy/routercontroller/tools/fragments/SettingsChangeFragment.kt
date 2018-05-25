@@ -19,9 +19,7 @@ import android.widget.ImageView
 import com.jimzjy.dialog.EDIT_DATA
 import com.jimzjy.dialog.EDIT_POSITION
 import com.jimzjy.dialog.EditDialog
-
 import com.jimzjy.routercontroller.R
-import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.common.SettingsRecyclerAdapter
 import com.jimzjy.routercontroller.tools.ToolsPresenter
 import io.reactivex.Observable
@@ -43,10 +41,10 @@ class SettingsChangeFragment : Fragment() {
         }
     }
     private var mToolsPresenter: ToolsPresenter? = null
-    private var mSettingEditText: EditText? = null
-    private var mSearchButton: ImageView? = null
-    private var mSettingRecyclerView: RecyclerView? = null
-    private var mRecyclerViewAdapter: SettingsRecyclerAdapter? = null
+    private lateinit var mSettingEditText: EditText
+    private lateinit var mSearchButton: ImageView
+    private lateinit var mSettingRecyclerView: RecyclerView
+    private lateinit var mRecyclerViewAdapter: SettingsRecyclerAdapter
     private var mCommitLocked = true
     private val mDisposable = CompositeDisposable()
     private val mSettingList = mutableListOf<SettingData>()
@@ -60,7 +58,7 @@ class SettingsChangeFragment : Fragment() {
 
         mSettingList.add(SettingData(resources.getString(R.string.cant_find_config),""))
         mRecyclerViewAdapter = SettingsRecyclerAdapter(context!!, mSettingList)
-        mRecyclerViewAdapter?.setOnClickItem { _, position ->
+        mRecyclerViewAdapter.setOnClickItem { _, position ->
             if (!mCommitLocked) {
                 val editDialog = EditDialog.newInstance(mSettingList[position].name,
                         mSettingList[position].value,
@@ -70,9 +68,9 @@ class SettingsChangeFragment : Fragment() {
             }
         }
         mSettingRecyclerView = view.findViewById(R.id.tools_settings_rv)
-        mSettingRecyclerView?.layoutManager = LinearLayoutManager(context)
-        mSettingRecyclerView?.adapter = mRecyclerViewAdapter
-        mSettingRecyclerView?.setHasFixedSize(true)
+        mSettingRecyclerView.layoutManager = LinearLayoutManager(context)
+        mSettingRecyclerView.adapter = mRecyclerViewAdapter
+        mSettingRecyclerView.setHasFixedSize(true)
 
         return view
     }
@@ -116,23 +114,23 @@ class SettingsChangeFragment : Fragment() {
         for ((K,V) in data) {
             mSettingList.add(SettingData(K,V))
         }
-        mRecyclerViewAdapter?.notifyDataSetChanged()
+        mRecyclerViewAdapter.notifyDataSetChanged()
         mCommitLocked = false
     }
 
     private fun settingSendObservable(): Observable<String> {
         return Observable.create {
             val emitter = it
-            mSearchButton?.setOnClickListener {
-                val text: String = mSettingEditText?.text.toString()
+            mSearchButton.setOnClickListener {
+                val text: String = mSettingEditText.text.toString()
                 if (text.isNotEmpty()) {
                     hideSoftInput()
                     emitter.onNext(text)
-                    mSettingEditText?.setText("")
+                    mSettingEditText.setText("")
                     changeData(hashMapOf(Pair(resources.getString(R.string.try_to_get),"")))
                 }
             }
-            mSettingEditText?.setOnEditorActionListener { v, actionId, event ->
+            mSettingEditText.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEND
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
@@ -168,7 +166,7 @@ class SettingsChangeFragment : Fragment() {
 
     private fun hideSoftInput() {
         (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(mSettingEditText?.windowToken, 0)
+                .hideSoftInputFromWindow(mSettingEditText.windowToken, 0)
     }
 }
 

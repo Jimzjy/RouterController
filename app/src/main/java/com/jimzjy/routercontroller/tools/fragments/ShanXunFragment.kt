@@ -10,21 +10,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.telephony.SmsManager
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 
 import com.jimzjy.routercontroller.R
-import com.jimzjy.routercontroller.common.*
 import com.jimzjy.routercontroller.common.utils.*
 import com.jimzjy.routercontroller.tools.ToolsPresenter
 
@@ -40,14 +36,14 @@ const val GREEN_TEXT = "#4DB6AC"
 class ShanXunFragment : Fragment() {
     private var mSmsReader: SmsReader? = null
     private var mToolsPresenter: ToolsPresenter? = null
-    private var mNumberPasswordET: TextInputEditText? = null
-    private var mNumberPasswordLayout: TextInputLayout? = null
-    private var mPasswordET: TextInputEditText? = null
-    private var mCommitButton: Button? = null
-    private var mCommandET: TextInputEditText? = null
-    private var mDisplayText: TextView? = null
-    private var mAutoText: TextView? = null
-    private var mManualText: TextView? = null
+    private lateinit var mNumberPasswordET: TextInputEditText
+    private lateinit var mNumberPasswordLayout: TextInputLayout
+    private lateinit var mPasswordET: TextInputEditText
+    private lateinit var mCommitButton: Button
+    private lateinit var mCommandET: TextInputEditText
+    private lateinit var mDisplayText: TextView
+    private lateinit var mAutoText: TextView
+    private lateinit var mManualText: TextView
     private var mText = ""
     private var mPasswordConfig = ""
     private var mCommandRestart = ""
@@ -75,17 +71,17 @@ class ShanXunFragment : Fragment() {
         mNumberPasswordLayout = view.findViewById(R.id.tools_sx_passwd_number_layout)
 
         val numberPasswordCommand = mToolsPresenter?.getNumberPassword() ?: arrayOf("", "", "")
-        mNumberPasswordET?.setText(numberPasswordCommand[0])
-        mPasswordET?.setText(numberPasswordCommand[1])
-        mCommandET?.setText(numberPasswordCommand[2])
+        mNumberPasswordET.setText(numberPasswordCommand[0])
+        mPasswordET.setText(numberPasswordCommand[1])
+        mCommandET.setText(numberPasswordCommand[2])
 
         checkPermission()
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) {
-            val text = mDisplayText?.text.toString() +
+            val text = mDisplayText.text.toString() +
                     resources.getString(R.string.set_phone_number_to_default)
-            mDisplayText?.text = text
-            mNumberPasswordET?.visibility = View.GONE
+            mDisplayText.text = text
+            mNumberPasswordET.visibility = View.GONE
         }
         setListener()
         return view
@@ -130,22 +126,22 @@ class ShanXunFragment : Fragment() {
     }
 
     private fun setListener() {
-        mCommitButton?.setOnClickListener {
+        mCommitButton.setOnClickListener {
             clearDisplayText()
             if (misPermissionGet) {
                 if (mToolsPresenter?.isConnected() == true) {
-                    mPasswordConfig = mPasswordET?.text.toString()
-                    mCommandRestart = mCommandET?.text.toString()
+                    mPasswordConfig = mPasswordET.text.toString()
+                    mCommandRestart = mCommandET.text.toString()
                     if (mPasswordConfig.isNotEmpty() && mCommandRestart.isNotEmpty()) {
                         if (misAutoMode) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                                val number = mNumberPasswordET?.text.toString()
+                                val number = mNumberPasswordET.text.toString()
                                 sendSms(number)
                             } else {
                                 sendSms("")
                             }
                         } else {
-                            val password = mNumberPasswordET?.text.toString()
+                            val password = mNumberPasswordET.text.toString()
                             if (password.isNotEmpty()) {
                                 doCommitConfig(password)
                             } else {
@@ -155,7 +151,7 @@ class ShanXunFragment : Fragment() {
                     } else {
                         addDisplayText(resources.getString(R.string.commit_error), RED_TEXT)
                     }
-                    mToolsPresenter?.setNumberPassword(mNumberPasswordET?.text.toString(), mPasswordConfig, mCommandRestart)
+                    mToolsPresenter?.setNumberPassword(mNumberPasswordET.text.toString(), mPasswordConfig, mCommandRestart)
                 } else {
                     addDisplayText(resources.getString(R.string.not_connect), RED_TEXT)
                 }
@@ -163,13 +159,13 @@ class ShanXunFragment : Fragment() {
                 addDisplayText(resources.getString(R.string.no_permission), RED_TEXT)
             }
         }
-        mAutoText?.setOnClickListener {
+        mAutoText.setOnClickListener {
             if (!misAutoMode) {
                 changeMode()
                 misAutoMode = true
             }
         }
-        mManualText?.setOnClickListener {
+        mManualText.setOnClickListener {
             if (misAutoMode) {
                 changeMode()
                 misAutoMode = false
@@ -244,7 +240,7 @@ class ShanXunFragment : Fragment() {
             }
         }
         if (display) {
-            mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mDisplayText.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(mText, Html.FROM_HTML_MODE_COMPACT)
             } else {
                 Html.fromHtml(mText)
@@ -254,7 +250,7 @@ class ShanXunFragment : Fragment() {
 
     private fun clearDisplayText() {
         mText = ""
-        mDisplayText?.text = mText
+        mDisplayText.text = mText
     }
 
     private fun doCommitConfig(code: String) {
@@ -298,17 +294,17 @@ class ShanXunFragment : Fragment() {
 
     private fun changeMode() {
         if (misAutoMode) {
-            mNumberPasswordET?.setText("")
+            mNumberPasswordET.setText("")
             //mNumberPasswordET?.setHint(R.string.phone_number_hint_manual)
-            mNumberPasswordLayout?.hint = resources.getString(R.string.phone_number_hint_manual)
-            mAutoText?.background = null
-            mManualText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
+            mNumberPasswordLayout.hint = resources.getString(R.string.phone_number_hint_manual)
+            mAutoText.background = null
+            mManualText.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         } else {
-            mNumberPasswordET?.setText("")
+            mNumberPasswordET.setText("")
             //mNumberPasswordET?.setHint(R.string.phone_number_hint)
-            mNumberPasswordLayout?.hint = resources.getString(R.string.phone_number_hint)
-            mManualText?.background = null
-            mAutoText?.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
+            mNumberPasswordLayout.hint = resources.getString(R.string.phone_number_hint)
+            mManualText.background = null
+            mAutoText.background = ContextCompat.getDrawable(context!!, R.drawable.round_corner_background)
         }
     }
 }

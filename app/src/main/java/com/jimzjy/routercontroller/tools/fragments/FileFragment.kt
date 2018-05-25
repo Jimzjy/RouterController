@@ -15,10 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
 import android.widget.TextView
-
 import com.jimzjy.routercontroller.R
 import com.jimzjy.routercontroller.common.SelectedFilesRecyclerAdapter
 import com.jimzjy.routercontroller.tools.LocalFilesActivity
@@ -35,15 +32,15 @@ const val REQUEST_LOCAL_FILE = 1
 
 class FileFragment : Fragment() {
     private var mToolsPresenter: ToolsPresenter? = null
-    private var mRVAdapter: SelectedFilesRecyclerAdapter? = null
+    private lateinit var mRVAdapter: SelectedFilesRecyclerAdapter
     private val mFileList = mutableListOf<File>()
     private var mText = ""
-    private var mRecyclerView: RecyclerView? = null
-    private var mCommitButton: Button? = null
-    private var mDestinationET: TextInputEditText? = null
-    private var mDisplayText: TextView? = null
-    private var mSelectFileBT: Button? = null
-    private var mNoFileText: TextView? = null
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mCommitButton: Button
+    private lateinit var mDestinationET: TextInputEditText
+    private lateinit var mDisplayText: TextView
+    private lateinit var mSelectFileBT: Button
+    private lateinit var mNoFileText: TextView
 
     companion object {
         @JvmStatic
@@ -68,9 +65,9 @@ class FileFragment : Fragment() {
         mRVAdapter = SelectedFilesRecyclerAdapter(context!!, mFileList)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        mRecyclerView?.adapter = mRVAdapter
-        mRecyclerView?.layoutManager = layoutManager
-        mRecyclerView?.setHasFixedSize(true)
+        mRecyclerView.adapter = mRVAdapter
+        mRecyclerView.layoutManager = layoutManager
+        mRecyclerView.setHasFixedSize(true)
 
         setListener()
         return view
@@ -87,21 +84,21 @@ class FileFragment : Fragment() {
             val path = data.getStringArrayExtra("path")
             path?.let {
                 if (it.isNotEmpty()) {
-                    mNoFileText?.visibility = View.GONE
+                    mNoFileText.visibility = View.GONE
                     resetFileList(it)
-                    mRVAdapter?.notifyDataSetChanged()
+                    mRVAdapter.notifyDataSetChanged()
                 } else {
-                    mNoFileText?.visibility = View.VISIBLE
+                    mNoFileText.visibility = View.VISIBLE
                 }
             }
         }
     }
 
     private fun setListener() {
-        mSelectFileBT?.setOnClickListener {
+        mSelectFileBT.setOnClickListener {
             startActivityForResult(Intent(context, LocalFilesActivity::class.java), REQUEST_LOCAL_FILE)
         }
-        mCommitButton?.setOnClickListener {
+        mCommitButton.setOnClickListener {
             clearDisplayText()
             if (mToolsPresenter?.isConnected() != true) {
                 addDisplayText(resources.getString(R.string.not_connect), RED_TEXT)
@@ -111,7 +108,7 @@ class FileFragment : Fragment() {
                 addDisplayText(resources.getString(R.string.no_file_upload), RED_TEXT)
                 return@setOnClickListener
             }
-            if (mDestinationET?.text.toString().isEmpty()) {
+            if (mDestinationET.text.toString().isEmpty()) {
                 addDisplayText(resources.getString(R.string.no_dst_path), RED_TEXT)
                 return@setOnClickListener
             }
@@ -122,7 +119,7 @@ class FileFragment : Fragment() {
                     mToolsPresenter?.let {
                         if (it.isConnected()) {
                             try {
-                                it.sftpTo(mDestinationET?.text.toString(), file, object : SftpProgress {
+                                it.sftpTo(mDestinationET.text.toString(), file, object : SftpProgress {
                                     override fun count(count: Long): Boolean {
                                         handler.post {
                                             countAction(count)
@@ -180,7 +177,7 @@ class FileFragment : Fragment() {
                 "<p style=\"color:$color\">$text</p>"
             }
         }
-        mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        mDisplayText.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(tmpText, Html.FROM_HTML_MODE_LEGACY)
         } else {
             Html.fromHtml(tmpText)
@@ -197,7 +194,7 @@ class FileFragment : Fragment() {
             }
         }
         if (display) {
-            mDisplayText?.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mDisplayText.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(mText, Html.FROM_HTML_MODE_COMPACT)
             } else {
                 Html.fromHtml(mText)
@@ -207,7 +204,7 @@ class FileFragment : Fragment() {
 
     private fun clearDisplayText() {
         mText = ""
-        mDisplayText?.text = mText
+        mDisplayText.text = mText
     }
 
     private fun resetFileList(path: Array<String>) {

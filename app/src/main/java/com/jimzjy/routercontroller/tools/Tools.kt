@@ -3,7 +3,6 @@ package com.jimzjy.routercontroller.tools
 
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
-import android.support.design.widget.CoordinatorLayout
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
@@ -32,12 +31,12 @@ const val TOOLS_FRAGMENT_TAG_3 = "SHAN_XUN"
  *
  */
 class Tools : Fragment(), ReconnectClickListener, ToolsView {
-    private var mCloseBar: ConstraintLayout? = null
-    private var mCloseButton: ImageView? = null
-    private var mFrameLayout: FrameLayout? = null
-    private var mToolsPresenter: ToolsPresenter? = null
+    private lateinit var mCloseBar: ConstraintLayout
+    private lateinit var mCloseButton: ImageView
+    private lateinit var mFrameLayout: FrameLayout
+    private lateinit var mToolsPresenter: ToolsPresenter
     private var mFrameLayoutTranslationY = 0f
-    private var mCloseBarText: TextView? = null
+    private lateinit var mCloseBarText: TextView
 
     companion object {
         val fragmentTags = arrayOf(TOOLS_FRAGMENT_TAG_0, TOOLS_FRAGMENT_TAG_1, TOOLS_FRAGMENT_TAG_2, TOOLS_FRAGMENT_TAG_3)
@@ -66,11 +65,11 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 
         mFrameLayoutTranslationY = resources.getDimension(R.dimen.tools_top_widget_height)
         mFrameLayout = view.findViewById(R.id.tools_frame_layout)
-        mFrameLayout?.translationY = mFrameLayoutTranslationY
+        mFrameLayout.translationY = mFrameLayoutTranslationY
 
         mCloseBar = view.findViewById(R.id.tools_close_bar)
         mCloseButton = view.findViewById(R.id.tools_close_bar_icon)
-        mCloseBar?.setOnClickListener {
+        mCloseBar.setOnClickListener {
             onClickCloseButton(mCloseButton)
         }
         mCloseBarText = view.findViewById(R.id.tools_tool_name_text)
@@ -82,21 +81,21 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 
     override fun onStart() {
         super.onStart()
-        mToolsPresenter?.onStart()
+        mToolsPresenter.onStart()
     }
 
     override fun onStop() {
         super.onStop()
-        mToolsPresenter?.onStop()
+        mToolsPresenter.onStop()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mToolsPresenter?.onDestroyView()
+        mToolsPresenter.onDestroyView()
     }
 
     override fun onClickReconnect() {
-        mToolsPresenter?.onClickReconnect()
+        mToolsPresenter.onClickReconnect()
     }
 
     private fun onClickCloseButton(view: ImageView?) {
@@ -105,7 +104,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     }
 
     private fun changeCloseBarIcon(view: ImageView?) {
-        when (mFrameLayout?.translationY?.compareTo(0f) == 0) {
+        when (mFrameLayout.translationY.compareTo(0f) == 0) {
             true -> {
                 view?.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.vector_drawable_ic_remove_white___px))
             }
@@ -116,10 +115,10 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
     }
 
     private fun frameLayoutTranslation(translation: Float) {
-        if (mFrameLayout?.translationY?.compareTo(0f) == 0) {
-            mFrameLayout?.animate()?.translationY(translation)
+        if (mFrameLayout.translationY.compareTo(0f) == 0) {
+            mFrameLayout.animate().translationY(translation)
         } else {
-            mFrameLayout?.animate()?.translationY(0f)
+            mFrameLayout.animate().translationY(0f)
         }
     }
 
@@ -151,7 +150,7 @@ class Tools : Fragment(), ReconnectClickListener, ToolsView {
 //        fragmentTransaction.addToBackStack(null)
         fragmentTransaction.commit()
 
-        mCloseBarText?.text = name
+        mCloseBarText.text = name
         if (isTrans) {
             frameLayoutTranslation(mFrameLayoutTranslationY)
             changeCloseBarIcon(mCloseButton)

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_file_height"
+    android:background="@drawable/dialog_item_ripple"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
@@ -24,6 +25,7 @@
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
         android:maxLines="2"
+        android:textColor="@android:color/tertiary_text_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_file_radio"
         app:layout_constraintStart_toEndOf="@+id/item_file_icon"

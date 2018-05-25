@@ -20,9 +20,7 @@ import com.jimzjy.dialog.COMMAND_DATA
 import com.jimzjy.dialog.CommandData
 import com.jimzjy.dialog.ListDialog
 import com.jimzjy.dialog.MULTI_COMMAND_DATA
-
 import com.jimzjy.routercontroller.R
-import com.jimzjy.routercontroller.common.ReconnectClickListener
 import com.jimzjy.routercontroller.tools.ToolsPresenter
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -39,9 +37,9 @@ const val DIALOG_TO_FRAGMENT_MULTI_COMMAND = 1
  */
 class CommandFragment : Fragment(){
     private var mToolsPresenter: ToolsPresenter? = null
-    private var mCommandEditText: EditText? = null
-    private var mOutputDisplayText: TextView? = null
-    private var mUpdateTimeButton: Button? = null
+    private lateinit var mCommandEditText: EditText
+    private lateinit var mOutputDisplayText: TextView
+    private lateinit var mUpdateTimeButton: Button
     private var mCommandListener: (() -> Unit)? = null
     private val mDisposable = CompositeDisposable()
     private val mCommandList = mutableListOf<CommandData>()
@@ -94,7 +92,7 @@ class CommandFragment : Fragment(){
         when(requestCode) {
             DIALOG_TO_FRAGMENT_COMMAND -> {
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    mCommandEditText?.setText(
+                    mCommandEditText.setText(
                             mCommandList[data.getIntExtra(COMMAND_DATA, 0)].content)
                     mCommandListener?.invoke()
                 }
@@ -106,7 +104,7 @@ class CommandFragment : Fragment(){
                     position.forEach {
                         command.append("${mCommandList[it].content}&&")
                     }
-                    mCommandEditText?.setText(command.toString())
+                    mCommandEditText.setText(command.toString())
                     mCommandListener?.invoke()
                 }
             }
@@ -116,7 +114,7 @@ class CommandFragment : Fragment(){
     private fun commandSendObservable(): Observable<String> {
         return Observable.create {
             val emitter = it
-            mCommandEditText?.setOnEditorActionListener { v, actionId, event ->
+            mCommandEditText.setOnEditorActionListener { v, actionId, event ->
                 if (actionId == EditorInfo.IME_ACTION_SEND
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || (event != null && KeyEvent.KEYCODE_ENTER == event.keyCode
@@ -125,22 +123,22 @@ class CommandFragment : Fragment(){
                         hideSoftInput()
                         emitter.onNext(v.text.toString())
                         v.text = ""
-                        mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
+                        mOutputDisplayText.text = resources.getString(R.string.try_to_get)
                     }
                 }
                 false
             }
             mCommandListener = {
-                if (mCommandEditText?.text?.isNotEmpty() == true) {
-                    emitter.onNext(mCommandEditText?.text.toString())
-                    mCommandEditText?.setText("")
-                    mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
+                if (mCommandEditText.text?.isNotEmpty() == true) {
+                    emitter.onNext(mCommandEditText.text.toString())
+                    mCommandEditText.setText("")
+                    mOutputDisplayText.text = resources.getString(R.string.try_to_get)
                 }
             }
-            mUpdateTimeButton?.setOnClickListener {
+            mUpdateTimeButton.setOnClickListener {
                 val time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(Date())
                 emitter.onNext("date -s \"$time\"")
-                mOutputDisplayText?.text = resources.getString(R.string.try_to_get)
+                mOutputDisplayText.text = resources.getString(R.string.try_to_get)
             }
         }
     }
@@ -158,7 +156,7 @@ class CommandFragment : Fragment(){
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    mOutputDisplayText?.text = if (it[1].isNotEmpty()) {
+                    mOutputDisplayText.text = if (it[1].isNotEmpty()) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             Html.fromHtml("<font color=\"#EF5350\">${it[1]}</font>${it[0]}", Html.FROM_HTML_MODE_COMPACT)
                         } else {
@@ -172,6 +170,6 @@ class CommandFragment : Fragment(){
 
     private fun hideSoftInput() {
         (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
-                .hideSoftInputFromWindow(mCommandEditText?.windowToken, 0)
+                .hideSoftInputFromWindow(mCommandEditText.windowToken, 0)
     }
 }

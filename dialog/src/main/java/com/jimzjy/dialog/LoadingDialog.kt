@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +23,7 @@ class LoadingDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window.setBackgroundDrawableResource(R.color.transparent)
         return inflater.inflate(R.layout.fragment_loading_dialog, container, false)
     }

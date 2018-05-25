@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 
@@ -20,9 +21,9 @@ const val EDIT_POSITION = "edit_position"
  *
  */
 open class EditDialog : DialogFragment() {
-    private var mTitle: TextView? = null
-    private var mContent: TextView? = null
-    private var mDoneButton: TextView? = null
+    private lateinit var mTitle: TextView
+    private lateinit var mContent: TextView
+    private lateinit var mDoneButton: TextView
     private var mTitleText: String? = null
     private var mContentText: String? = null
     private var mDoneButtonText: String? = null
@@ -59,37 +60,38 @@ open class EditDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         val view = inflater.inflate(R.layout.fragment_edit_dialog, container, false)
 
         mTitle = view.findViewById(R.id.edit_dialog_title)
         mContent = view.findViewById(R.id.edit_dialog_content)
         mDoneButton = view.findViewById(R.id.edit_dialog_button)
-        mDoneButton?.setOnClickListener {
+        mDoneButton.setOnClickListener {
             sendData()
             dismiss()
         }
 
         mTitleText?.let {
             if (mTitleEditable) {
-                mTitle?.text = it
+                mTitle.text = it
             } else {
-                mTitle?.text = String.format(resources.getString(R.string.withColon), it)
+                mTitle.text = String.format(resources.getString(R.string.withColon), it)
             }
         }
-        mContentText?.let { mContent?.text = it }
-        mDoneButtonText?.let { mDoneButton?.text = it }
+        mContentText?.let { mContent.text = it }
+        mDoneButtonText?.let { mDoneButton.text = it }
 
         if (!mTitleEditable) {
-            mTitle?.background = null
-            mTitle?.isEnabled = false
+            mTitle.background = null
+            mTitle.isEnabled = false
         }
         return view
     }
 
     private fun sendData() {
         val intent = Intent()
-                .putExtra(EDIT_DATA, arrayOf(mTitle?.text.toString()
-                        , mContent?.text.toString()))
+                .putExtra(EDIT_DATA, arrayOf(mTitle.text.toString()
+                        , mContent.text.toString()))
                 .putExtra(EDIT_POSITION, position)
         targetFragment?.onActivityResult(targetRequestCode, Activity.RESULT_OK, intent)
     }

@@ -242,7 +242,7 @@ open class NetworkSpeedView : View {
     /**
      * 外部访问 速度
      */
-    val speedArray = arrayOf("", "")
+    val speedArray = arrayOf("▲ 0.0 B/s", "▼ 0.0 B/s")
 
     constructor(ctx: Context) : super(ctx)
 

@@ -72,7 +72,7 @@
     <string name="no_file_selected">No file selected</string>
     <string name="disabled">Disabled</string>
     <string name="about_text">GitHub repo: https://github.com/Jimzjy/RouterController</string>
-    <string name="license_p">Copyright 2018 Jimzjy\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.See the License for the specific language governing permissions and limitations under the License</string>
+    <string name="license_p">Copyright 2018 Jimzjy\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\nhttp://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License</string>
     <string name="open_source_license">Open Source Licenses</string>
     <string name="version">Version %s</string>
     <string name="about">About</string>

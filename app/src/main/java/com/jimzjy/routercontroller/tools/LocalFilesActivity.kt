@@ -20,7 +20,7 @@ import java.io.File
 
 
 class LocalFilesActivity : AppCompatActivity() {
-    private var mRVAdapter: FilesRecyclerAdapter? = null
+    private lateinit var mRVAdapter: FilesRecyclerAdapter
     private val mFileSeeker = FileSeeker()
     private val mFileList = mutableListOf<File>()
     private var mLoadingDialog: LoadingDialog? = null
@@ -48,17 +48,17 @@ class LocalFilesActivity : AppCompatActivity() {
     }
 
     private fun setListener() {
-        mRVAdapter?.setOnClickItemFile { _, position ->
+        mRVAdapter.setOnClickItemFile { _, position ->
             val intent = Intent()
             intent.putExtra("path", arrayOf(mFileList[position].absolutePath))
             this.setResult(Activity.RESULT_OK, intent)
             this.finish()
         }
-        mRVAdapter?.setOnClickItemFolder { _, position ->
+        mRVAdapter.setOnClickItemFolder { _, position ->
             toFile(mFileList[position].absolutePath)
         }
-        mRVAdapter?.setOnLongClickItem { _, _ ->
-            mRVAdapter?.notifyDataSetChanged()
+        mRVAdapter.setOnLongClickItem { _, _ ->
+            mRVAdapter.notifyDataSetChanged()
             tools_lf_bar_normal.visibility = View.GONE
             tools_lf_bar_multi.visibility = View.VISIBLE
         }
@@ -66,15 +66,15 @@ class LocalFilesActivity : AppCompatActivity() {
             this.finish()
         }
         tools_lf_bar_cancel.setOnClickListener {
-            if (mRVAdapter?.multiSelectMode == true) {
-                mRVAdapter?.multiSelectMode = false
-                mRVAdapter?.notifyDataSetChanged()
+            if (mRVAdapter.multiSelectMode) {
+                mRVAdapter.multiSelectMode = false
+                mRVAdapter.notifyDataSetChanged()
                 tools_lf_bar_multi.visibility = View.GONE
                 tools_lf_bar_normal.visibility = View.VISIBLE
             }
         }
         tools_lf_bar_done.setOnClickListener {
-            mRVAdapter?.let {
+            mRVAdapter.let {
                 if (it.multiSelectMode) {
                     val path = Array(it.selectList.size){ "" }
                     for (i in 0..(it.selectList.size - 1)) {
@@ -110,7 +110,7 @@ class LocalFilesActivity : AppCompatActivity() {
         }
         mFileSeeker.setFindFileFindListener {
             mFileList.add(0, it)
-            mRVAdapter?.notifyItemInserted(0)
+            mRVAdapter.notifyItemInserted(0)
         }
         mFileSeeker.setFindFileCompleteListener {
             mLoadingDialog?.dismiss()
@@ -127,14 +127,14 @@ class LocalFilesActivity : AppCompatActivity() {
         mFileSeeker.currentPath = path
         mFileList.clear()
         mFileList.addAll(mFileSeeker.currentDirFiles ?: emptyArray())
-        mRVAdapter?.notifyDataSetChanged()
+        mRVAdapter.notifyDataSetChanged()
     }
 
     private fun backToLastFile() {
         mFileSeeker.popFile()
         mFileList.clear()
         mFileList.addAll(mFileSeeker.currentDirFiles ?: emptyArray())
-        mRVAdapter?.notifyDataSetChanged()
+        mRVAdapter.notifyDataSetChanged()
     }
 
     private fun hideSoftInput() {
@@ -145,7 +145,7 @@ class LocalFilesActivity : AppCompatActivity() {
     private fun searchFile(text: String) {
         hideSoftInput()
         mFileList.clear()
-        mRVAdapter?.notifyDataSetChanged()
+        mRVAdapter.notifyDataSetChanged()
         mFileSeeker.findFile(text)
     }
 }
