@@ -183,9 +183,7 @@ class FilesRecyclerAdapter(ctx: Context, private val mFileList: List<File>) : Re
                 if (!multiSelectMode) {
                     multiSelectMode = true
                     selectList.clear()
-                    radioBT.isChecked = true
-                    if (!selectList.contains(adapterPosition))
-                        selectList.add(adapterPosition)
+                    selectList.add(adapterPosition)
                     mOnLongClickItem?.invoke(it, adapterPosition)
                 }
                 true
@@ -204,9 +202,6 @@ class FilesRecyclerAdapter(ctx: Context, private val mFileList: List<File>) : Re
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val viewHolder = holder as ViewHolder
         viewHolder.text.text = mFileList[position].name
-        if (selectList.contains(position)) {
-            viewHolder.radioBT.isChecked = true
-        }
         if (mFileList[position].isDirectory) {
             viewHolder.icon.setImageDrawable(mFolderImage)
         } else {
@@ -215,6 +210,7 @@ class FilesRecyclerAdapter(ctx: Context, private val mFileList: List<File>) : Re
         if (!multiSelectMode) {
             viewHolder.radioBT.visibility = View.GONE
         } else {
+            viewHolder.radioBT.isChecked = selectList.contains(position)
             viewHolder.radioBT.visibility = View.VISIBLE
         }
     }
