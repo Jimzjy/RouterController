@@ -46,7 +46,7 @@
     <string name="Done">确认</string>
     <string name="back">返回</string>
     <string name="select_file">选择文件</string>
-    <string name="search_file">在当前目录选择文件</string>
+    <string name="search_file">在当前目录搜索文件</string>
     <string name="destination_path">目标路径</string>
     <string name="no_dst_path">没有目标路径</string>
     <string name="no_file_upload">没有文件需要上传</string>

@@ -136,14 +136,14 @@ class FileFragment : Fragment() {
                                             initAction(op, src, dest, max)
                                         }
                                     }
-                                }, {
-                                    addDisplayText("Upload: Finish!")
                                 })
                             } catch (e: SSHUtilsException) {
                                 e.printStackTrace()
                                 handler.post {
                                     errorAction(e)
                                 }
+                            } finally {
+
                             }
                         }
                     }

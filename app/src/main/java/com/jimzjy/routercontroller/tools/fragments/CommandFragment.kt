@@ -102,7 +102,7 @@ class CommandFragment : Fragment(){
                     val position = data.getIntArrayExtra(MULTI_COMMAND_DATA)
                     val command = StringBuilder()
                     position.forEach {
-                        command.append("${mCommandList[it].content}&&")
+                        command.append("${mCommandList[it].content};")
                     }
                     mCommandEditText.setText(command.toString())
                     mCommandListener?.invoke()

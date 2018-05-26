@@ -109,9 +109,9 @@ class ToolsPresenterImpl(private var mToolsView: ToolsView?, private var ctx: Co
         return arrayOf(number, passwordConfig, command)
     }
 
-    override fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress?, uploadFinishAction: (() -> Unit)?) {
+    override fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress?) {
         if (isConnected()) {
-            mConnector?.sftpTo(dst, file, sftpProgress, uploadFinishAction)
+            mConnector?.sftpTo(dst, file, sftpProgress)
         }
     }
 

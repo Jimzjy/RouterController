@@ -98,9 +98,8 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
      * @param dst 目标目录
      * @param file 上传的文件
      * @param sftpProgress 反馈进度 [SftpProgress]
-     * @param uploadFinishAction 上传完成后的回调函数
      */
-    open fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null, uploadFinishAction: (() -> Unit)?) {
+    open fun sftpTo(dst: String, file: File, sftpProgress: SftpProgress? = null) {
         if (mSession == null) throw SSHUtilsException("Session is null")
         if (mSession?.isConnected != true) throw SSHUtilsException("Session is not connected")
         var channel: ChannelSftp? = null
@@ -136,10 +135,8 @@ abstract class Connector(private val connectorInfo: ConnectorInfo) {
                         }
                     }
                 }
-                uploadFinishAction?.invoke()
             } else {
                 sftpFileTo(channel, "$ogDst/${file.name}", file, sftpProgress)
-                uploadFinishAction?.invoke()
             }
         } catch (e: Exception) {
             throw SSHUtilsException(e)
