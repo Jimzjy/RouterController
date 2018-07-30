@@ -7,14 +7,14 @@
     android:orientation="vertical"
     tools:context=".about.AboutActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/about_toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appBarHeight"
         android:background="@color/colorPrimary"
         app:title="@string/about"/>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/about_replace_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -93,5 +93,5 @@
                 android:textIsSelectable="true" />
         </ScrollView>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

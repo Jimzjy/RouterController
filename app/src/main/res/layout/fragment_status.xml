@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="com.jimzjy.routercontroller.status.Status">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/status_top_CL"
         android:layout_width="match_parent"
         android:layout_height="@dimen/status_top_widget_height"
@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Dev: br0" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.jimzjy.routercontroller.status.StatusCoordinatorLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:background="@color/colorPrimary"
             android:alpha="0"
             app:layout_behavior=".common.DeviceRecyclerScrollerBehavior"/>
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/status_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -53,7 +53,7 @@
             tools:listitem="@layout/item_device"
             tools:itemCount="7" />
     </com.jimzjy.routercontroller.status.StatusCoordinatorLayout>
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/status_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/status_top_text_height"
@@ -98,5 +98,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/status_constraint_view"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

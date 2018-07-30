@@ -8,7 +8,7 @@
     android:background="@color/background"
     tools:context=".tools.fragments.ShanXunFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/tools_bar_height"
         android:background="@color/colorPrimary">
@@ -51,9 +51,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tools_sx_divide"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tools_sx_passwd_number_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,9 +67,9 @@
             android:layout_marginEnd="8dp"
             android:inputType="phone"
             android:textSize="@dimen/tools_sx_edit_size"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -82,9 +82,9 @@
             android:layout_marginEnd="8dp"
             android:inputType="text"
             android:textSize="@dimen/tools_sx_edit_size" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -97,7 +97,7 @@
             android:layout_marginEnd="8dp"
             android:inputType="text"
             android:textSize="@dimen/tools_sx_edit_size" />
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/tools_sx_commit_button"

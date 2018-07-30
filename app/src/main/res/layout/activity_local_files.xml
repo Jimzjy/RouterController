@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     tools:context=".tools.LocalFilesActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tools_lf_bar_normal"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appBarHeight"
@@ -41,9 +41,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/tools_lf_bar_back"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/tools_lf_bar_multi"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appBarHeight"
@@ -78,9 +78,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/tools_lf_search_ET_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/tools_lf_searchET_height"
@@ -101,7 +101,7 @@
             android:hint="@string/search_file"
             android:inputType="text"
             android:imeOptions="actionSend" />
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/tools_lf_search_BT"
@@ -116,7 +116,7 @@
         app:layout_constraintEnd_toEndOf="@+id/tools_lf_search_ET_layout"
         app:layout_constraintTop_toTopOf="@+id/tools_lf_search_ET_layout" />
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tools_lf_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -126,4 +126,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tools_lf_search_ET_layout"
         tools:listitem="@layout/item_file" />
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
